@@ -1,0 +1,164 @@
+/* --------- ОБНУЛЕННЯ СТИЛІВ ТЕГІВ ------------ */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-sizing: border-box;
+}
+li {
+	list-style: none;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+img{
+	vertical-align: top;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: inherit;
+	font-size: inherit;
+}
+input,
+button,
+textarea {
+	font-family: inherit;
+	font-size: inherit;
+}
+button {
+	cursor: pointer;
+	color: inherit;
+	background-color: inherit;
+}
+html,
+body{
+	height: 100%;
+}
+body {
+	line-height: 1;
+
+}
+/* --------------------------------------- */
+
+  .movie-card {
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border: .0625rem solid #dedede;
+    border-radius: 0.9375rem;
+    overflow: hidden;
+    text-align: center;
+	max-width: 17.5rem;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	box-shadow: 0 100px 80px 0 rgba(0, 0, 0, .07), 0 41.778px 33.422px 0 rgba(0, 0, 0, .05), 0 22.336px 17.869px 0 rgba(0, 0, 0, .04), 0 12.522px 10.017px 0 rgba(0, 0, 0, .04), 0 6.65px 5.32px 0 rgba(0, 0, 0, .03), 0 2.767px 2.214px 0 rgba(0, 0, 0, .02);
+	// .movie-card__image
+
+	&__image {
+		position: relative;
+		aspect-ratio: 840/1340;
+		&:not(:last-child) {margin-bottom: .9375rem;}
+		overflow: hidden;
+
+		img{
+			transition: transform 0.8s;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			right: 0;
+			object-fit: cover;
+			@media (any-hover: hover){
+				&:hover{
+					transform: scale(1.1);
+				}
+			}
+		}
+	}
+
+	// .movie-card__info
+
+	&__info {
+		flex-grow: 1;
+		padding: 0 1.25rem;
+		&:not(:last-child) {margin-bottom: .9375rem;}
+	}
+
+	// .movie-card__title
+
+	&__title {
+		font-size: 1.5rem;
+		transition: color 0.3s;
+		&:not(:last-child) {margin-bottom: .625rem;}
+		@media (any-hover: hover){
+			&:hover{
+				color: #4e4e4e;
+			}
+		}
+	}
+
+	// .movie-card__rating
+
+	&__rating {
+		&:not(:last-child) {margin-bottom: .625rem;}
+	}
+
+	// .movie-card__description
+
+	&__description {
+		line-height: 1.4;
+		&:not(:last-child) {margin-bottom: .625rem;}
+	}
+
+	// .movie-card__actions
+
+	&__actions {
+		padding: 0 .9375rem 1.25rem .9375rem;
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		gap: 0.9375rem;
+
+	}
+
+	// .movie-card__button
+
+	&__button {
+		flex-grow: 1;
+		padding: .625rem;
+		border-radius: .625rem;
+		transition: background-color 0.3s;
+		img{
+			width: 2.1875rem;
+			height: 2.1875rem;
+		}
+	}
+
+	// .movie-card__button--favourite
+
+	&__button--favourite {
+		background-color: #e44d4d;
+		@media (any-hover: hover){
+			&:hover{
+				background-color: #f80a0a;
+			}
+		}
+	}
+
+	// .movie-card__button--watch-later
+
+	&__button--watch-later {
+		background-color: #44a144;
+		@media (any-hover: hover){
+			&:hover{
+				background-color: #1ebb1e;
+			}
+		}
+	}
+}

@@ -1,0 +1,16 @@
+<div class="movie-card" *ngIf="movie">
+    <a href="" class="movie-card__image"><img  [src]="movie.backdrop_path" alt="{{ movie.title }} Poster"></a>
+    <div class="movie-card__info">
+        <h3 class="movie-card__title"><a href="">{{ movie.title }}</a></h3>
+        <p class="movie-card__rating">Rating: {{ movie.rating }}</p>
+        <p class="movie-card__description">{{ movie.description }}</p>
+    </div>
+    <div class="movie-card__actions">
+        <button (click)="onAddToFavourites()" class="movie-card__button movie-card__button--favourite">
+            <img src="../../../assets/img/icons/favourite.svg" alt="Favourite">
+        </button>
+        <button (click)="onAddToWatchList()" class="movie-card__button movie-card__button--watch-later">
+            <img src="../../../assets/img/icons/watchLater.svg" alt="Watch Later">
+        </button>
+    </div>
+</div>
