@@ -1,41 +1,18 @@
 .movie-list {
   display: grid;
   gap: 2.5rem;
-  // .movie-list__all
-
-  &__all {
-  }
-
-  // .movie-list__favourites
-
-  &__favourites {
-  }
-
-  // .movie-list__watch-later
-
-  &__watch-later {
-  }
 }
-.all-movies {
 
-  // .all-movies__title
-
-  &__title {
-  }
-
-  // .all-movies__items
-
-  &__items {
-  }
-}
 .title-movie-section {
   font-size: 2.625rem;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   line-height: 1.3;
   letter-spacing: 0.0563rem;
   color: #2b2b2b;
   padding-left: 1.25rem;
-  &:not(:last-child) {margin-bottom: .9375rem;}
+  &:not(:last-child) {
+    margin-bottom: 0.9375rem;
+  }
 }
 .items-movies {
   display: grid;
@@ -44,28 +21,4 @@
   column-gap: 1.25rem;
   row-gap: 1.875rem;
   justify-items: center;
-}
-.favourites-movies {
-
-  // .favourites-movies__title
-
-  &__title {
-  }
-
-  // .favourites-movies__items
-
-  &__items {
-  }
-}
-.watch-later-movies {
-
-  // .watch-later-movies__title
-
-  &__title {
-  }
-
-  // .watch-later-movies__items
-
-  &__items {
-  }
 }
