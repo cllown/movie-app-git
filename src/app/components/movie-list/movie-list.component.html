@@ -2,19 +2,25 @@
     <section class="movie-list__all all-movies">
         <h2 class="all-movies__title title-movie-section">All Movies</h2>
         <div class="all-movies__items items-movies">
-            <ng-container *ngFor="let movie of movies; trackBy: trackById"><app-movie-card [movie]="movie" (addToFavourites)="onAddToFavourites(movie)" (addToWatchList)="onAddToWatchList(movie)"></app-movie-card></ng-container>
-          </div>
+            <ng-container *ngFor="let movie of movies; trackBy: trackById"><app-p-movie-card [movie]="movie"
+                    (addToFavourites)="onAddToFavourites(movie)"
+                    (addToWatchList)="onAddToWatchList(movie)"></app-p-movie-card></ng-container>
+        </div>
     </section>
     <section *ngIf="favourites.length > 0" class="movie-list__favourites favourites-movies">
         <h2 class="favourites-movies__title title-movie-section">Favourites</h2>
         <div class="favourites-movies__items items-movies">
-            <ng-container *ngFor="let movie of favourites; trackBy: trackById"><app-movie-card [movie]="movie" [showActions]="false" [showRemoveButton]="true" (removeFromList)="onRemoveFromFavourites(movie)"></app-movie-card></ng-container>
-          </div>
+            <ng-container *ngFor="let movie of favourites; trackBy: trackById"><app-p-movie-card [movie]="movie"
+                    [showActions]="false" [showRemoveButton]="true"
+                    (removeFromList)="onRemoveFromFavourites(movie)"></app-p-movie-card></ng-container>
+        </div>
     </section>
     <section *ngIf="watchList.length > 0" class="movie-list__watch-later watch-later-movies">
         <h2 class="watch-later-movies__title title-movie-section">Watch Later</h2>
         <div class="watch-later-movies__items items-movies">
-            <ng-container *ngFor="let movie of watchList; trackBy: trackById"><app-movie-card [movie]="movie" [showActions]="false" [showRemoveButton]="true" (removeFromList)="onRemoveFromWatchList(movie)"></app-movie-card></ng-container>
-          </div>
+            <ng-container *ngFor="let movie of watchList; trackBy: trackById"><app-p-movie-card [movie]="movie"
+                    [showActions]="false" [showRemoveButton]="true"
+                    (removeFromList)="onRemoveFromWatchList(movie)"></app-p-movie-card></ng-container>
+        </div>
     </section>
 </div>

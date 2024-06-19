@@ -1,32 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
+import { Movie } from '../../../models/movie';
 import { ButtonModule } from 'primeng/button';
-
+import { MovieTimePipe } from '../../../pipes/movie-time/movie-time.pipe';
 @Component({
   selector: 'app-p-movie-card',
   standalone: true,
-  imports: [CardModule, ButtonModule, CommonModule],
+  imports: [CardModule, ButtonModule, CommonModule, MovieTimePipe],
   templateUrl: './p-movie-card.component.html',
-  styleUrl: './p-movie-card.component.scss'
+  styleUrl: './p-movie-card.component.scss',
 })
 export class PMovieCardComponent {
-  @Input() movie: {
-    backdrop_path: string;
-    id: number;
-    description: string;
-    release_date: string;
-    title: string;
-    rating: string;
-  } | undefined;
+  @Input() movie: Movie | undefined;
+  @Input() showActions: boolean = true;
+  @Input() showRemoveButton = false;
   @Output() addToFavourites = new EventEmitter<void>();
   @Output() addToWatchList = new EventEmitter<void>();
+  @Output() removeFromList = new EventEmitter<void>();
 
-  onAddToFavourites(){
+  onAddToFavourites() {
     this.addToFavourites.emit();
   }
 
-  onAddToWatchList(){
+  onAddToWatchList() {
     this.addToWatchList.emit();
+  }
+
+  onRemoveFromList() {
+    this.removeFromList.emit();
   }
 }
