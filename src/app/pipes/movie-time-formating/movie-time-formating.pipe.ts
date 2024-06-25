@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'movieTime',
+  name: 'movieTimeFormating',
   standalone: true,
 })
-export class MovieTimePipe implements PipeTransform {
+export class MovieTimeFormatingPipe implements PipeTransform {
   transform(value: number): string {
     const hours: number = Math.floor(value / 3600);
     const minutes: number = Math.floor((value % 3600) / 60);

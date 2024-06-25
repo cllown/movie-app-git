@@ -3,11 +3,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { Movie } from '../../../models/movie';
 import { ButtonModule } from 'primeng/button';
-import { MovieTimePipe } from '../../../pipes/movie-time/movie-time.pipe';
+import { RouterLink } from '@angular/router';
+import { MovieTimeFormatingPipe } from '../../../pipes/movie-time-formating/movie-time-formating.pipe';
 @Component({
   selector: 'app-p-movie-card',
   standalone: true,
-  imports: [CardModule, ButtonModule, CommonModule, MovieTimePipe],
+  imports: [
+    CardModule,
+    ButtonModule,
+    CommonModule,
+    MovieTimeFormatingPipe,
+    RouterLink,
+  ],
   templateUrl: './p-movie-card.component.html',
   styleUrl: './p-movie-card.component.scss',
 })
