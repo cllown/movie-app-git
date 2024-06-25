@@ -9,8 +9,11 @@
         {{movie.release_date}}
     </p>
     <p class="movie-duration">
-        {{movie.duration | movieTime}}
+        {{movie.duration | movieTimeFormating}}
         <span class="pi pi-clock"></span>
+    </p>
+    <p class="movie-more">
+        <a [routerLink]="['/movie/', movie.id]">Show more ></a>
     </p>
     <ng-template pTemplate="footer">
         <p-button *ngIf="showActions" (click)="onAddToFavourites()" class="w-full movie-card-button"

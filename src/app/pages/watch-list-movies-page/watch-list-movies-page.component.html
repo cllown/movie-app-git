@@ -1,0 +1,11 @@
+<div *ngIf="watchListMovies.length > 0" class="page-wrapper">
+  <div class="watch-list-movies-page">
+    <h2 class="title-movie-section">Watch List</h2>
+    <div class="items-movies">
+      <ng-container *ngFor="let movie of watchListMovies; trackBy: trackById">
+        <app-p-movie-card [movie]="movie" [showActions]="false" [showRemoveButton]="true"
+          (removeFromList)="removeFromWatchList(movie)"></app-p-movie-card>
+      </ng-container>
+    </div>
+  </div>
+</div>
