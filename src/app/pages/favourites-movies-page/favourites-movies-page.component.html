@@ -1,11 +1,13 @@
-<div *ngIf="favouriteMovies.length > 0" class="page-wrapper">
-  <div class="favourites-movies-page">
-    <h2 class="title-movie-section">Favourites</h2>
-    <div class="favourites-movies-list items-movies">
-      <ng-container *ngFor="let movie of favouriteMovies; trackBy: trackById">
-        <app-p-movie-card [movie]="movie" [showActions]="false" [showRemoveButton]="true"
-          (removeFromList)="removeFromFavourites(movie)"></app-p-movie-card>
-      </ng-container>
-    </div>
+<div class="page-wrapper">
+  @if(favourites.length > 0){
+  <h2 class="title-movie-section">Favourites</h2>
+  <div class="items-movies">
+    @for(movie of favourites; track movie.id){
+    <app-p-movie-card [movie]="movie" [isActionsShow]="false" [isRemoveButtonShow]="true"
+      (removeFromList)="removeFromFavourites(movie)"></app-p-movie-card>
+    }
   </div>
+  } @else {
+  <p>You haven't added any movies to this category yet.</p>
+  }
 </div>

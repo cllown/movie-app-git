@@ -7,22 +7,15 @@ import { PopularMoviesPageComponent } from './pages/popular-movies-page/popular-
 import { UpcomingMoviesPageComponent } from './pages/upcoming-movies-page/upcoming-movies-page.component';
 import { FavouritesMoviesPageComponent } from './pages/favourites-movies-page/favourites-movies-page.component';
 import { WatchListMoviesPageComponent } from './pages/watch-list-movies-page/watch-list-movies-page.component';
+import { AllMoviesPageComponent } from './pages/all-movies-page/all-movies-page.component';
 
 export const routes: Routes = [
+  { path: '', component: AllMoviesPageComponent },
   { path: 'movie/:id', component: DetailsMoviePageComponent },
   { path: 'now-playing', component: NowPlayingMoviesPageComponent },
   { path: 'top-rated', component: TopRatedMoviesPageComponent },
   { path: 'upcoming', component: UpcomingMoviesPageComponent },
   { path: 'popular', component: PopularMoviesPageComponent },
-
-  {
-    path: 'favourites',
-    component: FavouritesMoviesPageComponent,
-    outlet: 'header',
-  },
-  {
-    path: 'watch-list',
-    component: WatchListMoviesPageComponent,
-    outlet: 'header',
-  },
+  { path: 'favourites', component: FavouritesMoviesPageComponent },
+  { path: 'watch-list', component: WatchListMoviesPageComponent },
 ];

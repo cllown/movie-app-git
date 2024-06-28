@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { movies } from '../../mock-data/mock-movies';
 import { PMovieCardComponent } from '../../components/p-movie-card/p-movie-card/p-movie-card.component';
+import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-watch-list-movies-page',
@@ -13,27 +14,16 @@ import { PMovieCardComponent } from '../../components/p-movie-card/p-movie-card/
   styleUrl: './watch-list-movies-page.component.scss',
 })
 export class WatchListMoviesPageComponent implements OnInit {
-  watchListMovies: Movie[] = [];
+  watchList: Movie[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      const dataString = params['data'];
-      if (dataString) {
-        const watchListMovieIds: string[] = JSON.parse(dataString);
-        this.watchListMovies = movies.filter((movie) =>
-          watchListMovieIds.includes(movie.id.toString())
-        );
-      }
-    });
+    this.watchList = this.movieService.getWatchList();
   }
+
   removeFromWatchList(movie: Movie) {
-    this.watchListMovies = this.watchListMovies.filter(
-      (m) => m.id !== movie.id
-    );
-  }
-  trackById(index: number, item: Movie): number {
-    return item.id;
+    this.movieService.removeFromWatchList(movie);
+    this.watchList = this.movieService.getWatchList();
   }
 }

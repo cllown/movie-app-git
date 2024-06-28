@@ -6,6 +6,7 @@ import { TopRatedMoviesPageComponent } from './pages/top-rated-movies-page/top-r
 import { UpcomingMoviesPageComponent } from './pages/upcoming-movies-page/upcoming-movies-page.component';
 import { DetailsMoviePageComponent } from './pages/details-movie-page/details-movie-page.component';
 import { NowPlayingMoviesPageComponent } from './pages/now-playing-movies-page/now-playing-movies-page.component';
+import { HeaderComponent } from "./components/header/header.component";
 
 
 @Component({
@@ -24,6 +25,7 @@ import { NowPlayingMoviesPageComponent } from './pages/now-playing-movies-page/n
         UpcomingMoviesPageComponent,
         DetailsMoviePageComponent,
         NowPlayingMoviesPageComponent,
+        HeaderComponent
     ]
 })
 export class AppComponent {}

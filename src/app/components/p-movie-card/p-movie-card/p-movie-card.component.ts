@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { Movie } from '../../../models/movie';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
 import { MovieTimeFormatingPipe } from '../../../pipes/movie-time-formating/movie-time-formating.pipe';
+import { MovieService } from '../../../services/movie/movie.service';
+import { Movie } from '../../../models/movie';
+
 @Component({
   selector: 'app-p-movie-card',
   standalone: true,
@@ -19,19 +21,19 @@ import { MovieTimeFormatingPipe } from '../../../pipes/movie-time-formating/movi
   styleUrl: './p-movie-card.component.scss',
 })
 export class PMovieCardComponent {
-  @Input() movie: Movie | undefined;
-  @Input() showActions: boolean = true;
-  @Input() showRemoveButton = false;
-  @Output() addToFavourites = new EventEmitter<void>();
-  @Output() addToWatchList = new EventEmitter<void>();
+  @Input() movie!: Movie;
+  @Input() isActionsShow: boolean = true;
+  @Input() isRemoveButtonShow = false;
   @Output() removeFromList = new EventEmitter<void>();
 
+  constructor(private movieService: MovieService) {}
+
   onAddToFavourites() {
-    this.addToFavourites.emit();
+    this.movieService.addToFavourites(this.movie);
   }
 
   onAddToWatchList() {
-    this.addToWatchList.emit();
+    this.movieService.addToWatchList(this.movie);
   }
 
   onRemoveFromList() {

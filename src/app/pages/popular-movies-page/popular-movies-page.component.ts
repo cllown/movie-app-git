@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
-import { OnInit } from '@angular/core';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
+import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
 
 @Component({
@@ -13,21 +13,11 @@ import { Movie } from '../../models/movie';
   imports: [HeaderComponent, RouterLink, RouterModule, MovieListComponent],
 })
 export class PopularMoviesPageComponent implements OnInit {
-  constructor(private router: Router) {}
+  popularMovies: Movie[] = [];
 
-  favoriteMovieListIds: string[] = [];
-  watchLaterMovieListIds: string[] = [];
+  constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.favoriteMovieListIds = [];
-    this.watchLaterMovieListIds = [];
-  }
-
-  onFavouritesChange(favourites: Movie[]) {
-    this.favoriteMovieListIds = favourites.map((movie) => movie.id.toString());
-  }
-
-  onWatchListChange(watchList: Movie[]) {
-    this.watchLaterMovieListIds = watchList.map((movie) => movie.id.toString());
+    this.popularMovies = this.movieService.getPopularMovies();
   }
 }

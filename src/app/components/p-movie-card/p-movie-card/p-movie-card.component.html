@@ -16,11 +16,11 @@
         <a [routerLink]="['/movie/', movie.id]">Show more ></a>
     </p>
     <ng-template pTemplate="footer">
-        <p-button *ngIf="showActions" (click)="onAddToFavourites()" class="w-full movie-card-button"
+        <p-button *ngIf="isActionsShow" (click)="onAddToFavourites()" class="w-full movie-card-button"
             styleClass="pi pi-heart" />
-        <p-button *ngIf="showActions" (click)="onAddToWatchList()" severity="secondary" class="w-full movie-card-button"
-            styleClass="pi pi-history" />
-        <p-button *ngIf="showRemoveButton" (click)="onRemoveFromList()" severity="secondary"
+        <p-button *ngIf="isActionsShow" (click)="onAddToWatchList()" severity="secondary"
+            class="w-full movie-card-button" styleClass="pi pi-history" />
+        <p-button *ngIf="isRemoveButtonShow" (click)="onRemoveFromList()" severity="secondary"
             class="w-full movie-card-button" styleClass="pi pi-times" />
     </ng-template>
 </p-card>
