@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { movies } from '../../mock-data/mock-movies';
 import { PMovieCardComponent } from '../../components/p-movie-card/p-movie-card/p-movie-card.component';
+import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-favourites-movies-page',
@@ -13,28 +14,16 @@ import { PMovieCardComponent } from '../../components/p-movie-card/p-movie-card/
   imports: [CommonModule, PMovieCardComponent],
 })
 export class FavouritesMoviesPageComponent implements OnInit {
-  favouriteMovies: Movie[] = [];
+  favourites: Movie[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      const dataString = params['data'];
-      if (dataString) {
-        const favouriteMovieIds: string[] = JSON.parse(dataString);
-        this.favouriteMovies = movies.filter((movie) =>
-          favouriteMovieIds.includes(movie.id.toString())
-        );
-      }
-    });
-  }
-  removeFromFavourites(movie: Movie) {
-    this.favouriteMovies = this.favouriteMovies.filter(
-      (m) => m.id !== movie.id
-    );
+    this.favourites = this.movieService.getFavouritesMovies();
   }
 
-  trackById(index: number, item: Movie): number {
-    return item.id;
+  removeFromFavourites(movie: Movie) {
+    this.movieService.removeFromFavourites(movie);
+    this.favourites = this.movieService.getFavouritesMovies();
   }
 }

@@ -1,21 +1,8 @@
-*,
-*::before,
-*::after {
-	margin: 0;
-	padding: 0;
-	border: none;
-	box-sizing: border-box;
-}
-button {
-	font-family: inherit;
-	font-size: inherit;
-	cursor: pointer;
-	color: inherit;
-	background-color: inherit;
-}
 .header-nav {
 	display: flex;
 	gap: 1.25rem;
+	padding: 1.25rem;
+	justify-content: center;
 	& .link {
 		padding: 0.625rem 1.25rem;
 		background: #6c757d;
