@@ -1,7 +1,7 @@
 import { Component, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
-import { MovieCardComponent } from '../movie-card/movie-card/movie-card.component';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
