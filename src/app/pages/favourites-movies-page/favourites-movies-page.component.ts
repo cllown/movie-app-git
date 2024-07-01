@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
-import { movies } from '../../mock-data/mock-movies';
-import { PMovieCardComponent } from '../../components/p-movie-card/p-movie-card/p-movie-card.component';
+import { MovieCardComponent } from '../../components/movie-card/movie-card/movie-card.component';
 import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
@@ -11,7 +9,7 @@ import { MovieService } from '../../services/movie/movie.service';
   standalone: true,
   templateUrl: './favourites-movies-page.component.html',
   styleUrls: ['./favourites-movies-page.component.scss'],
-  imports: [CommonModule, PMovieCardComponent],
+  imports: [CommonModule, MovieCardComponent],
 })
 export class FavouritesMoviesPageComponent implements OnInit {
   favourites: Movie[] = [];

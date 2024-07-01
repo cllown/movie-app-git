@@ -8,7 +8,7 @@ import { MovieService } from '../../../services/movie/movie.service';
 import { Movie } from '../../../models/movie';
 
 @Component({
-  selector: 'app-p-movie-card',
+  selector: 'app-movie-card',
   standalone: true,
   imports: [
     CardModule,
@@ -17,10 +17,10 @@ import { Movie } from '../../../models/movie';
     MovieTimeFormatingPipe,
     RouterLink,
   ],
-  templateUrl: './p-movie-card.component.html',
-  styleUrl: './p-movie-card.component.scss',
+  templateUrl: './movie-card.component.html',
+  styleUrl: './movie-card.component.scss',
 })
-export class PMovieCardComponent {
+export class MovieCardComponent {
   @Input() movie!: Movie;
   @Input() isActionsShow: boolean = true;
   @Input() isRemoveButtonShow = false;

@@ -2,8 +2,8 @@
   <section class="movie-list__all all-movies">
     <div class="all-movies__items items-movies">
       @for(movie of movies; track movie.id){
-      <app-p-movie-card [movie]="movie" (addToFavourites)="onAddToFavourites(movie)"
-        (addToWatchList)="onAddToWatchList(movie)"></app-p-movie-card>
+      <app-movie-card [movie]="movie" (addToFavourites)="onAddToFavourites(movie)"
+        (addToWatchList)="onAddToWatchList(movie)"></app-movie-card>
       }
     </div>
   </section>
