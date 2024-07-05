@@ -3,9 +3,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
-import { MovieTimeFormatingPipe } from '../../pipes/movie-time-formating/movie-time-formating.pipe';
 import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
+import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
 
 @Component({
   selector: 'app-movie-card',
@@ -14,8 +14,8 @@ import { Movie } from '../../models/movie';
     CardModule,
     ButtonModule,
     CommonModule,
-    MovieTimeFormatingPipe,
     RouterLink,
+    RatingRoundingPipe
   ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',

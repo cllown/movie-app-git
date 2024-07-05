@@ -1,13 +1,15 @@
 .movie-details-page {
     display: flex;
     gap: 3.125rem;
+    align-items: center;
 }
 .movie-image {
-    width: 28.125rem;
-    flex: 0 1 30%;
+    flex: 0 1 50%;
+    img {
+        max-width: 100%;
+    }
 }
 .movie-info {
-    flex: 0 1 70%;
     font-size: 1.25rem;
     max-width: 50rem;
     line-height: 1.5;

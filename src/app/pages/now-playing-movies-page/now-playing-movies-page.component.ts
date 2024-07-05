@@ -17,6 +17,8 @@ export class NowPlayingMoviesPageComponent implements OnInit {
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.nowPlayingMovies = this.movieService.getNowPlayingMovies();
+    this.movieService.getNowPlayingMovies().subscribe(data =>  {
+      this.nowPlayingMovies = data.results;
+    });
   }
 }

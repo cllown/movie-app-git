@@ -1,16 +1,12 @@
-<p-card *ngIf="movie" header="{{movie.title}}" subheader="Rating: {{movie.rating}}">
+<p-card *ngIf="movie" header="{{movie.title}}" subheader="Rating: {{movie.vote_average | ratingRounding}}">
     <ng-template pTemplate="header">
-        <img alt="{{movie.title}}" [src]="movie.backdrop_path" />
+        <img alt="{{movie.title}}" [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
     </ng-template>
     <p>
-        {{movie.description}}
+        {{movie.overview}}
     </p>
     <p>
         {{movie.release_date}}
-    </p>
-    <p class="movie-duration">
-        {{movie.duration | movieTimeFormating}}
-        <span class="pi pi-clock"></span>
     </p>
     <p class="movie-more">
         <a [routerLink]="['/movie/', movie.id]">Show more ></a>

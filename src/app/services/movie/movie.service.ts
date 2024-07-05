@@ -1,40 +1,38 @@
 import { Injectable } from '@angular/core';
-import { movies } from '../../mock-data/mock-movies';
-import { Movie } from '../../models/movie';
+import { Movie, MovieApiModel } from '../../models/movie';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
+  apiKey = '?api_key=a66e14aac3918847e798bf6247df6743';
+  baseApiUrl = 'https://api.themoviedb.org/3/movie';
+
   favourites: Movie[] = [];
   watchList: Movie[] = [];
 
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
-  getAllMovies() {
-    return movies;
+  getPopularMovies(): Observable<MovieApiModel> {
+   return this.httpClient.get<MovieApiModel>(`${this.baseApiUrl}/popular${this.apiKey}`);
   }
 
-  getPopularMovies() {
-    return movies.filter((movie) => movie.popularity > 5000);
-  }
+  getTopRatedMovies(): Observable<MovieApiModel> {
+    return this.httpClient.get<MovieApiModel>(`${this.baseApiUrl}/top_rated${this.apiKey}`);
+   }
 
-  getTopRatedMoviesSortedByRating() {
-    return [...movies].sort(
-      (a, b) => parseFloat(b.rating) - parseFloat(a.rating)
-    );
-  }
+  getNowPlayingMovies(): Observable<MovieApiModel> {
+    return this.httpClient.get<MovieApiModel>(`${this.baseApiUrl}/now_playing${this.apiKey}`);
+   }
 
-  getNowPlayingMovies() {
-    const currentDate = new Date();
-    return movies.filter(
-      (movie) => new Date(movie.release_date) <= currentDate
-    );
-  }
-
-  getUpcomingMovies() {
-    const currentDate = new Date();
-    return movies.filter((movie) => new Date(movie.release_date) > currentDate);
+  getUpcomingMovies(): Observable<MovieApiModel> {
+    return this.httpClient.get<MovieApiModel>(`${this.baseApiUrl}/upcoming${this.apiKey}`);
+   }
+   
+   getMovieDetails(movieId: number): Observable<Movie> {
+    return this.httpClient.get<Movie>(`${this.baseApiUrl}/${movieId}${this.apiKey}`);
   }
 
   getFavouritesMovies() {
