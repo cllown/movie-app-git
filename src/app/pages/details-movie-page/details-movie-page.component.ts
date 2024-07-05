@@ -1,26 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Movie } from '../../models/movie';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { movies } from '../../mock-data/mock-movies';
-import { MovieTimeFormatingPipe } from '../../pipes/movie-time-formating/movie-time-formating.pipe';
 import { CommonModule } from '@angular/common';
+import { MovieService } from '../../services/movie/movie.service';
+import { Movie } from '../../models/movie';
+import { RatingRoundingPipe } from "../../pipes/rating-rounding/rating-rounding.pipe";
 
 @Component({
-  selector: 'app-details-movie-page',
-  standalone: true,
-  templateUrl: './details-movie-page.component.html',
-  styleUrl: './details-movie-page.component.scss',
-  imports: [MovieTimeFormatingPipe, CommonModule],
+    selector: 'app-details-movie-page',
+    standalone: true,
+    templateUrl: './details-movie-page.component.html',
+    styleUrls: ['./details-movie-page.component.scss'],
+    imports: [CommonModule, RatingRoundingPipe]
 })
 export class DetailsMoviePageComponent implements OnInit {
-  @Input() movie: Movie | undefined;
+  movie: Movie | undefined;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private movieService: MovieService) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const movieId = params['id'];
-      this.movie = movies.find((movie) => movie.id.toString() === movieId);
+      const movieId = +params['id'];
+      this.movieService.getMovieDetails(movieId).subscribe((movie) => {
+        this.movie = movie;
+      });
     });
   }
 }

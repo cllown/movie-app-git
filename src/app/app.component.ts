@@ -7,7 +7,7 @@ import { UpcomingMoviesPageComponent } from './pages/upcoming-movies-page/upcomi
 import { DetailsMoviePageComponent } from './pages/details-movie-page/details-movie-page.component';
 import { NowPlayingMoviesPageComponent } from './pages/now-playing-movies-page/now-playing-movies-page.component';
 import { HeaderComponent } from "./components/header/header.component";
-
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
     selector: 'app-root',
@@ -25,7 +25,8 @@ import { HeaderComponent } from "./components/header/header.component";
         UpcomingMoviesPageComponent,
         DetailsMoviePageComponent,
         NowPlayingMoviesPageComponent,
-        HeaderComponent
+        HeaderComponent,
+        HttpClientModule,
     ]
 })
 export class AppComponent {}

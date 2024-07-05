@@ -1,15 +1,13 @@
 <div *ngIf="movie" class="page-wrapper">
     <div class="movie-details-page">
-        <img class="movie-image" [src]="movie.backdrop_path" alt="{{ movie.title }}">
-        <div class="movie-info">
-            <h2 class="page-title">{{ movie.title }}</h2>
-            <p>Release Date: {{ movie.release_date }}</p>
-            <p>Rating: {{ movie.rating }}</p>
-            <p>Description: {{ movie.description }}</p>
-            <p>
-                {{movie.duration | movieTimeFormating}}
-                <span class="pi pi-clock"></span>
-            </p>
-        </div>
+      <img class="movie-image" [src]="'https://image.tmdb.org/t/p/w500' + movie.backdrop_path" alt="{{ movie.title }}">
+      <div class="movie-info">
+        <h2 class="page-title">{{ movie.title }}</h2>
+        <p>Release Date: {{ movie.release_date }}</p>
+        <p>Rating: {{ movie.vote_average | ratingRounding}}</p>
+        <p>Description: {{ movie.overview }}</p>
+        <p>Original Language: {{ movie.original_language }}</p>
+      </div>
     </div>
-</div>
+  </div>
+  

@@ -17,6 +17,8 @@ export class TopRatedMoviesPageComponent implements OnInit {
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.topRatedMovies = this.movieService.getTopRatedMoviesSortedByRating();
+    this.movieService.getTopRatedMovies().subscribe(data =>  {
+      this.topRatedMovies = data.results;
+    });
   }
 }
