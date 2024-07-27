@@ -29,7 +29,7 @@ export class MovieCardComponent {
   constructor(private movieService: MovieService) {}
 
   onAddToFavourites() {
-    this.movieService.setFavouriteMovie(this.movie);
+    this.movieService.setFavouriteMovie(this.movie.id);
   }
 
   onAddToWatchList() {

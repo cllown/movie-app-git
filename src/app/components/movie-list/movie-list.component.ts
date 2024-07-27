@@ -17,7 +17,7 @@ export class MovieListComponent {
   constructor(private movieService: MovieService) {}
 
   onAddToFavourites(movie: Movie) {
-    this.movieService.setFavouriteMovie(movie);
+    this.movieService.setFavouriteMovie(movie.id);
   }
 
   onAddToWatchList(movie: Movie) {
