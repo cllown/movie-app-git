@@ -63,10 +63,15 @@ export class MovieService {
       );
     }
   */
-  setFavouriteMovie(movie: Movie): Observable<Movie> | void {
-    return this.httpClient.post<Movie>(
-      `https://api.themoviedb.org/3/account/${this.accountId}/favorite?api_key=${this.apiKey}`, movie 
-    );
+  setFavouriteMovie(movieId: number): Observable<{status_code: number; status_message: string}> {
+    const body = {
+      media_type: 'movie',
+      media_id: movieId,
+      favorite: true
+    };
+    return this.httpClient
+      .post<{status_code: number; status_message: string}>(`https://api.themoviedb.org/3/account/${this.accountId}/favorite`, body);
+  
   }
 
   getFavouritesMovies(){
