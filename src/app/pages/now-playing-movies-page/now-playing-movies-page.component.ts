@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { Movie } from '../../models/movie';
 import { MovieService } from '../../services/movie/movie.service';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
+import { takeUntil } from 'rxjs';
+import { ClearObservable } from '../../models/clear-observable';
 
 @Component({
   selector: 'app-now-playing-movies-page',
@@ -11,13 +13,15 @@ import { MovieListComponent } from '../../components/movie-list/movie-list.compo
   styleUrl: './now-playing-movies-page.component.scss',
   imports: [RouterModule, MovieListComponent],
 })
-export class NowPlayingMoviesPageComponent implements OnInit {
+export class NowPlayingMoviesPageComponent extends ClearObservable implements OnInit {
   nowPlayingMovies: Movie[] = [];
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService) {
+    super();
+  }
 
   ngOnInit() {
-    this.movieService.getNowPlayingMovies().subscribe(data =>  {
+    this.movieService.getNowPlayingMovies().pipe(takeUntil(this.destroy$)).subscribe(data =>  {
       this.nowPlayingMovies = data.results;
     });
   }

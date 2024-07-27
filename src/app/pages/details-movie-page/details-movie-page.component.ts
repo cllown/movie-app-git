@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
 import { RatingRoundingPipe } from "../../pipes/rating-rounding/rating-rounding.pipe";
+import { ClearObservable } from '../../models/clear-observable';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-details-movie-page',
@@ -12,13 +14,15 @@ import { RatingRoundingPipe } from "../../pipes/rating-rounding/rating-rounding.
     styleUrls: ['./details-movie-page.component.scss'],
     imports: [CommonModule, RatingRoundingPipe]
 })
-export class DetailsMoviePageComponent implements OnInit {
+export class DetailsMoviePageComponent extends ClearObservable implements OnInit {
   movie: Movie | undefined;
 
-  constructor(private route: ActivatedRoute, private movieService: MovieService) {}
+  constructor(private route: ActivatedRoute, private movieService: MovieService) {
+    super();
+  }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       const movieId = +params['id'];
       this.movieService.getMovieDetails(movieId).subscribe((movie) => {
         this.movie = movie;

@@ -5,6 +5,8 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
 import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
+import { ClearObservable } from '../../models/clear-observable';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-popular-movies-page',
@@ -19,15 +21,16 @@ import { Movie } from '../../models/movie';
     MovieListComponent,
   ],
 })
-export class PopularMoviesPageComponent implements OnInit {
+export class PopularMoviesPageComponent extends ClearObservable implements OnInit {
   popularMovies: Movie[] = [];
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService) {
+    super();
+  }
 
   ngOnInit() {
-    this.movieService.getPopularMovies().subscribe((data) => {
+    this.movieService.getPopularMovies().pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.popularMovies = data.results;
-      console.log(this.popularMovies);
     });
   }
 }

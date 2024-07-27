@@ -29,11 +29,11 @@ export class MovieCardComponent {
   constructor(private movieService: MovieService) {}
 
   onAddToFavourites() {
-    this.movieService.addToFavourites(this.movie);
+    this.movieService.setFavouriteMovie(this.movie);
   }
 
   onAddToWatchList() {
-    this.movieService.addToWatchList(this.movie);
+    this.movieService.setWatchLaterMovie(this.movie);
   }
 
   onRemoveFromList() {
