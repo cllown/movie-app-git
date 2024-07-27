@@ -17,10 +17,10 @@ export class MovieListComponent {
   constructor(private movieService: MovieService) {}
 
   onAddToFavourites(movie: Movie) {
-    this.movieService.addToFavourites(movie);
+    this.movieService.setFavouriteMovie(movie);
   }
 
   onAddToWatchList(movie: Movie) {
-    this.movieService.addToWatchList(movie);
+    this.movieService.setWatchLaterMovie(movie);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PopularMoviesPageComponent } from './pages/popular-movies-page/popular-movies-page.component';
@@ -8,6 +8,8 @@ import { DetailsMoviePageComponent } from './pages/details-movie-page/details-mo
 import { NowPlayingMoviesPageComponent } from './pages/now-playing-movies-page/now-playing-movies-page.component';
 import { HeaderComponent } from "./components/header/header.component";
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './services/auth/auth.service';
+import { MovieService } from './services/movie/movie.service';
 
 @Component({
     selector: 'app-root',
@@ -29,4 +31,19 @@ import { HttpClientModule } from '@angular/common/http';
         HttpClientModule,
     ]
 })
-export class AppComponent {}
+export class AppComponent implements OnInit{
+    constructor(private authService: AuthService, private movieService: MovieService) {}
+
+    ngOnInit(){
+        this.authService.authenticateAndGetAccountId().subscribe(
+            accountId => {
+                this.movieService.setAccountId(accountId);
+                console.log('Account ID:', accountId);
+            },
+            error => {
+                console.error('Authentication failed:', error);
+            }
+        );
+    }
+    
+}
