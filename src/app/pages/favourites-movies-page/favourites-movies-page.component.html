@@ -4,7 +4,7 @@
   <div class="items-movies">
     @for(movie of favourites; track movie.id){
     <app-movie-card [movie]="movie" [isActionsShow]="false" [isRemoveButtonShow]="true"
-      (removeFromList)="removeFromFavourites(movie)"></app-movie-card>
+      (removeFromList)="removeFromFavourites(movie.id)"></app-movie-card>
     }
   </div>
   } @else {

@@ -33,4 +33,5 @@ export class PopularMoviesPageComponent extends ClearObservable implements OnIni
       this.popularMovies = data.results;
     });
   }
+
 }
