@@ -77,7 +77,7 @@ export class MovieService {
     return this.httpClient.get<MovieApiModel>(
       `https://api.themoviedb.org/3/account/${this.accountId}/favorite/movies${this.apiKey}&session_id=${sessionId}`
     ).pipe(
-      tap(response => console.log('Favourite Movies:', response.results)), // Выводим результат получения избранных фильмов в консоль
+      tap(response => console.log('Favourite Movies:', response.results)),
       catchError(this.handleError)
     );
   }
