@@ -34,16 +34,17 @@ import { MovieService } from './services/movie/movie.service';
 export class AppComponent implements OnInit{
     constructor(private authService: AuthService, private movieService: MovieService) {}
 
-    ngOnInit(){
-        this.authService.authenticateAndGetAccountId().subscribe(
-            accountId => {
-                this.movieService.setAccountId(accountId);
-                console.log('Account ID:', accountId);
-            },
-            error => {
-                console.error('Authentication failed:', error);
-            }
+    ngOnInit() {
+        this.authService.authenticateAndGetAccountInfo().subscribe(
+          ({ accountId, sessionId }) => {
+            this.movieService.setAccountId(accountId);
+            this.authService.setSessionId(sessionId);
+            console.log('Account ID:', accountId);
+            console.log('Session ID:', sessionId);
+          },
+          error => {
+            console.error('Authentication failed:', error);
+          }
         );
-    }
-    
+      } 
 }

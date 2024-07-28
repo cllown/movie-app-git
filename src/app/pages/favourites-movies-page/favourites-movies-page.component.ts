@@ -21,15 +21,25 @@ export class FavouritesMoviesPageComponent extends ClearObservable implements On
   }
 
   ngOnInit() {
-    // this.movieService.favouriteList$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-    //   this.favourites = data;
-    // });
-    this.movieService.getFavouritesMovies().pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      this.favourites = data.results;
-    });
+    this.movieService.getFavouritesMovies().subscribe(
+      movies => {
+        this.favourites = movies.results;
+        console.log('Favourite movies:', this.favourites);
+      },
+      error => {
+        console.error('Failed to load favourite movies:', error);
+      }
+    );
+    console.log(this.favourites);
   }
-
-  removeFromFavourites(movie: Movie) {
-    this.movieService.removeFromFavourites(movie);
+  removeFromFavourites(movieId: number) {
+    this.movieService.removeFromFavourites(movieId).subscribe(
+      response => {
+        console.log('Movie removed from favourites:', response);
+      },
+      error => {
+        console.error('Failed to remove movie from favourites:', error);
+      }
+    );
   }
 }

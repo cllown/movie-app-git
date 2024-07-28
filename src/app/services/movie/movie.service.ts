@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Movie, MovieApiModel } from '../../models/movie';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,16 +12,12 @@ export class MovieService {
   baseApiUrl = 'https://api.themoviedb.org/3/movie';
 
   accountId: number | null = null;
-  favourites: Movie[] = [];
   watchList: Movie[] = [];
-
-  favouriteMovies$ = new BehaviorSubject<Movie[]>([]);
-  public favouriteList$ = this.favouriteMovies$;
 
   watchLaterMovies$ = new BehaviorSubject<Movie[]>([]);
   public watchList$ = this.watchLaterMovies$;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
   setAccountId(id: number) {
     this.accountId = id;
@@ -56,33 +53,54 @@ export class MovieService {
     );
   }
 
-  /*
-    if (!this.favourites.includes(movie)) {
-      return this.httpClient.post<Movie>(
-      `${this.baseApiUrl}/account/${this.accountId}/favorite?api_key=${this.apiKey}`, movie 
-      );
+  setFavouriteMovie(movieId: number): Observable<{ status_code: number; status_message: string; }> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) {
+      throw new Error('Session ID is not available');
     }
-  */
-  setFavouriteMovie(movieId: number): Observable<{status_code: number; status_message: string}> {
     const body = {
       media_type: 'movie',
       media_id: movieId,
       favorite: true
     };
-    return this.httpClient
-      .post<{status_code: number; status_message: string}>(`https://api.themoviedb.org/3/account/${this.accountId}/favorite`, body);
-  
-  }
-
-  getFavouritesMovies(){
-    return this.httpClient.get<MovieApiModel>(
-      `https://api.themoviedb.org/3/account/${this.accountId}/favorite/movies${this.apiKey}`
+    return this.httpClient.post<{ status_code: number; status_message: string; }>(
+      `https://api.themoviedb.org/3/account/${this.accountId}/favorite${this.apiKey}&session_id=${sessionId}`,
+      body
     );
   }
 
-  removeFromFavourites(movie: Movie) {
-    this.favourites = this.favourites.filter((item) => item.id !== movie.id);
-    this.favouriteMovies$.next(this.favourites);
+  getFavouritesMovies(): Observable<MovieApiModel> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) {
+      throw new Error('Session ID is not available');
+    }
+    return this.httpClient.get<MovieApiModel>(
+      `https://api.themoviedb.org/3/account/${this.accountId}/favorite/movies${this.apiKey}&session_id=${sessionId}`
+    ).pipe(
+      tap(response => console.log('Favourite Movies:', response.results)), // Выводим результат получения избранных фильмов в консоль
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: any) {
+    console.error('An error occurred:', error);
+    return throwError(error);
+  }
+
+  removeFromFavourites(movieId: number): Observable<{status_code: number; status_message: string}> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) {
+      throw new Error('Session ID is not available');
+    }
+    const body = {
+      media_type: 'movie',
+      media_id: movieId,
+      favorite: false
+    };
+    return this.httpClient.post<{status_code: number; status_message: string}>(
+      `https://api.themoviedb.org/3/account/${this.accountId}/favorite?api_key=${this.apiKey}&session_id=${sessionId}`,
+      body
+    );
   }
 
   setWatchLaterMovie(movie: Movie) {
