@@ -1,10 +1,10 @@
 <div class="page-wrapper">
-  @if(watchList.length > 0){
+  @if(movies.length > 0){
   <h2 class="title-movie-section">Watch List</h2>
   <div class="items-movies">
-    @for(movie of watchList; track movie.id){
+    @for(movie of movies; track movie.id){
     <app-movie-card [movie]="movie" [isActionsShow]="false" [isRemoveButtonShow]="true"
-      (removeFromList)="removeFromWatchList(movie)"></app-movie-card>
+      (removeFromList)="removeFromWatchList(movie.id)"></app-movie-card>
     }
   </div>
   } @else {

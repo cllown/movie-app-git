@@ -7,6 +7,7 @@ import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
 
+
 @Component({
   selector: 'app-movie-card',
   standalone: true,
@@ -29,11 +30,12 @@ export class MovieCardComponent {
   constructor(private movieService: MovieService) {}
 
   onAddToFavourites() {
-    this.movieService.setFavouriteMovie(this.movie.id);
+    this.movieService.updateFavorites(this.movie.id);
+    console.log(this.movie.id);
   }
-
+  
   onAddToWatchList() {
-    this.movieService.setWatchLaterMovie(this.movie);
+    this.movieService.updateWatchlist(this.movie.id);
   }
 
   onRemoveFromList() {
