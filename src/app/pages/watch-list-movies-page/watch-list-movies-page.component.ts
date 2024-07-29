@@ -13,20 +13,46 @@ import { takeUntil } from 'rxjs';
   templateUrl: './watch-list-movies-page.component.html',
   styleUrl: './watch-list-movies-page.component.scss',
 })
-export class WatchListMoviesPageComponent extends ClearObservable implements OnInit {
-  watchList: Movie[] = [];
+export class WatchListMoviesPageComponent
+  extends ClearObservable
+  implements OnInit
+{
+  movies: Movie[] = [];
 
   constructor(private movieService: MovieService) {
     super();
   }
 
   ngOnInit() {
-    this.movieService.watchList$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.watchList = data;
-    });
+    this.movieService
+      .getWatchlistMovies()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (results) => {
+          console.log('Fetched watchlist movies:', results);
+          this.movies = results;
+        },
+        error: (error) => {
+          console.error('Error fetching watchlist movies:', error);
+        },
+      });
   }
 
-  removeFromWatchList(movie: Movie) {
-    this.movieService.removeFromWatchList(movie);
+  removeFromWatchList(id: number) {
+    this.movieService
+      .removeFromWatchlist(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log(`Movie with ID ${id} removed from watchlist`);
+          this.movies = this.movies.filter((movie) => movie.id !== id);
+        },
+        error: (error) => {
+          console.error(
+            `Error removing movie with ID ${id} from watchlist:`,
+            error
+          );
+        },
+      });
   }
 }

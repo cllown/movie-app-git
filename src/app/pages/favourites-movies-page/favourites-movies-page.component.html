@@ -1,8 +1,8 @@
 <div class="page-wrapper">
-  @if(favourites.length > 0){
+  @if(movies.length > 0){
   <h2 class="title-movie-section">Favourites</h2>
   <div class="items-movies">
-    @for(movie of favourites; track movie.id){
+    @for(movie of movies; track movie.id){
     <app-movie-card [movie]="movie" [isActionsShow]="false" [isRemoveButtonShow]="true"
       (removeFromList)="removeFromFavourites(movie.id)"></app-movie-card>
     }

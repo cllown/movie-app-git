@@ -13,14 +13,4 @@ import { MovieService } from '../../services/movie/movie.service';
 })
 export class MovieListComponent {
   @Input() movies: Movie[] = [];
-
-  constructor(private movieService: MovieService) {}
-
-  onAddToFavourites(movie: Movie) {
-    this.movieService.setFavouriteMovie(movie.id);
-  }
-
-  onAddToWatchList(movie: Movie) {
-    this.movieService.setWatchLaterMovie(movie);
-  }
 }

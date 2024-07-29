@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
 import { MovieService } from '../../services/movie/movie.service';
-import { takeUntil } from 'rxjs';
+import { Subscription, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../models/clear-observable';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-favourites-movies-page',
@@ -13,33 +14,46 @@ import { ClearObservable } from '../../models/clear-observable';
   styleUrls: ['./favourites-movies-page.component.scss'],
   imports: [CommonModule, MovieCardComponent],
 })
-export class FavouritesMoviesPageComponent extends ClearObservable implements OnInit {
-  favourites: Movie[] = [];
+export class FavouritesMoviesPageComponent
+  extends ClearObservable
+  implements OnInit
+{
+  movies: Movie[] = [];
 
   constructor(private movieService: MovieService) {
     super();
   }
 
   ngOnInit() {
-    this.movieService.getFavouritesMovies().subscribe(
-      movies => {
-        this.favourites = movies.results;
-        console.log('Favourite movies:', this.favourites);
-      },
-      error => {
-        console.error('Failed to load favourite movies:', error);
-      }
-    );
-    console.log(this.favourites);
+    this.movieService
+      .getFavoritesMovies()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (results) => {
+          console.log('Fetched favorite movies:', results);
+          this.movies = results;
+        },
+        error: (error) => {
+          console.error('Error fetching favorite movies:', error);
+        },
+      });
   }
-  removeFromFavourites(movieId: number) {
-    this.movieService.removeFromFavourites(movieId).subscribe(
-      response => {
-        console.log('Movie removed from favourites:', response);
-      },
-      error => {
-        console.error('Failed to remove movie from favourites:', error);
-      }
-    );
+
+  removeFromFavourites(id: number) {
+    this.movieService
+      .removeFromFavorites(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log(`Movie with ID ${id} removed from favorites`);
+          this.movies = this.movies.filter((movie) => movie.id !== id);
+        },
+        error: (error) => {
+          console.error(
+            `Error removing movie with ID ${id} from favorites:`,
+            error
+          );
+        },
+      });
   }
 }

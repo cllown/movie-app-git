@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs';
 })
 export class PopularMoviesPageComponent extends ClearObservable implements OnInit {
   popularMovies: Movie[] = [];
-
+  
   constructor(private movieService: MovieService) {
     super();
   }
@@ -32,6 +32,7 @@ export class PopularMoviesPageComponent extends ClearObservable implements OnIni
     this.movieService.getPopularMovies().pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.popularMovies = data.results;
     });
+
   }
 
 }
