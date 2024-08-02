@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
 import { Movie } from '../../models/movie';
-import { MovieService } from '../../services/movie/movie.service';
 import { takeUntil } from 'rxjs';
 import { ClearObservable } from '../../models/clear-observable';
+import { Store } from '@ngrx/store';
+import { selectUpcomingMovies } from '../../store/selectors';
 
 @Component({
   selector: 'app-upcoming-movies-page',
@@ -14,15 +15,18 @@ import { ClearObservable } from '../../models/clear-observable';
   imports: [RouterModule, MovieListComponent],
 })
 export class UpcomingMoviesPageComponent extends ClearObservable implements OnInit {
-  upcomingMovies: Movie[] = [];
+  upcomingMovies: Movie[] | null = [];
 
-  constructor(private movieService: MovieService) {
+  constructor(private store: Store) {
     super();
   }
 
   ngOnInit() {
-    this.movieService.getUpcomingMovies().pipe(takeUntil(this.destroy$)).subscribe(data =>  {
-      this.upcomingMovies = data.results;
+    this.store
+    .select(selectUpcomingMovies)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((movies) => {
+      this.upcomingMovies = movies || null;
     });
   }
 }

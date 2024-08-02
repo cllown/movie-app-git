@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
-import { MovieService } from '../../services/movie/movie.service';
 import { ClearObservable } from '../../models/clear-observable';
 import { takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectWatchListMovies } from '../../store/selectors';
+import { removeMovieFromWatchList } from '../../store/actions';
 
 @Component({
   selector: 'app-watch-list-movies-page',
@@ -17,42 +19,22 @@ export class WatchListMoviesPageComponent
   extends ClearObservable
   implements OnInit
 {
-  movies: Movie[] = [];
+  movies: Movie[] | null = [];
 
-  constructor(private movieService: MovieService) {
+  constructor(private store: Store) {
     super();
   }
 
   ngOnInit() {
-    this.movieService
-      .getWatchlistMovies()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (results) => {
-          console.log('Fetched watchlist movies:', results);
-          this.movies = results;
-        },
-        error: (error) => {
-          console.error('Error fetching watchlist movies:', error);
-        },
-      });
+    this.store
+    .select(selectWatchListMovies)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((movies) => {
+      this.movies = movies || null;
+    });
   }
 
-  removeFromWatchList(id: number) {
-    this.movieService
-      .removeFromWatchlist(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          console.log(`Movie with ID ${id} removed from watchlist`);
-          this.movies = this.movies.filter((movie) => movie.id !== id);
-        },
-        error: (error) => {
-          console.error(
-            `Error removing movie with ID ${id} from watchlist:`,
-            error
-          );
-        },
-      });
+  removeFromWatchList(movieId: number) {
+    this.store.dispatch(removeMovieFromWatchList({ movieId }));
   }
 }

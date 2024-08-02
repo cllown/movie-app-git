@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
-import { MovieService } from '../../services/movie/movie.service';
-import { Subscription, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ClearObservable } from '../../models/clear-observable';
-import { AuthService } from '../../services/auth/auth.service';
+import { selectFavouriteMovies } from '../../store/selectors';
+import { Store } from '@ngrx/store';
+import { removeMovieFromFavourites } from '../../store/actions';
 
 @Component({
   selector: 'app-favourites-movies-page',
@@ -18,42 +19,22 @@ export class FavouritesMoviesPageComponent
   extends ClearObservable
   implements OnInit
 {
-  movies: Movie[] = [];
+  movies: Movie[] | null = [];
 
-  constructor(private movieService: MovieService) {
+  constructor(private store: Store) {
     super();
   }
 
   ngOnInit() {
-    this.movieService
-      .getFavoritesMovies()
+    this.store
+      .select(selectFavouriteMovies)
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (results) => {
-          console.log('Fetched favorite movies:', results);
-          this.movies = results;
-        },
-        error: (error) => {
-          console.error('Error fetching favorite movies:', error);
-        },
+      .subscribe((movies) => {
+        this.movies = movies || null;
       });
   }
 
-  removeFromFavourites(id: number) {
-    this.movieService
-      .removeFromFavorites(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          console.log(`Movie with ID ${id} removed from favorites`);
-          this.movies = this.movies.filter((movie) => movie.id !== id);
-        },
-        error: (error) => {
-          console.error(
-            `Error removing movie with ID ${id} from favorites:`,
-            error
-          );
-        },
-      });
+  removeFromFavourites(movieId: number) {
+    this.store.dispatch(removeMovieFromFavourites({ movieId }));
   }
 }

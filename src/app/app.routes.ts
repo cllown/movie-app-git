@@ -6,13 +6,14 @@ import { PopularMoviesPageComponent } from './pages/popular-movies-page/popular-
 import { UpcomingMoviesPageComponent } from './pages/upcoming-movies-page/upcoming-movies-page.component';
 import { FavouritesMoviesPageComponent } from './pages/favourites-movies-page/favourites-movies-page.component';
 import { WatchListMoviesPageComponent } from './pages/watch-list-movies-page/watch-list-movies-page.component';
+import { MovieResolver } from './guards/movie.resolver';
 
 export const routes: Routes = [
-  { path: '', component: PopularMoviesPageComponent },
-  { path: 'movie/:id', component: DetailsMoviePageComponent },
-  { path: 'now-playing', component: NowPlayingMoviesPageComponent },
-  { path: 'top-rated', component: TopRatedMoviesPageComponent },
-  { path: 'upcoming', component: UpcomingMoviesPageComponent },
-  { path: 'favourites', component: FavouritesMoviesPageComponent },
-  { path: 'watch-list', component: WatchListMoviesPageComponent },
+  { path: '', component: PopularMoviesPageComponent, resolve: {data: MovieResolver}},
+  { path: 'movie/:id', component: DetailsMoviePageComponent, resolve: {data: MovieResolver} },
+  { path: 'now-playing', component: NowPlayingMoviesPageComponent, resolve: {data: MovieResolver} },
+  { path: 'top-rated', component: TopRatedMoviesPageComponent, resolve: {data: MovieResolver} },
+  { path: 'upcoming', component: UpcomingMoviesPageComponent, resolve: {data: MovieResolver} },
+  { path: 'favourites', component: FavouritesMoviesPageComponent, resolve: {data: MovieResolver} },
+  { path: 'watch-list', component: WatchListMoviesPageComponent, resolve: {data: MovieResolver} },
 ];

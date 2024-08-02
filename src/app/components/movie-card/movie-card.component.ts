@@ -6,6 +6,8 @@ import { RouterLink } from '@angular/router';
 import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
+import { Store } from '@ngrx/store';
+import { setMovieToFavourites, setMovieToWatchList } from '../../store/actions';
 
 
 @Component({
@@ -27,15 +29,14 @@ export class MovieCardComponent {
   @Input() isRemoveButtonShow = false;
   @Output() removeFromList = new EventEmitter<void>();
 
-  constructor(private movieService: MovieService) {}
+  constructor(private store: Store) {}
 
-  onAddToFavourites() {
-    this.movieService.updateFavorites(this.movie.id);
-    console.log(this.movie.id);
+  onAddToFavourites(movieId: number) {
+    this.store.dispatch(setMovieToFavourites({ movieId }));
   }
   
-  onAddToWatchList() {
-    this.movieService.updateWatchlist(this.movie.id);
+  onAddToWatchList(movieId: number) {
+    this.store.dispatch(setMovieToWatchList({ movieId }));
   }
 
   onRemoveFromList() {
