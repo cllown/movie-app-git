@@ -12,5 +12,5 @@ import { MovieService } from '../../services/movie/movie.service';
   imports: [CommonModule, MovieCardComponent],
 })
 export class MovieListComponent {
-  @Input() movies: Movie[] = [];
+  @Input() movies: Movie[] | null = [];
 }

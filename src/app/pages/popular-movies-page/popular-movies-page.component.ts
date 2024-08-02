@@ -3,10 +3,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from '../../components/header/header.component';
 import { RouterLink, RouterModule } from '@angular/router';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
-import { MovieService } from '../../services/movie/movie.service';
 import { Movie } from '../../models/movie';
 import { ClearObservable } from '../../models/clear-observable';
 import { takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectPopularMovies } from '../../store/selectors';
 
 @Component({
   selector: 'app-popular-movies-page',
@@ -21,18 +22,22 @@ import { takeUntil } from 'rxjs';
     MovieListComponent,
   ],
 })
-export class PopularMoviesPageComponent extends ClearObservable implements OnInit {
-  popularMovies: Movie[] = [];
-  
-  constructor(private movieService: MovieService) {
+export class PopularMoviesPageComponent
+  extends ClearObservable
+  implements OnInit
+{
+  popularMovies: Movie[] | null = [];
+
+  constructor(private store: Store) {
     super();
   }
 
   ngOnInit() {
-    this.movieService.getPopularMovies().pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      this.popularMovies = data.results;
-    });
-
+    this.store
+      .select(selectPopularMovies)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((movies) => {
+        this.popularMovies = movies || null;
+      });
   }
-
 }
