@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Movie } from '../models/movie';
+import { Genre, Movie } from '../models/movie';
 
 export const loadPopularMovies = createAction('[Movie] Load Popular Movies');
 
@@ -112,4 +112,82 @@ export const setMovieToWatchList = createAction(
 export const removeMovieFromWatchList = createAction(
   '[Movies] Remove Movie From WatchList',
   props<{ movieId: number }>()
+);
+
+export const login = createAction(
+  '[Auth] Login',
+  props<{ username: string; password: string; redirectUrl?: string }>()
+);
+
+export const loginSuccess = createAction(
+  '[Auth] Login Success',
+  props<{ sessionId: string; redirectUrl?: string }>()
+);
+
+export const loginFailure = createAction(
+  '[Auth] Login Failure',
+  props<{ error: string }>()
+);
+
+export const openLoginPopup = createAction('[Auth] Open Login Popup');
+
+export const closeLoginPopup = createAction('[Auth] Close Login Popup');
+
+export const searchMovies = createAction(
+  '[Movie] Search Movies',
+  props<{ query: string }>()
+);
+
+export const searchMoviesSuccess = createAction(
+  '[Movie] Search Movies Success',
+  props<{ movies: Movie[] }>()
+);
+
+export const searchMoviesFailure = createAction(
+  '[Movie] Search Movies Failure',
+  props<{ error: string }>()
+);
+
+export const clearSearchResults = createAction('[Movie] Clear Search Results');
+
+export const loadGenres = createAction('[Movie API] Load Genres');
+
+export const loadGenresSuccess = createAction(
+  '[Movie API] Load Genres Success',
+  props<{ genres: Genre[] }>()
+);
+
+export const loadGenresFailure = createAction(
+  '[Movie API] Load Genres Failure',
+  props<{ error: any }>()
+);
+
+export const loadMoviesByGenres = createAction(
+  '[Movies] Load Movies By Genres',
+  props<{ genres: number[] }>()
+);
+
+export const loadMoviesByGenresSuccess = createAction(
+  '[Movies] Load Movies By Genres Success',
+  props<{ movies: Movie[] }>()
+);
+
+export const loadMoviesByGenresFailure = createAction(
+  '[Movies] Load Movies By Genres Failure',
+  props<{ error: any }>()
+);
+
+export const loadMoviesByRating = createAction(
+  '[Movies] Load Movies By Rating',
+  props<{ rating: number }>()
+);
+
+export const loadMoviesByRatingSuccess = createAction(
+  '[Movies] Load Movies By Rating Success',
+  props<{ movies: Movie[] }>()
+);
+
+export const loadMoviesByRatingFailure = createAction(
+  '[Movies] Load Movies By Rating Failure',
+  props<{ error: any }>()
 );

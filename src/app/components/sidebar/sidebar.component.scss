@@ -1,0 +1,28 @@
+.sidebar-list {
+    padding-left: 0;
+    display: grid;
+    gap: .9375rem;
+    justify-content: center;
+    text-align: center;
+    // .sidebar-list__item
+
+    &__item {
+        list-style-type: none;
+    }
+
+    // .sidebar-list__link
+
+    &__link {
+        text-decoration: none;
+        font-size: 1.25rem;
+        text-transform: uppercase;
+        transition: color 0.3s;
+        @media (any-hover: hover){
+            &:hover{
+                color: #fff;
+            }
+        }
+    }
+}
+.sidebar-button {
+}

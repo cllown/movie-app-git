@@ -16,6 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { ClearObservable } from './models/clear-observable';
 import { takeUntil } from 'rxjs';
+import { LoginPopupComponent } from './components/login-popup/login-popup.component';
+import { MenubarComponent } from "./components/menubar/menubar.component";
+import { NewsSubscriptionComponent } from "./components/news-subscription/news-subscription.component";
 
 @Component({
   selector: 'app-root',
@@ -35,22 +38,25 @@ import { takeUntil } from 'rxjs';
     NowPlayingMoviesPageComponent,
     HeaderComponent,
     HttpClientModule,
-  ],
+    LoginPopupComponent,
+    MenubarComponent,
+    NewsSubscriptionComponent
+],
 })
 export class AppComponent extends ClearObservable implements OnInit {
+  title = 'movie-app';
+  
   constructor(private authService: AuthService) {
     super();
   }
 
-  ngOnInit() {
-    this.generateSessionId();
+  ngOnInit() {}
+
+  generateSessionId(username: string, password: string) {
+    this.requestToken(username, password);
   }
 
-  generateSessionId() {
-    this.requestToken();
-  }
-
-  requestToken() {
+  requestToken(username: string, password: string) {
     this.authService
       .getRequestToken()
       .pipe(takeUntil(this.destroy$))
@@ -59,7 +65,7 @@ export class AppComponent extends ClearObservable implements OnInit {
           const token = response.request_token;
           console.log('Request token received:', token);
           this.authService.setToken(token);
-          this.askForPermission(token);
+          this.askForPermission(username, password, token);
         },
         error: (error) => {
           console.error('Error requesting token:', error);
@@ -67,9 +73,9 @@ export class AppComponent extends ClearObservable implements OnInit {
       });
   }
 
-  askForPermission(token: string) {
+  askForPermission(username: string, password: string, token: string) {
     this.authService
-      .askForPermission(token)
+      .askForPermission(username, password, token)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

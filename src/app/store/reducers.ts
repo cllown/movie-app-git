@@ -10,6 +10,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       popularMovies: movies,
+      filteredMovies: null
     };
   }),
 
@@ -18,6 +19,7 @@ export const MovieReducer = createReducer(
       ...state,
       popularMovies: null,
       error: error,
+      filteredMovies: null
     };
   }),
 
@@ -25,6 +27,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       nowPlayingMovies: movies,
+      filteredMovies: null
     };
   }),
 
@@ -33,6 +36,7 @@ export const MovieReducer = createReducer(
       ...state,
       nowPlayingMovies: null,
       error: error,
+      filteredMovies: null
     };
   }),
 
@@ -40,6 +44,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       topRatedMovies: movies,
+      filteredMovies: null
     };
   }),
 
@@ -48,6 +53,7 @@ export const MovieReducer = createReducer(
       ...state,
       topRatedMovies: null,
       error: error,
+      filteredMovies: null
     };
   }),
 
@@ -55,6 +61,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       upcomingMovies: movies,
+      filteredMovies: null
     };
   }),
 
@@ -63,6 +70,7 @@ export const MovieReducer = createReducer(
       ...state,
       upcomingMovies: null,
       error: error,
+      filteredMovies: null
     };
   }),
 
@@ -136,5 +144,82 @@ export const MovieReducer = createReducer(
     watchListMovies: state.watchListMovies
       ? state.watchListMovies.filter((movie) => movie.id !== movieId)
       : null,
-  }))
+  })),
+
+  on(MovieActions.login, (state, { username, password }) => ({
+    ...state,
+    username,
+    password,
+    loading: true,
+    error: null,
+  })),
+
+  on(MovieActions.loginSuccess, (state, { sessionId }) => ({
+    ...state,
+    isLoggedIn: true,
+    loading: false,
+    error: null,
+  })),
+
+  on(MovieActions.loginFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  on(MovieActions.openLoginPopup, (state) => ({
+    ...state,
+    isPopupVisible: true,
+  })),
+
+  on(MovieActions.closeLoginPopup, (state) => ({
+    ...state,
+    isPopupVisible: false,
+  })),
+
+  on(MovieActions.searchMoviesSuccess, (state, { movies }) => ({
+    ...state,
+    searchResults: movies,
+  })),
+
+  on(MovieActions.searchMoviesFailure, (state, { error }) => ({
+    ...state,
+    searchError: error,
+  })),
+
+  on(MovieActions.clearSearchResults, (state) => ({
+    ...state,
+    searchResults: null,
+  })),
+
+  on(MovieActions.loadGenresSuccess, (state, { genres }) => ({
+    ...state,
+    genres,
+  })),
+
+  on(MovieActions.loadGenresFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+
+  on(MovieActions.loadMoviesByGenresSuccess, (state, { movies }) => ({
+    ...state,
+    filteredMovies: movies
+  })),
+
+  on(MovieActions.loadMoviesByGenresFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+
+  on(MovieActions.loadMoviesByRatingSuccess, (state, { movies }) => ({
+    ...state,
+    filteredMovies: movies
+  })),
+  
+  on(MovieActions.loadMoviesByRatingFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+  
 );

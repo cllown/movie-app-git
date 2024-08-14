@@ -1,0 +1,27 @@
+<form [formGroup]="formGroup">
+  <p-dialog 
+    header="Log In" 
+    [modal]="true" 
+    [(visible)]="isVisible" 
+    [style]="{ width: '25rem' }"
+    (onHide)="onCancel()">
+    <div class="popup-container">
+      <p-floatLabel>
+        <input type="text" formControlName="username" pInputText id="username"
+          [ngClass]="{ 'ng-invalid': formGroup.get('username')?.invalid && formGroup.get('username')?.touched || (error$ | async) }" />
+        <label class="font-semibold w-6rem" for="username">Username</label>
+      </p-floatLabel>
+      <p-floatLabel>
+        <p-password formControlName="password" [feedback]="false"
+          [ngClass]="{ 'ng-invalid': formGroup.get('password')?.invalid && formGroup.get('password')?.touched || (error$ | async) }" />
+        <label class="font-semibold w-6rem" for="password">Password</label>
+      </p-floatLabel>
+      <div *ngIf="error$ | async as error" class="error-message">Invalid Login</div>
+      <div class="popup-buttons">
+        <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
+        <p-button label="Log In" (onClick)="onSubmit()" [disabled]="loading$ | async" />
+      </div>
+    </div>
+  </p-dialog>
+</form>
+

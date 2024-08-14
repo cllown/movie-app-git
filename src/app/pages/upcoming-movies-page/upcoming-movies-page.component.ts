@@ -1,32 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
 import { Movie } from '../../models/movie';
-import { takeUntil } from 'rxjs';
-import { ClearObservable } from '../../models/clear-observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectUpcomingMovies } from '../../store/selectors';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-upcoming-movies-page',
   standalone: true,
   templateUrl: './upcoming-movies-page.component.html',
   styleUrl: './upcoming-movies-page.component.scss',
-  imports: [RouterModule, MovieListComponent],
+  imports: [MovieListComponent, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UpcomingMoviesPageComponent extends ClearObservable implements OnInit {
-  upcomingMovies: Movie[] | null = [];
+export class UpcomingMoviesPageComponent implements OnInit {
+  upcomingMovies$!: Observable<Movie[] | null>;
 
-  constructor(private store: Store) {
-    super();
-  }
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store
-    .select(selectUpcomingMovies)
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((movies) => {
-      this.upcomingMovies = movies || null;
-    });
+    this.upcomingMovies$ = this.store.select(selectUpcomingMovies);
   }
 }

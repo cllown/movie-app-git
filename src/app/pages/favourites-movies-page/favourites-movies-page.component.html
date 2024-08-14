@@ -1,13 +1,16 @@
 <div class="page-wrapper">
-  @if(movies){
-  <h2 class="title-movie-section">Favourites</h2>
-  <div class="items-movies">
-    @for(movie of movies; track movie.id){
-    <app-movie-card [movie]="movie" [isActionsShow]="false" [isRemoveButtonShow]="true"
-      (removeFromList)="removeFromFavourites(movie.id)"></app-movie-card>
-    }
-  </div>
-  } @else {
-  <p>You haven't added any movies to this category yet.</p>
-  }
+  <h2 class="title-movie-section">Favorites</h2>
+  <ng-container *ngIf="movies$ | async as movies;">
+    <ng-container *ngIf="movies && movies.length > 0; else noMovies">
+      <div class="items-movies">
+        @for(movie of movies; track movie.id){
+        <app-movie-card [movie]="movie" [isActionsShow]="false" [isRemoveButtonShow]="true"
+          (removeFromList)="removeFromFavourites(movie.id)"></app-movie-card>
+        }
+      </div>
+    </ng-container>
+    <ng-template #noMovies>
+      <p>You haven't added any movies to this category yet.</p>
+    </ng-template>
+  </ng-container>
 </div>

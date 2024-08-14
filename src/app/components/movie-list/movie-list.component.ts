@@ -1,6 +1,6 @@
 import { Component, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Movie } from '../../models/movie';
+import { Genre, Movie } from '../../models/movie';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MovieService } from '../../services/movie/movie.service';
 
@@ -12,5 +12,5 @@ import { MovieService } from '../../services/movie/movie.service';
   imports: [CommonModule, MovieCardComponent],
 })
 export class MovieListComponent {
-  @Input() movies: Movie[] | null = [];
+  @Input() movies: Movie[] = [];
 }

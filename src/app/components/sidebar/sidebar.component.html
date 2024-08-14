@@ -1,9 +1,10 @@
 <p-sidebar [(visible)]="sidebarVisible">
     <ul class="sidebar-list">
-        <li class="sidebar-item"><a routerLink="" class="sidebar-link">Popular Movies</a></li>
-        <li class="sidebar-item"><a routerLink="/now-playing" class="sidebar-link">Now Playing</a></li>
-        <li class="sidebar-item"><a routerLink="/top-rated" class="sidebar-link">Top Rated</a></li>
-        <li class="sidebar-item"><a routerLink="/upcoming" class="sidebar-link">Upcoming</a></li>
+        <li class="sidebar-list__item"><a routerLink="" class="sidebar-list__link">All Movies</a></li>
+        <li class="sidebar-list__item"><a routerLink="/popular" class="sidebar-list__link">Popular Movies</a></li>
+        <li class="sidebar-list__item"><a routerLink="/now-playing" class="sidebar-list__link">Now Playing</a></li>
+        <li class="sidebar-list__item"><a routerLink="/top-rated" class="sidebar-list__link">Top Rated</a></li>
+        <li class="sidebar-list__item"><a routerLink="/upcoming" class="sidebar-list__link">Upcoming</a></li>
     </ul>
 </p-sidebar>
-<p-button class="sidebar-button" (click)="sidebarVisible = true" icon="pi pi-arrow-right" />
+<p-button class="sidebar-button" (click)="sidebarVisible = true" icon="pi pi-bars" />

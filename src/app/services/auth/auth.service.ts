@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   CreateSessionIdResponse,
+  PermissionResponse,
   RequestTokenResponse,
 } from '../../models/responce.inetrface';
 
@@ -39,13 +40,17 @@ export class AuthService {
     );
   }
 
-  askForPermission(token: string): Observable<RequestTokenResponse> {
+  askForPermission(
+    username: string,
+    password: string,
+    token: string
+  ): Observable<PermissionResponse> {
     const body = {
-      username: 'IngaLekhman',
-      password: 'Inga2015',
+      username: username,
+      password: password,
       request_token: token,
     };
-    return this.httpClient.post<RequestTokenResponse>(
+    return this.httpClient.post<PermissionResponse>(
       `${environment.apiBaseUrl}/authentication/token/validate_with_login`,
       body,
       this.getOptions()

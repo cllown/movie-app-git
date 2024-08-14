@@ -1,4 +1,4 @@
-import { Movie } from '../models/movie';
+import { Genre, Movie } from '../models/movie';
 
 export interface MovieState {
   popularMovies: Movie[] | null;
@@ -8,6 +8,16 @@ export interface MovieState {
   favouriteMovies: Movie[] | null;
   watchListMovies: Movie[] | null;
   selectedMovie: Movie | null;
+  username: string | null;
+  password: string | null;
+  isLoggedIn: boolean;
+  loading: boolean;
+  isPopupVisible: boolean;
+  error: string | null;
+  searchResults: Movie[] | null;
+  searchError: string | null;
+  genres: Genre[] | null;
+  filteredMovies: Movie[] | null;
 }
 
 export const initialState: MovieState = {
@@ -18,4 +28,14 @@ export const initialState: MovieState = {
   favouriteMovies: null,
   watchListMovies: null,
   selectedMovie: null,
+  username: null,
+  password: null,
+  isLoggedIn: false,
+  loading: false,
+  isPopupVisible: false,
+  error: null,
+  searchResults: null,
+  searchError: null,
+  genres: null,
+  filteredMovies: null,
 };
