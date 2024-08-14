@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { HeaderComponent } from '../../components/header/header.component';
-import { RouterLink, RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
 import { Movie } from '../../models/movie';
-import { ClearObservable } from '../../models/clear-observable';
-import { takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectPopularMovies } from '../../store/selectors';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-popular-movies-page',
@@ -15,29 +12,17 @@ import { selectPopularMovies } from '../../store/selectors';
   templateUrl: './popular-movies-page.component.html',
   styleUrls: ['./popular-movies-page.component.scss'],
   imports: [
-    HttpClientModule,
-    HeaderComponent,
-    RouterLink,
-    RouterModule,
     MovieListComponent,
+    CommonModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PopularMoviesPageComponent
-  extends ClearObservable
-  implements OnInit
-{
-  popularMovies: Movie[] | null = [];
+export class PopularMoviesPageComponent implements OnInit {
+  popularMovies$!: Observable<Movie[] | null>;
 
-  constructor(private store: Store) {
-    super();
-  }
+  constructor(private store: Store) {}
 
-  ngOnInit() {
-    this.store
-      .select(selectPopularMovies)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((movies) => {
-        this.popularMovies = movies || null;
-      });
+  ngOnInit(): void {
+    this.popularMovies$ = this.store.select(selectPopularMovies);
   }
 }

@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
 import { Movie } from '../../models/movie';
-import { takeUntil } from 'rxjs';
-import { ClearObservable } from '../../models/clear-observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { CommonModule } from '@angular/common';
 import { selectTopRatedMovies } from '../../store/selectors';
 
 @Component({
@@ -12,21 +11,15 @@ import { selectTopRatedMovies } from '../../store/selectors';
   standalone: true,
   templateUrl: './top-rated-movies-page.component.html',
   styleUrl: './top-rated-movies-page.component.scss',
-  imports: [RouterModule, MovieListComponent],
+  imports: [MovieListComponent, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopRatedMoviesPageComponent extends ClearObservable implements OnInit {
-  topRatedMovies: Movie[] | null = [];
+export class TopRatedMoviesPageComponent implements OnInit {
+  topRatedMovies$!: Observable<Movie[] | null>;
 
-  constructor(private store: Store) {
-    super();
-  }
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store
-    .select(selectTopRatedMovies)
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((movies) => {
-      this.topRatedMovies = movies || null;
-    });
+    this.topRatedMovies$ = this.store.select(selectTopRatedMovies);
   }
 }

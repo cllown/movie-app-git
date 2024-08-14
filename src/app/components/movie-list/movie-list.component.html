@@ -1,4 +1,4 @@
-<div class="movie-list">
+<div class="movie-list" *ngIf="movies.length; else noMovies">
   <section class="movie-list__all all-movies">
     <div class="all-movies__items items-movies">
       @for(movie of movies; track movie.id){
@@ -7,3 +7,6 @@
     </div>
   </section>
 </div>
+<ng-template #noMovies>
+  <p>No movies found</p>
+</ng-template>

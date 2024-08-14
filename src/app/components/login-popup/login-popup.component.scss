@@ -1,0 +1,13 @@
+.popup-container {
+    display: grid;
+    gap: 1.875rem;
+    padding: 0.625rem;
+}
+.popup-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.error-message {
+    color: #f19ea6;
+}

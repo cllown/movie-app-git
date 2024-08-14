@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
-import { ClearObservable } from '../../models/clear-observable';
-import { takeUntil } from 'rxjs';
+import { Observable} from 'rxjs';
 import { Store } from '@ngrx/store';
-import { loadMovieDetails } from '../../store/actions';
 import { selectSelectedMovie } from '../../store/selectors';
 
 @Component({
@@ -15,22 +12,14 @@ import { selectSelectedMovie } from '../../store/selectors';
   templateUrl: './details-movie-page.component.html',
   styleUrls: ['./details-movie-page.component.scss'],
   imports: [CommonModule, RatingRoundingPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DetailsMoviePageComponent
-  extends ClearObservable
-  implements OnInit
-{
-  movie: Movie | null = null;
+export class DetailsMoviePageComponent implements OnInit {
+  movie$!: Observable<Movie | null>;
 
-  constructor(private route: ActivatedRoute, private store: Store) {
-    super();
-  }
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store.select(selectSelectedMovie)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((movie) => {
-        this.movie = movie;
-      });
+    this.movie$ = this.store.select(selectSelectedMovie);
   }
 }

@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
-import { takeUntil } from 'rxjs';
-import { ClearObservable } from '../../models/clear-observable';
 import { selectFavouriteMovies } from '../../store/selectors';
 import { Store } from '@ngrx/store';
 import { removeMovieFromFavourites } from '../../store/actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-favourites-movies-page',
@@ -14,24 +13,15 @@ import { removeMovieFromFavourites } from '../../store/actions';
   templateUrl: './favourites-movies-page.component.html',
   styleUrls: ['./favourites-movies-page.component.scss'],
   imports: [CommonModule, MovieCardComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FavouritesMoviesPageComponent
-  extends ClearObservable
-  implements OnInit
-{
-  movies: Movie[] | null = [];
+export class FavouritesMoviesPageComponent implements OnInit {
+  movies$!: Observable<Movie[] | null>;
 
-  constructor(private store: Store) {
-    super();
-  }
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store
-      .select(selectFavouriteMovies)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((movies) => {
-        this.movies = movies || null;
-      });
+    this.movies$ = this.store.select(selectFavouriteMovies);
   }
 
   removeFromFavourites(movieId: number) {

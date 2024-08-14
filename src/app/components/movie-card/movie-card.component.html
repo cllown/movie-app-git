@@ -2,21 +2,29 @@
     <ng-template pTemplate="header">
         <img alt="{{movie.title}}" [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
     </ng-template>
+    <p>{{movie.overview}}</p>
+    <p>{{movie.release_date}}</p>
     <p>
-        {{movie.overview}}
-    </p>
-    <p>
-        {{movie.release_date}}
+        <ng-container *ngIf="genres$ | async as genres">
+            {{ getGenreNames(movie.genre_ids, genres) }}
+        </ng-container>
     </p>
     <p class="movie-more">
         <a [routerLink]="['/movie/', movie.id]">Show more ></a>
     </p>
     <ng-template pTemplate="footer">
-        <p-button *ngIf="isActionsShow" (click)="onAddToFavourites(movie.id)" class="w-full movie-card-button"
-            styleClass="pi pi-heart" />
-        <p-button *ngIf="isActionsShow" (click)="onAddToWatchList(movie.id)" severity="secondary"
-            class="w-full movie-card-button" styleClass="pi pi-history" />
+        <ng-container *ngIf="isActionsShow">
+            <p-button [disabled]="!(isLoggedIn$ | async)" (click)="onAddToFavourites(movie.id)"
+                class="w-full movie-card-button"
+                [styleClass]="(isFavourite$ | async) ? 'pi pi-heart-fill' : 'pi pi-heart'"></p-button>
+
+            <p-button [disabled]="!(isLoggedIn$ | async)" (click)="onAddToWatchList(movie.id)"
+                class="w-full movie-card-button"
+                [styleClass]="(isInWatchList$ | async) ? 'pi pi-check-circle' : 'pi pi-history'"
+                severity="secondary"></p-button>
+        </ng-container>
+
         <p-button *ngIf="isRemoveButtonShow" (click)="onRemoveFromList()" severity="secondary"
-            class="w-full movie-card-button" styleClass="pi pi-times" />
+            class="w-full movie-card-button" styleClass="pi pi-times"></p-button>
     </ng-template>
 </p-card>

@@ -1,4 +1,9 @@
 <div class="page-wrapper">
     <h2 class="page-title">Top Rated</h2>
-    <app-movie-list [movies]="topRatedMovies"></app-movie-list>
+    <ng-container *ngIf="topRatedMovies$ | async as topRatedMovies; else loading"> 
+        <app-movie-list [movies]="topRatedMovies"></app-movie-list>
+    </ng-container>
+    <ng-template #loading>
+        <p>Loading...</p>
+    </ng-template>
 </div>
