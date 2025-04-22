@@ -17,11 +17,13 @@ import { CommonModule } from '@angular/common';
 import { Genre } from '../../models/movie';
 import { select, Store } from '@ngrx/store';
 import { selectGenres } from '../../store/selectors';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-news-subscription',
   standalone: true,
   imports: [
+    ButtonModule,
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,

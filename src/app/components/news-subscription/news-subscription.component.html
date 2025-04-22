@@ -1,6 +1,9 @@
 <div class="page-wrapper">
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
-    <h2>Subscribe for news</h2>
+    <div class="form__title">
+      <h2>Subscribe for news</h2>
+      <p-button class="form__close-button" >X</p-button>
+    </div>
     <div class="form__row">
       <p-floatLabel>
         <input type="text" formControlName="username" pInputText id="username-news"
@@ -33,7 +36,7 @@
       <div>
         <p-checkbox formControlName="consent" binary="true" inputId="consent"
           [ngClass]="{'ng-invalid': formGroup.controls['consent'].invalid && formGroup.controls['consent'].touched}"></p-checkbox>
-        <label for="consent">Consent to data processing</label>
+        <label for="consent">  Consent to data processing</label>
       </div>
     </div>
 
