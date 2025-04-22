@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SidebarComponent } from "../sidebar/sidebar.component";
+import { SidebarComponent } from '../sidebar/sidebar.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormControl } from '@angular/forms';
@@ -8,17 +8,27 @@ import { Movie } from '../../models/movie';
 import { Store } from '@ngrx/store';
 import { clearSearchResults, searchMovies } from '../../store/actions';
 import { selectSearchingMovies } from '../../store/selectors';
-import { MovieListComponent } from "../movie-list/movie-list.component";
+import { MovieListComponent } from '../movie-list/movie-list.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MoviesSortingComponent } from "../movies-sorting/movies-sorting.component";
+import { MoviesSortingComponent } from '../movies-sorting/movies-sorting.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-menubar',
   standalone: true,
-  imports: [SidebarComponent, ToolbarModule, InputTextModule, MovieListComponent, CommonModule, ReactiveFormsModule, MoviesSortingComponent],
+  imports: [
+    ButtonModule,
+    SidebarComponent,
+    ToolbarModule,
+    InputTextModule,
+    MovieListComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    MoviesSortingComponent,
+  ],
   templateUrl: './menubar.component.html',
-  styleUrl: './menubar.component.scss'
+  styleUrl: './menubar.component.scss',
 })
 export class MenubarComponent {
   searchControl = new FormControl('');
@@ -27,16 +37,18 @@ export class MenubarComponent {
   constructor(private store: Store) {
     this.movies$ = this.store.select(selectSearchingMovies);
 
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      tap(query => {
-        if (query) {
-          this.store.dispatch(searchMovies({ query }));
-        } else {
-          this.store.dispatch(clearSearchResults());
-        }
-      }),
-      switchMap(() => this.movies$)
-    ).subscribe();
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        tap((query) => {
+          if (query) {
+            this.store.dispatch(searchMovies({ query }));
+          } else {
+            this.store.dispatch(clearSearchResults());
+          }
+        }),
+        switchMap(() => this.movies$)
+      )
+      .subscribe();
   }
 }

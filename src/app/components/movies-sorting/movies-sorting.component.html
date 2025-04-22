@@ -1,7 +1,5 @@
-<div class="card flex justify-content-center">
-    <form [formGroup]="formGroup" class="form-sorting">
-        <p-rating formControlName="value" [stars]="10" />
-        <ng-container *ngIf="genres$ | async as genres">
+<div class="card">
+    <form [formGroup]="formGroup" class="form-sorting">        <ng-container *ngIf="genres$ | async as genres">
             <p-multiSelect id="selectedGenres" [options]="genres || []" formControlName="selectedGenres"
                 optionLabel="name" placeholder="Select Genres" display="chip" [showClear]="true" />
         </ng-container>

@@ -2,15 +2,22 @@
   <div class="p-toolbar-group-start">
     <app-sidebar></app-sidebar>
   </div>
-  <div class="p-toolbar-group-center">
-    <app-movies-sorting></app-movies-sorting>
-  </div>
-  <div class="p-toolbar-group-end">
+  <div class="p-toolbar-group-center center-group">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
       <input pInputText placeholder="Search" [formControl]="searchControl" />
     </span>
+    <app-movies-sorting></app-movies-sorting>
   </div>
+<div class="p-toolbar-group-end">
+  <button
+    pButton
+    type="button"
+    icon="pi pi-user"
+    class="p-button-rounded p-button-outlined p-button-sm"
+  ></button>
+</div>
+
 </p-toolbar>
 
 <div class="page-wrapper">
