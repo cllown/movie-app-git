@@ -6,8 +6,13 @@ import { NowPlayingMoviesResolver } from './guards/now-playing-movies.resolver';
 import { TopRatedMoviesResolver } from './guards/top-rated-movies.resolver';
 import { UpcomingMoviesResolver } from './guards/upcoming-movies.resolver';
 import { AllMoviesResolver } from './guards/all-movies.resolver';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
+  },
   {
     path: '',
     loadComponent: () =>

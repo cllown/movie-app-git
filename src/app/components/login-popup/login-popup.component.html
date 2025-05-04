@@ -1,8 +1,8 @@
 <form [formGroup]="formGroup">
-  <p-dialog 
-    header="Log In" 
-    [modal]="true" 
-    [(visible)]="isVisible" 
+  <p-dialog
+    header="Log In"
+    [modal]="true"
+    [(visible)]="isVisible"
     [style]="{ width: '25rem' }"
     (onHide)="onCancel()">
     <div class="popup-container">
@@ -20,6 +20,13 @@
       <div class="popup-buttons">
         <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
         <p-button label="Log In" (onClick)="onSubmit()" [disabled]="loading$ | async" />
+        <div class="register-checkbox">
+          <p-checkbox
+          formControlName="isRegisterMode"
+          binary="true"
+          label="Register instead?"
+        ></p-checkbox>
+                </div>
       </div>
     </div>
   </p-dialog>

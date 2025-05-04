@@ -177,11 +177,10 @@ export class MovieEffects {
       )
     )
   );
-
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.login),
-      mergeMap(({ username, password }) =>
+      mergeMap(({ username, password, redirectUrl }) =>
         this.authService.getRequestToken().pipe(
           switchMap((tokenResponse) =>
             this.authService
@@ -194,7 +193,11 @@ export class MovieEffects {
                       map((sessionResponse) => {
                         const sessionId = sessionResponse.session_id;
                         this.authService.setSessionId(sessionId);
-                        return MovieActions.loginSuccess({ sessionId });
+                        return MovieActions.loginSuccess({
+                          sessionId,
+                          username,
+                          redirectUrl,
+                        });
                       })
                     )
                 )

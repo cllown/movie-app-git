@@ -10,7 +10,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       popularMovies: movies,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -19,7 +19,7 @@ export const MovieReducer = createReducer(
       ...state,
       popularMovies: null,
       error: error,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -27,7 +27,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       nowPlayingMovies: movies,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -36,7 +36,7 @@ export const MovieReducer = createReducer(
       ...state,
       nowPlayingMovies: null,
       error: error,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -44,7 +44,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       topRatedMovies: movies,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -53,7 +53,7 @@ export const MovieReducer = createReducer(
       ...state,
       topRatedMovies: null,
       error: error,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -61,7 +61,7 @@ export const MovieReducer = createReducer(
     return {
       ...state,
       upcomingMovies: movies,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -70,7 +70,7 @@ export const MovieReducer = createReducer(
       ...state,
       upcomingMovies: null,
       error: error,
-      filteredMovies: null
+      filteredMovies: null,
     };
   }),
 
@@ -154,7 +154,7 @@ export const MovieReducer = createReducer(
     error: null,
   })),
 
-  on(MovieActions.loginSuccess, (state, { sessionId }) => ({
+  on(MovieActions.loginSuccess, (state, { sessionId, username }) => ({
     ...state,
     isLoggedIn: true,
     loading: false,
@@ -204,7 +204,7 @@ export const MovieReducer = createReducer(
 
   on(MovieActions.loadMoviesByGenresSuccess, (state, { movies }) => ({
     ...state,
-    filteredMovies: movies
+    filteredMovies: movies,
   })),
 
   on(MovieActions.loadMoviesByGenresFailure, (state, { error }) => ({
@@ -214,12 +214,11 @@ export const MovieReducer = createReducer(
 
   on(MovieActions.loadMoviesByRatingSuccess, (state, { movies }) => ({
     ...state,
-    filteredMovies: movies
+    filteredMovies: movies,
   })),
-  
+
   on(MovieActions.loadMoviesByRatingFailure, (state, { error }) => ({
     ...state,
     error,
-  })),
-  
+  }))
 );

@@ -121,7 +121,7 @@ export const login = createAction(
 
 export const loginSuccess = createAction(
   '[Auth] Login Success',
-  props<{ sessionId: string; redirectUrl?: string }>()
+  props<{ sessionId: string; username: string; redirectUrl?: string }>()
 );
 
 export const loginFailure = createAction(

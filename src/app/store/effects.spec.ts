@@ -432,7 +432,10 @@ describe('MovieEffects', () => {
     it('should return loginSuccess on success', (done) => {
       const sessionId = 'sessionId';
       const action = MovieActions.login({ username: 'user', password: 'pass' });
-      const outcome = MovieActions.loginSuccess({ sessionId });
+      const outcome = MovieActions.loginSuccess({
+        sessionId: 'mockSessionId',
+        username: 'testUser',
+      });
 
       jest
         .spyOn(authService, 'getRequestToken')
@@ -474,8 +477,9 @@ describe('MovieEffects', () => {
     it('should navigate to redirectUrl and close login popup', () => {
       const redirectUrl = '/home';
       const action = MovieActions.loginSuccess({
-        sessionId: 'sessionId',
-        redirectUrl,
+        sessionId: 'mockSessionId',
+        username: 'testUser',
+        redirectUrl: '/home',
       });
       const outcome = MovieActions.closeLoginPopup();
 
