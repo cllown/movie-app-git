@@ -2,7 +2,7 @@
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
     <div class="form__title">
       <h2>Subscribe for news</h2>
-      <p-button class="form__close-button" >X</p-button>
+      <p-button class="form__close-button" icon="pi pi-times" (click)="close.emit()"></p-button>
     </div>
     <div class="form__row">
       <p-floatLabel>

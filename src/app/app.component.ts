@@ -17,8 +17,9 @@ import { AuthService } from './services/auth/auth.service';
 import { ClearObservable } from './models/clear-observable';
 import { takeUntil } from 'rxjs';
 import { LoginPopupComponent } from './components/login-popup/login-popup.component';
-import { MenubarComponent } from "./components/menubar/menubar.component";
-import { NewsSubscriptionComponent } from "./components/news-subscription/news-subscription.component";
+import { MenubarComponent } from './components/menubar/menubar.component';
+import { NewsSubscriptionComponent } from './components/news-subscription/news-subscription.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -40,12 +41,14 @@ import { NewsSubscriptionComponent } from "./components/news-subscription/news-s
     HttpClientModule,
     LoginPopupComponent,
     MenubarComponent,
-    NewsSubscriptionComponent
-],
+    NewsSubscriptionComponent,
+    CommonModule,
+  ],
 })
 export class AppComponent extends ClearObservable implements OnInit {
   title = 'movie-app';
-  
+  showSubscriptionForm = true;
+
   constructor(private authService: AuthService) {
     super();
   }

@@ -3,13 +3,14 @@
     <app-sidebar></app-sidebar>
   </div>
   <div class="p-toolbar-group-center center-group">
-    <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-      <input pInputText placeholder="Search" [formControl]="searchControl" />
-    </span>
+
     <app-movies-sorting></app-movies-sorting>
   </div>
 <div class="p-toolbar-group-end">
+  <span class="p-input-icon-left">
+    <i class="pi pi-search"></i>
+    <input pInputText placeholder="Search" [formControl]="searchControl" />
+  </span>
   <button
     pButton
     type="button"
