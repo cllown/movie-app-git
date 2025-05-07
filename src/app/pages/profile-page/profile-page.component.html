@@ -1,7 +1,26 @@
-<div *ngIf="user; else notLoggedIn">
-  <h2>Welcome, {{ user.username }}!</h2>
-  <p>Your preferences and recommendations will be here soon.</p>
-</div>
+<ng-container *ngIf="user; else notLoggedIn">
+  <p-card header="Profile">
+    <h2>Welcome, {{ user.username }}!</h2>
+
+    <p-tabView>
+      <p-tabPanel header="Info">
+        <p>Here will be your personal info and stats.</p>
+      </p-tabPanel>
+
+      <p-tabPanel header="Preferences">
+        <p>Choose your favorite genres:</p>
+        <p-multiSelect
+          [options]="availableGenres"
+          [(ngModel)]="selectedGenres"
+          optionLabel=""
+          placeholder="Select genres"
+          [display]="'chip'"
+        ></p-multiSelect>
+      </p-tabPanel>
+    </p-tabView>
+  </p-card>
+</ng-container>
+
 <ng-template #notLoggedIn>
   <p>You are not logged in. Please log in first.</p>
 </ng-template>

@@ -64,6 +64,7 @@ export class LoginPopupComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+      isRegisterMode: [false],
     });
 
     combineLatest([
