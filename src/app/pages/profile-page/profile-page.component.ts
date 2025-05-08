@@ -7,6 +7,7 @@ import { CardModule } from 'primeng/card';
 
 import { AuthService } from '../../services/auth/auth.service';
 import { User } from '../../models/user';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-profile-page',
@@ -17,6 +18,7 @@ import { User } from '../../models/user';
     TabViewModule,
     MultiSelectModule,
     CardModule,
+    ButtonModule
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',

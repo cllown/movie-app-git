@@ -46,11 +46,11 @@ export class MovieCardComponent implements OnInit {
   ngOnInit(): void {
     this.genres$ = this.movieService.getGenreNames(this.movie.genre_ids);
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
-  
+
     this.isFavourite$ = this.movieService.checkIfMovieInList(this.movie.id, this.store.select(selectFavouriteMovies));
     this.isInWatchList$ = this.movieService.checkIfMovieInList(this.movie.id, this.store.select(selectWatchListMovies));
   }
-  
+
 
   onAddToFavourites(movieId: number) {
     this.isLoggedIn$

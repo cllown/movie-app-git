@@ -1,21 +1,24 @@
 <ng-container *ngIf="user; else notLoggedIn">
-  <p-card header="Profile">
-    <h2>Welcome, {{ user.username }}!</h2>
+  <p-card>
+    <div class="profile-header">
+      <h2>Welcome, {{ user.username }}!</h2>
+      <p-button label="logout"></p-button>
+    </div>
+
 
     <p-tabView>
       <p-tabPanel header="Info">
         <p>Here will be your personal info and stats.</p>
       </p-tabPanel>
 
-      <p-tabPanel header="Preferences">
-        <p>Choose your favorite genres:</p>
-        <p-multiSelect
-          [options]="availableGenres"
-          [(ngModel)]="selectedGenres"
-          optionLabel=""
-          placeholder="Select genres"
-          [display]="'chip'"
-        ></p-multiSelect>
+      <p-tabPanel header="liked">
+
+      </p-tabPanel>
+      <p-tabPanel header="watch list">
+
+      </p-tabPanel>
+      <p-tabPanel header="other">
+
       </p-tabPanel>
     </p-tabView>
   </p-card>
