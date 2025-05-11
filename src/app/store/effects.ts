@@ -243,6 +243,7 @@ export class MovieEffects {
       switchMap(({ sessionId }) => [
         MovieActions.loginSuccess({ sessionId }),
         MovieActions.loadFavouriteMovies(),
+        MovieActions.loadWatchListMovies(),
       ])
     )
   );

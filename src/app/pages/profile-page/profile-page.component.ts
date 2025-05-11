@@ -7,10 +7,17 @@ import { CardModule } from 'primeng/card';
 import { AuthService } from '../../services/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { Store } from '@ngrx/store';
-import { selectFavouriteMovies, selectUsername } from '../../store/selectors';
+import {
+  selectFavouriteMovies,
+  selectUsername,
+  selectWatchListMovies,
+} from '../../store/selectors';
 import { Observable } from 'rxjs';
 import { Movie } from '../../models/movie';
-import { removeMovieFromFavourites } from '../../store/actions';
+import {
+  removeMovieFromFavourites,
+  removeMovieFromWatchList,
+} from '../../store/actions';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
 import * as MovieActions from '../../store/actions';
 
@@ -30,7 +37,8 @@ import * as MovieActions from '../../store/actions';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
-  movies$!: Observable<Movie[] | null>;
+  favouriteMovies$!: Observable<Movie[] | null>;
+  watchListMovies$!: Observable<Movie[] | null>;
   username$: Observable<string | null>;
   availableGenres: string[] = [
     'Action',
@@ -47,7 +55,8 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.movies$ = this.store.select(selectFavouriteMovies);
+    this.favouriteMovies$ = this.store.select(selectFavouriteMovies);
+    this.watchListMovies$ = this.store.select(selectWatchListMovies);
   }
   logout(): void {
     this.store.dispatch(MovieActions.logout());
@@ -55,5 +64,8 @@ export class ProfilePageComponent implements OnInit {
 
   removeFromFavourites(movieId: number) {
     this.store.dispatch(removeMovieFromFavourites({ movieId }));
+  }
+  removeFromWatchList(movieId: number) {
+    this.store.dispatch(removeMovieFromWatchList({ movieId }));
   }
 }
