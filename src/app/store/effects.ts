@@ -13,6 +13,7 @@ import { of } from 'rxjs';
 import { MovieService } from '../services/movie/movie.service';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { selectFavouriteMovies } from './selectors';
 
 @Injectable()
 export class MovieEffects {
@@ -244,6 +245,7 @@ export class MovieEffects {
         MovieActions.loginSuccess({ sessionId }),
         MovieActions.loadFavouriteMovies(),
         MovieActions.loadWatchListMovies(),
+        MovieActions.loadGenres(),
       ])
     )
   );
