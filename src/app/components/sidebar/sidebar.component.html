@@ -1,10 +1,33 @@
 <p-sidebar [(visible)]="sidebarVisible">
+  <div class="sidebar">
     <ul class="sidebar-list">
-        <li class="sidebar-list__item"><a routerLink="" class="sidebar-list__link">All Movies</a></li>
-        <li class="sidebar-list__item"><a routerLink="/popular" class="sidebar-list__link">Popular Movies</a></li>
-        <li class="sidebar-list__item"><a routerLink="/now-playing" class="sidebar-list__link">Now Playing</a></li>
-        <li class="sidebar-list__item"><a routerLink="/top-rated" class="sidebar-list__link">Top Rated</a></li>
-        <li class="sidebar-list__item"><a routerLink="/upcoming" class="sidebar-list__link">Upcoming</a></li>
+      <li class="sidebar-list__item">
+        <a routerLink="" routerLinkActive="active" class="sidebar-list__link">All Movies</a>
+      </li>
+      <li class="sidebar-list__item">
+        <a routerLink="/popular" routerLinkActive="active" class="sidebar-list__link">Popular Movies</a>
+      </li>
+      <li class="sidebar-list__item">
+        <a routerLink="/now-playing" routerLinkActive="active" class="sidebar-list__link">Now Playing</a>
+      </li>
+      <li class="sidebar-list__item">
+        <a routerLink="/top-rated" routerLinkActive="active" class="sidebar-list__link">Top Rated</a>
+      </li>
+      <li class="sidebar-list__item">
+        <a routerLink="/upcoming" routerLinkActive="active" class="sidebar-list__link">Upcoming</a>
+      </li>
     </ul>
+
+    <div class="sidebar-bottom">
+      <ng-container *ngIf="isLoggedIn$ | async; else loginButton">
+        <a routerLink="/profile" routerLinkActive="active" class="sidebar-list__link">Profile</a>
+      </ng-container>
+
+      <ng-template #loginButton>
+        <p-button class="sidebar-button" label="Login" (click)="openLoginPopup()" />
+      </ng-template>
+    </div>
+  </div>
 </p-sidebar>
-<p-button class="sidebar-button" (click)="sidebarVisible = true" icon="pi pi-bars" />
+
+<p-button (click)="sidebarVisible = true" icon="pi pi-bars" />
