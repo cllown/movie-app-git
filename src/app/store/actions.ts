@@ -133,6 +133,22 @@ export const openLoginPopup = createAction('[Auth] Open Login Popup');
 
 export const closeLoginPopup = createAction('[Auth] Close Login Popup');
 
+export const openRegisterPopup = createAction('[Auth] Open Register Popup');
+
+export const closeRegisterPopup = createAction('[Auth] Close Register Popup');
+
+export const register = createAction(
+  '[Auth] Register',
+  props<{ username: string; password: string }>()
+);
+
+export const registerSuccess = createAction('[Auth] Register Success');
+
+export const registerFailure = createAction(
+  '[Auth] Register Failure',
+  props<{ error: string }>()
+);
+
 export const searchMovies = createAction(
   '[Movie] Search Movies',
   props<{ query: string }>()

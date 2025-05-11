@@ -1,0 +1,16 @@
+@use 'sass:map';
+
+.popup-container {
+  display: grid;
+  gap: 1.875rem; // 30px
+  padding: 0.625rem; // 10px
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.error-message {
+  color: #f19ea6;
+}

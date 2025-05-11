@@ -18,6 +18,7 @@ import { Genre } from '../../models/movie';
 import { select, Store } from '@ngrx/store';
 import { selectGenres } from '../../store/selectors';
 import { ButtonModule } from 'primeng/button';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-news-subscription',
@@ -39,6 +40,12 @@ export class NewsSubscriptionComponent
   extends ClearObservable
   implements OnInit
 {
+  @Output() close = new EventEmitter<void>();
+
+  onClose() {
+    this.close.emit();
+  }
+
   formGroup!: FormGroup;
   genres$!: Observable<Genre[] | null>;
   successMessage: string | null = null;

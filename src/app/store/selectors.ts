@@ -77,6 +77,10 @@ export const selectIsPopupVisible = createSelector(
   selectState,
   (state) => state.isPopupVisible ?? false
 );
+export const selectIsRegisterPopupVisible = createSelector(
+  selectState,
+  (state) => state.isRegisterPopupVisible ?? false
+);
 
 export const selectError = createSelector(selectState, (state) => state.error);
 

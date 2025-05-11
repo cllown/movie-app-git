@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   CreateSessionIdResponse,
@@ -66,5 +66,25 @@ export class AuthService {
       body,
       this.getOptions()
     );
+  }
+
+  register(username: string, password: string): Observable<void> {
+    const usersString = localStorage.getItem('users');
+    const users = usersString ? JSON.parse(usersString) : [];
+
+    const userExists = users.some((u: any) => u.username === username);
+    if (userExists) {
+      return throwError(() => new Error('Користувач уже існує'));
+    }
+
+    users.push({ username, password });
+    localStorage.setItem('users', JSON.stringify(users));
+
+    return of(undefined);
+  }
+
+  loginWithLocal(username: string, password: string): boolean {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    return users[username] === password;
   }
 }

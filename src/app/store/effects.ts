@@ -219,7 +219,19 @@ export class MovieEffects {
       map(() => MovieActions.closeLoginPopup())
     )
   );
-
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.register),
+      switchMap(({ username, password }) =>
+        this.authService.register(username, password).pipe(
+          map(() => MovieActions.registerSuccess()),
+          catchError((err) =>
+            of(MovieActions.registerFailure({ error: err.message }))
+          )
+        )
+      )
+    )
+  );
   searchMovies$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.searchMovies),

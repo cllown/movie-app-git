@@ -82,7 +82,6 @@ export const mockMovie2: Movie = {
   vote_count: 100,
 };
 
-
 export const mockRequestTokenResponse: RequestTokenResponse = {
   request_token: 'requestToken',
   success: true,
@@ -109,7 +108,7 @@ export const mockState: MovieState = {
   nowPlayingMovies: mockMovies,
   topRatedMovies: mockMovies,
   upcomingMovies: mockMovies,
-  selectedMovie: mockMovie ,
+  selectedMovie: mockMovie,
   favouriteMovies: mockMovies,
   watchListMovies: mockMovies,
   username: 'testuser',
@@ -122,4 +121,7 @@ export const mockState: MovieState = {
   searchResults: mockMovies,
   genres: mockGenres,
   filteredMovies: mockMovies,
+  isRegisterPopupVisible: false,
+  registerError: null,
+  isRegistering: false,
 };

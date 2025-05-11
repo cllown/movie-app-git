@@ -9,5 +9,10 @@
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
-  ]
+  ],
+  "exclude": [
+  "src/**/*.e2e.ts",
+  "src/test.ts",
+  "**/*.spec.ts"
+]
 }

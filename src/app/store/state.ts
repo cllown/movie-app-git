@@ -18,6 +18,9 @@ export interface MovieState {
   searchError: string | null;
   genres: Genre[] | null;
   filteredMovies: Movie[] | null;
+  isRegisterPopupVisible: boolean;
+  registerError: string | null;
+  isRegistering: boolean;
 }
 
 export const initialState: MovieState = {
@@ -38,4 +41,7 @@ export const initialState: MovieState = {
   searchError: null,
   genres: null,
   filteredMovies: null,
+  isRegisterPopupVisible: false,
+  registerError: null,
+  isRegistering: false,
 };

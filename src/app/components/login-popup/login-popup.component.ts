@@ -21,7 +21,6 @@ import {
   selectUsername,
 } from '../../store/selectors';
 import * as MovieActions from '../../store/actions';
-
 @Component({
   selector: 'app-login-popup',
   standalone: true,
@@ -42,6 +41,7 @@ export class LoginPopupComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
   isVisible: boolean = false;
+  showRegistration = false;
 
   constructor(private store: Store, private formBuilder: FormBuilder) {
     this.loading$ = this.store.select(selectLoading);
@@ -57,21 +57,25 @@ export class LoginPopupComponent implements OnInit {
     combineLatest([
       this.store.select(selectUsername),
       this.store.select(selectPassword),
-      this.store.select(selectIsPopupVisible).pipe(map(visible => visible ?? false)),
-    ]).pipe(
-      map(([username, password, visible]) => {
-        if (username) {
-          this.formGroup.get('username')?.setValue(username);
-        }
-        if (password) {
-          this.formGroup.get('password')?.setValue(password);
-        }
-        this.isVisible = visible;
-        if (!visible) {
-          this.formGroup.reset();
-        }
-      })
-    ).subscribe();
+      this.store
+        .select(selectIsPopupVisible)
+        .pipe(map((visible) => visible ?? false)),
+    ])
+      .pipe(
+        map(([username, password, visible]) => {
+          if (username) {
+            this.formGroup.get('username')?.setValue(username);
+          }
+          if (password) {
+            this.formGroup.get('password')?.setValue(password);
+          }
+          this.isVisible = visible;
+          if (!visible) {
+            this.formGroup.reset();
+          }
+        })
+      )
+      .subscribe();
   }
 
   onSubmit(): void {
@@ -84,6 +88,11 @@ export class LoginPopupComponent implements OnInit {
   }
 
   onCancel(): void {
+    this.store.dispatch(MovieActions.closeLoginPopup());
+  }
+
+  openRegisterPopup(): void {
+    this.store.dispatch(MovieActions.openRegisterPopup());
     this.store.dispatch(MovieActions.closeLoginPopup());
   }
 }
