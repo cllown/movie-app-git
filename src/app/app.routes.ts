@@ -17,6 +17,14 @@ export const routes: Routes = [
     resolve: { data: AllMoviesResolver },
   },
   {
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile-page/profile-page.component').then(
+        (m) => m.ProfilePageComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'popular',
     loadComponent: () =>
       import('./pages/popular-movies-page/popular-movies-page.component').then(

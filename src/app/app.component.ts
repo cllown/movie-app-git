@@ -22,8 +22,7 @@ import { NewsSubscriptionComponent } from './components/news-subscription/news-s
 import { RegistrationPopupComponent } from './components/registration-popup/registration-popup.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { selectIsRegisterPopupVisible } from './store/selectors';
-
+import * as MovieActions from './store/actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -57,7 +56,9 @@ export class AppComponent extends ClearObservable implements OnInit {
     super();
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.store.dispatch(MovieActions.loadSessionFromStorage());
+  }
 
   generateSessionId(username: string, password: string) {
     this.requestToken(username, password);

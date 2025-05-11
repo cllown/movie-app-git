@@ -25,7 +25,7 @@ export class AuthService {
     this.token = token;
   }
 
-  setSessionId(sessionId: string) {
+  setSessionId(sessionId: string | null): void {
     this.sessionId = sessionId;
   }
 

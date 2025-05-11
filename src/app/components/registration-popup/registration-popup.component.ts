@@ -13,7 +13,6 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import * as MovieActions from '../../store/actions';
 import { selectIsRegisterPopupVisible } from '../../store/selectors';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-registration-popup',

@@ -1,6 +1,17 @@
 import { createAction, props } from '@ngrx/store';
 import { Genre, Movie } from '../models/movie';
 
+export const loadSessionFromStorage = createAction(
+  '[Auth] Load Session From Storage'
+);
+
+export const sessionRestored = createAction(
+  '[Auth] Session Restored',
+  props<{ sessionId: string }>()
+);
+
+export const logout = createAction('[Auth] Logout');
+
 export const loadPopularMovies = createAction('[Movie] Load Popular Movies');
 
 export const loadPopularMoviesSuccess = createAction(

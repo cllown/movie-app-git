@@ -193,6 +193,9 @@ export class MovieEffects {
                     .pipe(
                       map((sessionResponse) => {
                         const sessionId = sessionResponse.session_id;
+
+                        localStorage.setItem('sessionId', sessionId);
+
                         this.authService.setSessionId(sessionId);
                         return MovieActions.loginSuccess({ sessionId });
                       })
@@ -219,6 +222,44 @@ export class MovieEffects {
       map(() => MovieActions.closeLoginPopup())
     )
   );
+
+  loadSessionFromStorage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.loadSessionFromStorage),
+      map(() => {
+        const sessionId = localStorage.getItem('sessionId');
+        if (sessionId) {
+          this.authService.setSessionId(sessionId);
+          return MovieActions.sessionRestored({ sessionId });
+        } else {
+          return MovieActions.logout();
+        }
+      })
+    )
+  );
+  sessionRestored$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.sessionRestored),
+      switchMap(({ sessionId }) => [
+        MovieActions.loginSuccess({ sessionId }),
+        MovieActions.loadFavouriteMovies(),
+      ])
+    )
+  );
+
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(MovieActions.logout),
+        tap(() => {
+          localStorage.removeItem('sessionId');
+          this.authService.setSessionId(null);
+          this.router.navigate(['/']);
+        })
+      ),
+    { dispatch: false }
+  );
+
   register$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.register),
