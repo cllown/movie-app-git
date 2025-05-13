@@ -146,6 +146,10 @@ export class MovieEffects {
       mergeMap((action) =>
         this.movieService.updateList('favorite', action.movieId, true).pipe(
           map(() => MovieActions.loadFavouriteMovies()),
+          mergeMap(() => [
+            MovieActions.loadRecomendationMovies(),
+            MovieActions.loadFavouriteMovies(),
+          ]),
           catchError((error) =>
             of(MovieActions.loadFavouriteMoviesFailure({ error }))
           )

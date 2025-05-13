@@ -1,64 +1,82 @@
-:host {
-  ::ng-deep p-card {
-    width: 200px; // или 220px, подбери по вкусу
-    flex-shrink: 0;
+:host ::ng-deep p-card {
+  margin: 0.75rem;
 
-    .p-card {
-      display: flex;
-      flex-direction: column;
+  .p-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .p-card-header {
+    position: relative;
+    aspect-ratio: 840 / 1340;
+    overflow: hidden;
+
+    img {
+      transition: transform 0.8s;
+      position: absolute;
+      width: 100%;
       height: 100%;
-    }
+      top: 0;
+      right: 0;
+      object-fit: cover;
 
-    .p-card-header {
-      position: relative;
-      aspect-ratio: 840/1340;
-      overflow: hidden;
-
-      img {
-        transition: transform 0.8s;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        right: 0;
-        object-fit: cover;
-
-        @media (any-hover: hover) {
-          &:hover {
-            transform: scale(1.1);
-          }
+      @media (any-hover: hover) {
+        &:hover {
+          transform: scale(1.1);
         }
       }
     }
+  }
 
-    .p-card-body {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      padding: 0.625rem 0.9375rem 1.25rem 0.9375rem;
+  .p-card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0.625rem 0.9375rem 0.9375rem;
+  }
+
+  .p-card-content {
+    flex-grow: 1;
+    padding: 0;
+
+    .movie-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      margin-bottom: 0.25rem;
     }
 
-    .p-card-content {
-      flex-grow: 1;
-      padding: 0;
+    .movie-subtitle {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
     }
 
-    .p-card-footer {
-      display: flex;
-      gap: 1.25rem;
+    .movie-more {
+      margin-top: auto;
+    }
+  }
 
-      .movie-card-button {
-        margin-top: auto;
-        display: flex;
+  .p-card-footer {
+    display: flex;
+    gap: 0.75rem;
+
+    .movie-card-button {
+      margin-top: auto;
+      display: flex;
+      flex-grow: 1;
+
+      button {
+        padding: 0.625rem;
         flex-grow: 1;
 
-        button {
-          padding: 0.625rem;
-          flex-grow: 1;
-
-          &::before {
-            font-size: 1.25rem;
-          }
+        &::before {
+          font-size: 1.25rem;
         }
       }
     }
