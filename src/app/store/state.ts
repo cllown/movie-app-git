@@ -1,6 +1,7 @@
 import { Genre, Movie } from '../models/movie';
 
 export interface MovieState {
+  recomendationMovies: Movie[] | null;
   popularMovies: Movie[] | null;
   nowPlayingMovies: Movie[] | null;
   topRatedMovies: Movie[] | null;
@@ -18,10 +19,15 @@ export interface MovieState {
   searchError: string | null;
   genres: Genre[] | null;
   filteredMovies: Movie[] | null;
+  isRegisterPopupVisible: boolean;
+  isSubscriptionPopupVisible: boolean;
+  registerError: string | null;
+  isRegistering: boolean;
 }
 
 export const initialState: MovieState = {
   popularMovies: null,
+  recomendationMovies: null,
   nowPlayingMovies: null,
   topRatedMovies: null,
   upcomingMovies: null,
@@ -38,4 +44,8 @@ export const initialState: MovieState = {
   searchError: null,
   genres: null,
   filteredMovies: null,
+  isRegisterPopupVisible: false,
+  registerError: null,
+  isRegistering: false,
+  isSubscriptionPopupVisible: false,
 };

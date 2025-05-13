@@ -2,8 +2,6 @@
     <ng-template pTemplate="header">
         <img alt="{{movie.title}}" [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
     </ng-template>
-    <p>{{movie.overview}}</p>
-    <p>{{movie.release_date}}</p>
     <p>
         <ng-container *ngIf="genres$ | async as genres">
             {{ getGenreNames(movie.genre_ids, genres) }}

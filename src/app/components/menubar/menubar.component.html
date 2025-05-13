@@ -1,8 +1,11 @@
 <p-toolbar>
   <div class="p-toolbar-group-start">
     <app-sidebar></app-sidebar>
+    <app-movies-sorting></app-movies-sorting>
   </div>
-  <div class="p-toolbar-group-center center-group">
+  <div class="p-toolbar-group-center">
+  </div>
+  <div class="p-toolbar-group-end">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
       <input pInputText placeholder="Search" [formControl]="searchControl" />

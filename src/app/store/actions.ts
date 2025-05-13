@@ -1,6 +1,17 @@
 import { createAction, props } from '@ngrx/store';
 import { Genre, Movie } from '../models/movie';
 
+export const loadSessionFromStorage = createAction(
+  '[Auth] Load Session From Storage'
+);
+
+export const sessionRestored = createAction(
+  '[Auth] Session Restored',
+  props<{ sessionId: string }>()
+);
+
+export const logout = createAction('[Auth] Logout');
+
 export const loadPopularMovies = createAction('[Movie] Load Popular Movies');
 
 export const loadPopularMoviesSuccess = createAction(
@@ -10,6 +21,19 @@ export const loadPopularMoviesSuccess = createAction(
 
 export const loadPopularMoviesFailure = createAction(
   '[Movie] Load Popular Moviess Failure',
+  props<{ error: any }>()
+);
+export const loadRecomendationMovies = createAction(
+  '[Movie] Load Recomendation Movies'
+);
+
+export const loadRecomendationMoviesSuccess = createAction(
+  '[Movie] Load Recomendation Movies Success',
+  props<{ movies: Movie[] | null }>()
+);
+
+export const loadRecomendationMoviesFailure = createAction(
+  '[Movie] Load Recomendation Moviess Failure',
   props<{ error: any }>()
 );
 
@@ -132,6 +156,30 @@ export const loginFailure = createAction(
 export const openLoginPopup = createAction('[Auth] Open Login Popup');
 
 export const closeLoginPopup = createAction('[Auth] Close Login Popup');
+
+export const openRegisterPopup = createAction('[Auth] Open Register Popup');
+
+export const closeRegisterPopup = createAction('[Auth] Close Register Popup');
+
+export const openSubscriptionPopup = createAction(
+  '[Auth] Open Subscription Popup'
+);
+
+export const closeSubscriptionPopup = createAction(
+  '[Auth] Close Subscription Popup'
+);
+
+export const register = createAction(
+  '[Auth] Register',
+  props<{ username: string; password: string }>()
+);
+
+export const registerSuccess = createAction('[Auth] Register Success');
+
+export const registerFailure = createAction(
+  '[Auth] Register Failure',
+  props<{ error: string }>()
+);
 
 export const searchMovies = createAction(
   '[Movie] Search Movies',

@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Genre, Movie, MovieApiModel } from '../../models/movie';
-import { BehaviorSubject, map, Observable, of, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  forkJoin,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
@@ -20,19 +28,25 @@ export class MovieService {
     private store: Store
   ) {}
 
-  private getCachedData<T>(url: string, params?: Record<string, string>): Observable<T> {
+  private getCachedData<T>(
+    url: string,
+    params?: Record<string, string>
+  ): Observable<T> {
     const fullUrl = this.constructFullUrl(url, params);
-    
+
     if (this.cache.has(fullUrl)) {
       return of(this.cache.get(fullUrl)! as T);
     } else {
-      return this.httpClient.get<T>(fullUrl).pipe(
-        tap((data) => this.cache.set(fullUrl, data))
-      );
+      return this.httpClient
+        .get<T>(fullUrl)
+        .pipe(tap((data) => this.cache.set(fullUrl, data)));
     }
   }
 
-  private constructFullUrl(url: string, params?: Record<string, string>): string {
+  private constructFullUrl(
+    url: string,
+    params?: Record<string, string>
+  ): string {
     if (!params) {
       return url;
     }
@@ -42,26 +56,76 @@ export class MovieService {
   }
 
   getPopularMovies(): Observable<MovieApiModel> {
-    return this.getCachedData(`${environment.apiBaseUrl}/movie/popular?api_key=${environment.apiKey}`);
+    return this.getCachedData(
+      `${environment.apiBaseUrl}/movie/popular?api_key=${environment.apiKey}`
+    );
   }
 
   getTopRatedMovies(): Observable<MovieApiModel> {
-    return this.getCachedData(`${environment.apiBaseUrl}/movie/top_rated?api_key=${environment.apiKey}`);
+    return this.getCachedData(
+      `${environment.apiBaseUrl}/movie/top_rated?api_key=${environment.apiKey}`
+    );
   }
 
   getNowPlayingMovies(): Observable<MovieApiModel> {
-    return this.getCachedData(`${environment.apiBaseUrl}/movie/now_playing?api_key=${environment.apiKey}`);
+    return this.getCachedData(
+      `${environment.apiBaseUrl}/movie/now_playing?api_key=${environment.apiKey}`
+    );
   }
 
   getUpcomingMovies(): Observable<MovieApiModel> {
-    return this.getCachedData(`${environment.apiBaseUrl}/movie/upcoming?api_key=${environment.apiKey}`);
+    return this.getCachedData(
+      `${environment.apiBaseUrl}/movie/upcoming?api_key=${environment.apiKey}`
+    );
+  }
+
+  getRecommendationForMovie(movieId: number): Observable<MovieApiModel> {
+    return this.getCachedData(
+      `${environment.apiBaseUrl}/movie/${movieId}/recommendations?api_key=${environment.apiKey}`
+    );
+  }
+
+  getSmartRecommendations(userLikedMovies: number[]): Observable<Movie[]> {
+    const topLikedIds = userLikedMovies;
+
+    const requests$ = topLikedIds.map((id) =>
+      this.getRecommendationForMovie(id)
+    );
+
+    return forkJoin(requests$).pipe(
+      map((results) => {
+        const allMovies = results.flatMap((r) => r.results);
+        const uniqueMoviesMap = new Map<number, Movie>();
+
+        for (const movie of allMovies) {
+          if (!userLikedMovies.includes(movie.id)) {
+            uniqueMoviesMap.set(movie.id, movie);
+          }
+        }
+
+        return Array.from(uniqueMoviesMap.values());
+      })
+    );
+  }
+  getPersonalRecommendations(): Observable<Movie[]> {
+    return this.getFavouriteMovies().pipe(
+      map((favourites) => favourites.map((movie) => movie.id)),
+      switchMap((ids) => {
+        if (!ids.length) {
+          return of([]);
+        }
+        return this.getSmartRecommendations(ids);
+      })
+    );
   }
 
   getMovieDetails(movieId: number): Observable<Movie> {
-    return this.getCachedData(`${environment.apiBaseUrl}/movie/${movieId}?api_key=${environment.apiKey}`);
+    return this.getCachedData(
+      `${environment.apiBaseUrl}/movie/${movieId}?api_key=${environment.apiKey}`
+    );
   }
 
-  getMoviesByParams(params: Record<string, string>): Observable<MovieApiModel> { 
+  getMoviesByParams(params: Record<string, string>): Observable<MovieApiModel> {
     return this.httpClient.get<MovieApiModel>(
       `${environment.apiBaseUrl}/discover/movie`,
       this.getOptions(params)

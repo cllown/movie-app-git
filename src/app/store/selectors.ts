@@ -17,6 +17,10 @@ export const selectTopRatedMovies = createSelector(
   selectState,
   (state) => state.topRatedMovies
 );
+export const selectRecomendationMovies = createSelector(
+  selectState,
+  (state) => state.recomendationMovies
+);
 
 export const selectUpcomingMovies = createSelector(
   selectState,
@@ -76,6 +80,16 @@ export const selectLoading = createSelector(
 export const selectIsPopupVisible = createSelector(
   selectState,
   (state) => state.isPopupVisible ?? false
+);
+
+export const selectIsRegisterPopupVisible = createSelector(
+  selectState,
+  (state) => state.isRegisterPopupVisible ?? false
+);
+
+export const selectIsSubscriptionPopupVisible = createSelector(
+  selectState,
+  (state) => state.isSubscriptionPopupVisible ?? false
 );
 
 export const selectError = createSelector(selectState, (state) => state.error);

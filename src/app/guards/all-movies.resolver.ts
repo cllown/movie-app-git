@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import * as MovieActions from '../store/actions';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AllMoviesResolver implements Resolve<boolean> {
   constructor(private store: Store) {}
@@ -15,6 +15,7 @@ export class AllMoviesResolver implements Resolve<boolean> {
     this.store.dispatch(MovieActions.loadNowPlayingMovies());
     this.store.dispatch(MovieActions.loadTopRatedMovies());
     this.store.dispatch(MovieActions.loadUpcomingMovies());
+    this.store.dispatch(MovieActions.loadRecomendationMovies());
     return true;
   }
 }

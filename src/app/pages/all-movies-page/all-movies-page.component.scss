@@ -1,0 +1,19 @@
+.all-movies__items.items-movies {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  gap: 1.25rem;
+  scroll-snap-type: x mandatory;
+
+  & > * {
+    flex: 0 0 12rem;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

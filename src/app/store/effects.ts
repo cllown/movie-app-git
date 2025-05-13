@@ -13,6 +13,7 @@ import { of } from 'rxjs';
 import { MovieService } from '../services/movie/movie.service';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { selectFavouriteMovies } from './selectors';
 
 @Injectable()
 export class MovieEffects {
@@ -79,6 +80,23 @@ export class MovieEffects {
       )
     )
   );
+  loadRecomendationMovies$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.loadRecomendationMovies),
+      concatMap(() =>
+        this.movieService.getUpcomingMovies().pipe(
+          map((movies) =>
+            MovieActions.loadRecomendationMoviesSuccess({
+              movies: movies.results,
+            })
+          ),
+          catchError((error) =>
+            of(MovieActions.loadRecomendationMoviesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 
   loadMovieDetails$ = createEffect(() =>
     this.actions$.pipe(
@@ -128,6 +146,10 @@ export class MovieEffects {
       mergeMap((action) =>
         this.movieService.updateList('favorite', action.movieId, true).pipe(
           map(() => MovieActions.loadFavouriteMovies()),
+          mergeMap(() => [
+            MovieActions.loadRecomendationMovies(),
+            MovieActions.loadFavouriteMovies(),
+          ]),
           catchError((error) =>
             of(MovieActions.loadFavouriteMoviesFailure({ error }))
           )
@@ -193,6 +215,9 @@ export class MovieEffects {
                     .pipe(
                       map((sessionResponse) => {
                         const sessionId = sessionResponse.session_id;
+
+                        localStorage.setItem('sessionId', sessionId);
+
                         this.authService.setSessionId(sessionId);
                         return MovieActions.loginSuccess({ sessionId });
                       })
@@ -211,15 +236,74 @@ export class MovieEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.loginSuccess),
-      tap(({ redirectUrl }) => {
+      switchMap(({ sessionId, redirectUrl }) => {
         if (redirectUrl) {
           this.router.navigate([redirectUrl]);
         }
-      }),
-      map(() => MovieActions.closeLoginPopup())
+
+        return [
+          MovieActions.closeLoginPopup(),
+          MovieActions.loadFavouriteMovies(),
+          MovieActions.loadWatchListMovies(),
+          MovieActions.loadGenres(),
+          MovieActions.loadRecomendationMovies(),
+        ];
+      })
     )
   );
 
+  loadSessionFromStorage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.loadSessionFromStorage),
+      map(() => {
+        const sessionId = localStorage.getItem('sessionId');
+        if (sessionId) {
+          this.authService.setSessionId(sessionId);
+          return MovieActions.sessionRestored({ sessionId });
+        } else {
+          return MovieActions.logout();
+        }
+      })
+    )
+  );
+  sessionRestored$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.sessionRestored),
+      switchMap(({ sessionId }) => [
+        MovieActions.loginSuccess({ sessionId }),
+        MovieActions.loadFavouriteMovies(),
+        MovieActions.loadWatchListMovies(),
+        MovieActions.loadGenres(),
+      ])
+    )
+  );
+
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(MovieActions.logout),
+        tap(() => {
+          localStorage.removeItem('sessionId');
+          this.authService.setSessionId(null);
+          this.router.navigate(['/']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.register),
+      switchMap(({ username, password }) =>
+        this.authService.register(username, password).pipe(
+          map(() => MovieActions.registerSuccess()),
+          catchError((err) =>
+            of(MovieActions.registerFailure({ error: err.message }))
+          )
+        )
+      )
+    )
+  );
   searchMovies$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.searchMovies),

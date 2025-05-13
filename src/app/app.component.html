@@ -1,7 +1,12 @@
 <app-menubar></app-menubar>
-<app-news-subscription></app-news-subscription>
-<app-header></app-header>
+<app-news-subscription
+  *ngIf="showSubscriptionForm"
+  (close)="showSubscriptionForm = false">
+</app-news-subscription>
+<!-- <app-header></app-header>-->
 <app-login-popup></app-login-popup>
+<app-registration-popup></app-registration-popup>
+<app-subscription-popup></app-subscription-popup>
 <main>
     <router-outlet></router-outlet>
 </main>

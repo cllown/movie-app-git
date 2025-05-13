@@ -17,9 +17,13 @@ import { AuthService } from './services/auth/auth.service';
 import { ClearObservable } from './models/clear-observable';
 import { takeUntil } from 'rxjs';
 import { LoginPopupComponent } from './components/login-popup/login-popup.component';
-import { MenubarComponent } from "./components/menubar/menubar.component";
-import { NewsSubscriptionComponent } from "./components/news-subscription/news-subscription.component";
-
+import { MenubarComponent } from './components/menubar/menubar.component';
+import { NewsSubscriptionComponent } from './components/news-subscription/news-subscription.component';
+import { RegistrationPopupComponent } from './components/registration-popup/registration-popup.component';
+import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import * as MovieActions from './store/actions';
+import { SubscriptionPopupComponent } from './components/subscription-popup/subscription-popup.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -40,17 +44,23 @@ import { NewsSubscriptionComponent } from "./components/news-subscription/news-s
     HttpClientModule,
     LoginPopupComponent,
     MenubarComponent,
-    NewsSubscriptionComponent
-],
+    NewsSubscriptionComponent,
+    RegistrationPopupComponent,
+    CommonModule,
+    SubscriptionPopupComponent,
+  ],
 })
 export class AppComponent extends ClearObservable implements OnInit {
   title = 'movie-app';
-  
-  constructor(private authService: AuthService) {
+  showSubscriptionForm = false;
+
+  constructor(private authService: AuthService, private store: Store) {
     super();
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.store.dispatch(MovieActions.loadSessionFromStorage());
+  }
 
   generateSessionId(username: string, password: string) {
     this.requestToken(username, password);
