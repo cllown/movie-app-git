@@ -1,13 +1,19 @@
 <div class="page-wrapper">
   <ng-container *ngIf="movie$ | async as movie; else loading">
     <div class="movie-details-page">
-      <img class="movie-image" [src]="'https://image.tmdb.org/t/p/w500' + movie.backdrop_path" alt="{{ movie.title }}">
+      <div class="movie-image">
+        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.backdrop_path" alt="{{ movie.title }}">
+      </div>
       <div class="movie-info">
         <h2 class="page-title">{{ movie.title }}</h2>
-        <p>Release Date: {{ movie.release_date }}</p>
-        <p>Rating: {{ movie.vote_average | ratingRounding}}</p>
-        <p>Description: {{ movie.overview }}</p>
-        <p>Original Language: {{ movie.original_language }}</p>
+        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+        <p><strong>Rating:</strong> {{ movie.vote_average | ratingRounding }}</p>
+        <p><strong>Description:</strong> {{ movie.overview }}</p>
+        <p><strong>Original Language:</strong> {{ movie.original_language }}</p>
+        <p-button
+        [disabled]="!(isLoggedIn$ | async)"
+        (click)="onWatch(movie.id)"
+        label="Watch"></p-button>
       </div>
     </div>
   </ng-container>

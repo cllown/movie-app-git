@@ -161,6 +161,14 @@ export const openRegisterPopup = createAction('[Auth] Open Register Popup');
 
 export const closeRegisterPopup = createAction('[Auth] Close Register Popup');
 
+export const openSubscriptionPopup = createAction(
+  '[Auth] Open Subscription Popup'
+);
+
+export const closeSubscriptionPopup = createAction(
+  '[Auth] Close Subscription Popup'
+);
+
 export const register = createAction(
   '[Auth] Register',
   props<{ username: string; password: string }>()

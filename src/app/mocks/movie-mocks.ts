@@ -125,4 +125,5 @@ export const mockState: MovieState = {
   isRegisterPopupVisible: false,
   registerError: null,
   isRegistering: false,
+  isSubscriptionPopupVisible: false,
 };

@@ -23,6 +23,7 @@ import { RegistrationPopupComponent } from './components/registration-popup/regi
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as MovieActions from './store/actions';
+import { SubscriptionPopupComponent } from './components/subscription-popup/subscription-popup.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -46,11 +47,12 @@ import * as MovieActions from './store/actions';
     NewsSubscriptionComponent,
     RegistrationPopupComponent,
     CommonModule,
+    SubscriptionPopupComponent,
   ],
 })
 export class AppComponent extends ClearObservable implements OnInit {
   title = 'movie-app';
-  showSubscriptionForm = true;
+  showSubscriptionForm = false;
 
   constructor(private authService: AuthService, private store: Store) {
     super();
