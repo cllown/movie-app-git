@@ -104,6 +104,7 @@ export const mockGenres: Genre[] = [
 ];
 
 export const mockState: MovieState = {
+  recomendationMovies: mockMovies,
   popularMovies: mockMovies,
   nowPlayingMovies: mockMovies,
   topRatedMovies: mockMovies,

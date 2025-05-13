@@ -73,6 +73,22 @@ export const MovieReducer = createReducer(
       filteredMovies: null,
     };
   }),
+  on(MovieActions.loadRecomendationMoviesSuccess, (state, { movies }) => {
+    return {
+      ...state,
+      recomendationMovies: movies,
+      filteredMovies: null,
+    };
+  }),
+
+  on(MovieActions.loadRecomendationMoviesFailure, (state, { error }) => {
+    return {
+      ...state,
+      recomendationMovies: null,
+      error: error,
+      filteredMovies: null,
+    };
+  }),
 
   on(MovieActions.loadMovieDetailsSuccess, (state, { movie }) => {
     return {

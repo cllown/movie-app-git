@@ -1,6 +1,7 @@
 import { Genre, Movie } from '../models/movie';
 
 export interface MovieState {
+  recomendationMovies: Movie[] | null;
   popularMovies: Movie[] | null;
   nowPlayingMovies: Movie[] | null;
   topRatedMovies: Movie[] | null;
@@ -25,6 +26,7 @@ export interface MovieState {
 
 export const initialState: MovieState = {
   popularMovies: null,
+  recomendationMovies: null,
   nowPlayingMovies: null,
   topRatedMovies: null,
   upcomingMovies: null,

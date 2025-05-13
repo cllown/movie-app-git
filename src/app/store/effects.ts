@@ -80,6 +80,23 @@ export class MovieEffects {
       )
     )
   );
+  loadRecomendationMovies$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.loadRecomendationMovies),
+      concatMap(() =>
+        this.movieService.getUpcomingMovies().pipe(
+          map((movies) =>
+            MovieActions.loadRecomendationMoviesSuccess({
+              movies: movies.results,
+            })
+          ),
+          catchError((error) =>
+            of(MovieActions.loadRecomendationMoviesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 
   loadMovieDetails$ = createEffect(() =>
     this.actions$.pipe(
@@ -215,12 +232,18 @@ export class MovieEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.loginSuccess),
-      tap(({ redirectUrl }) => {
+      switchMap(({ sessionId, redirectUrl }) => {
         if (redirectUrl) {
           this.router.navigate([redirectUrl]);
         }
-      }),
-      map(() => MovieActions.closeLoginPopup())
+
+        return [
+          MovieActions.closeLoginPopup(),
+          MovieActions.loadFavouriteMovies(),
+          MovieActions.loadWatchListMovies(),
+          MovieActions.loadGenres(),
+        ];
+      })
     )
   );
 

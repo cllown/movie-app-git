@@ -17,6 +17,10 @@ export const selectTopRatedMovies = createSelector(
   selectState,
   (state) => state.topRatedMovies
 );
+export const selectRecomendationMovies = createSelector(
+  selectState,
+  (state) => state.recomendationMovies
+);
 
 export const selectUpcomingMovies = createSelector(
   selectState,

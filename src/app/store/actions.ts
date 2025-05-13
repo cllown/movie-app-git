@@ -23,6 +23,19 @@ export const loadPopularMoviesFailure = createAction(
   '[Movie] Load Popular Moviess Failure',
   props<{ error: any }>()
 );
+export const loadRecomendationMovies = createAction(
+  '[Movie] Load Recomendation Movies'
+);
+
+export const loadRecomendationMoviesSuccess = createAction(
+  '[Movie] Load Recomendation Movies Success',
+  props<{ movies: Movie[] | null }>()
+);
+
+export const loadRecomendationMoviesFailure = createAction(
+  '[Movie] Load Recomendation Moviess Failure',
+  props<{ error: any }>()
+);
 
 export const loadNowPlayingMovies = createAction(
   '[Movie] Load Now Playing Movies'
