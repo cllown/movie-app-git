@@ -242,6 +242,7 @@ export class MovieEffects {
           MovieActions.loadFavouriteMovies(),
           MovieActions.loadWatchListMovies(),
           MovieActions.loadGenres(),
+          MovieActions.loadRecomendationMovies(),
         ];
       })
     )

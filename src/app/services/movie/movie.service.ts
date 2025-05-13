@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Genre, Movie, MovieApiModel } from '../../models/movie';
-import { BehaviorSubject, map, Observable, of, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  forkJoin,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
@@ -71,9 +79,43 @@ export class MovieService {
     );
   }
 
-  getRecomendationMovies(): Observable<MovieApiModel> {
+  getRecommendationForMovie(movieId: number): Observable<MovieApiModel> {
     return this.getCachedData(
-      `${environment.apiBaseUrl}/movie/upcoming?api_key=${environment.apiKey}`
+      `${environment.apiBaseUrl}/movie/${movieId}/recommendations?api_key=${environment.apiKey}`
+    );
+  }
+
+  getSmartRecommendations(userLikedMovies: number[]): Observable<Movie[]> {
+    const topLikedIds = userLikedMovies;
+
+    const requests$ = topLikedIds.map((id) =>
+      this.getRecommendationForMovie(id)
+    );
+
+    return forkJoin(requests$).pipe(
+      map((results) => {
+        const allMovies = results.flatMap((r) => r.results);
+        const uniqueMoviesMap = new Map<number, Movie>();
+
+        for (const movie of allMovies) {
+          if (!userLikedMovies.includes(movie.id)) {
+            uniqueMoviesMap.set(movie.id, movie);
+          }
+        }
+
+        return Array.from(uniqueMoviesMap.values());
+      })
+    );
+  }
+  getPersonalRecommendations(): Observable<Movie[]> {
+    return this.getFavouriteMovies().pipe(
+      map((favourites) => favourites.map((movie) => movie.id)),
+      switchMap((ids) => {
+        if (!ids.length) {
+          return of([]);
+        }
+        return this.getSmartRecommendations(ids);
+      })
     );
   }
 

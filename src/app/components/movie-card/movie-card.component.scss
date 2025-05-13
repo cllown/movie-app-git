@@ -1,64 +1,66 @@
 :host {
-    ::ng-deep p-card {
-        .p-card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .p-card-header {
-            position: relative;
-            aspect-ratio: 840/1340;
-            overflow: hidden;
-            img {
-                transition: transform 0.8s;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                right: 0;
-                object-fit: cover;
-                @media (any-hover: hover) {
-                    &:hover {
-                        transform: scale(1.1);
-                    }
-                }
-            }
-        }
-        .p-card-body {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            padding: 0.625rem 0.9375rem 1.25rem 0.9375rem;
-        }
-        .p-card-content {
-            flex-grow: 1;
-            padding: 0;
-        }
-        .p-card-footer {
-            display: flex;
-            gap: 1.25rem;
-            & .movie-card-button {
-                margin-top: auto;
-                display: flex;
-                flex-grow: 1;
-                & button {
-                    padding: 0.625rem;
-                    flex-grow: 1;
-                    &::before {
-                        font-size: 1.25rem;
-                    }
-                }
-            }
-        }
+  ::ng-deep p-card {
+    width: 200px; // или 220px, подбери по вкусу
+    flex-shrink: 0;
+
+    .p-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
-}
-.movie-duration {
-    display: flex;
-    align-items: center;
-    gap: 0.4375rem;
-    span {
-        &::before {
-            font-size: 0.8125rem;
+
+    .p-card-header {
+      position: relative;
+      aspect-ratio: 840/1340;
+      overflow: hidden;
+
+      img {
+        transition: transform 0.8s;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        object-fit: cover;
+
+        @media (any-hover: hover) {
+          &:hover {
+            transform: scale(1.1);
+          }
         }
+      }
     }
+
+    .p-card-body {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 0.625rem 0.9375rem 1.25rem 0.9375rem;
+    }
+
+    .p-card-content {
+      flex-grow: 1;
+      padding: 0;
+    }
+
+    .p-card-footer {
+      display: flex;
+      gap: 1.25rem;
+
+      .movie-card-button {
+        margin-top: auto;
+        display: flex;
+        flex-grow: 1;
+
+        button {
+          padding: 0.625rem;
+          flex-grow: 1;
+
+          &::before {
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+  }
 }

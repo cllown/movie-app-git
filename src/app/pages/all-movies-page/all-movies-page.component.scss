@@ -1,0 +1,14 @@
+.all-movies__items.items-movies {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  gap: 1.25rem; // Расстояние между карточками
+  scroll-snap-type: x mandatory;
+
+  & > * {
+    flex: 0 0 17.5rem; // Фиксированная ширина
+    scroll-snap-align: start;
+    box-sizing: border-box;
+  }
+}
