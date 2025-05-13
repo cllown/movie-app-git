@@ -83,17 +83,6 @@ export class LoginPopupComponent implements OnInit {
         })
       )
       .subscribe();
-    this.store
-      .select(selectIsLoggedIn)
-      .pipe(
-        startWith(false),
-        map((loggedIn) => {
-          if (loggedIn) {
-            this.router.navigate(['/profile']);
-          }
-        })
-      )
-      .subscribe();
   }
 
   onSubmit(): void {
