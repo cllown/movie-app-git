@@ -98,8 +98,7 @@ export class LoginPopupComponent implements OnInit {
     this.store.dispatch(MovieActions.closeLoginPopup());
   }
 
-  openRegisterPopup(): void {
-    this.store.dispatch(MovieActions.openRegisterPopup());
-    this.store.dispatch(MovieActions.closeLoginPopup());
+  openSignUp(): void {
+    window.open('https://www.themoviedb.org/signup', '_blank');
   }
 }

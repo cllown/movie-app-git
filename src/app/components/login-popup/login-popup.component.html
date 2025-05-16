@@ -24,7 +24,16 @@
       <div class="popup-buttons">
         <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
         <p-button label="Log In" (onClick)="onSubmit()" [disabled]="loading$ | async" />
-        <p-button label="Зареєструватися" severity="info" (onClick)="openRegisterPopup()" />
+        <button
+          type="button"
+          pButton
+          label="Sign Up"
+          severity="info"
+          class="sign-up-button"
+           (click)="openSignUp()">
+        </button>
+
+
       </div>
     </div>
 
