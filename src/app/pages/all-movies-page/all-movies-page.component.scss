@@ -1,6 +1,7 @@
 .all-movies__items.items-movies {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 1rem;
   margin-bottom: 2rem;
   gap: 1.25rem;

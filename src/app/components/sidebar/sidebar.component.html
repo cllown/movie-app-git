@@ -19,6 +19,7 @@
     </ul>
 
     <div class="sidebar-bottom">
+      <app-movies-sorting class="sorting-mobile"></app-movies-sorting>
       <ng-container *ngIf="isLoggedIn$ | async; else loginButton">
         <a routerLink="/profile" routerLinkActive="active" class="sidebar-list__link">Profile</a>
       </ng-container>

@@ -1,9 +1,4 @@
-  :host ::ng-deep .p-card {
-    margin: 2rem;
-  }
-
   :host ::ng-deep .p-multiselect {
-    margin-top: 1rem;
     width: 300px;
   }
   .profile-header{
@@ -17,4 +12,5 @@
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   gap: 0.5rem;
   align-items: stretch;
+
   }

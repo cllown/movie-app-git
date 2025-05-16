@@ -2,3 +2,10 @@
   display: flex;
   gap: 20px;
 }
+.sorting-desktop {
+  display: block;
+
+  @media (max-width: 839px) {
+    display: none;
+  }
+}
