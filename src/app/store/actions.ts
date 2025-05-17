@@ -259,3 +259,18 @@ export const addMovieToCustomListFailure = createAction(
   '[Movie] Add Movie To Custom List Failure',
   props<{ error: any }>()
 );
+
+export const removeMovieFromCustomList = createAction(
+  '[Movie] Remove Movie From Custom List',
+  props<{ movieId: number; listId: number }>()
+);
+
+export const removeMovieFromCustomListSuccess = createAction(
+  '[Movie] Remove Movie From Custom List Success',
+  props<{ movieId: number; listId: number }>()
+);
+
+export const removeMovieFromCustomListFailure = createAction(
+  '[Movie] Remove Movie ToFrom Custom List Failure',
+  props<{ error: any }>()
+);

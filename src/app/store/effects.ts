@@ -198,6 +198,7 @@ export class MovieEffects {
       )
     )
   );
+
   addMovieToCustomList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.addMovieToCustomList),
@@ -213,6 +214,28 @@ export class MovieEffects {
             ),
             catchError((error) =>
               of(MovieActions.addMovieToCustomListFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  removeMovieFromCustomList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.removeMovieFromCustomList),
+      mergeMap((action) =>
+        this.movieService
+          .removeMovieFromCustomList(action.listId, action.movieId)
+          .pipe(
+            mergeMap(() => [
+              MovieActions.removeMovieFromCustomListSuccess({
+                movieId: action.movieId,
+                listId: action.listId,
+              }),
+              MovieActions.loadCustomLists(),
+            ]),
+            catchError((error) =>
+              of(MovieActions.removeMovieFromCustomListFailure({ error }))
             )
           )
       )

@@ -69,7 +69,8 @@
               <app-movie-card
                 [movie]="movie"
                 [isActionsShow]="false"
-                [isRemoveButtonShow]="false"
+                [isRemoveButtonShow]="true"
+                (removeFromList)="removeFromCustomList(movie.id, list.id)"
               ></app-movie-card>
             }
           </div>

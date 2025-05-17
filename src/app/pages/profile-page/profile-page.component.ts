@@ -118,4 +118,9 @@ export class ProfilePageComponent implements OnInit {
       this.loadCustomLists();
     });
   }
+  removeFromCustomList(movieId: number, listId: number) {
+    this.store.dispatch(
+      MovieActions.removeMovieFromCustomList({ movieId, listId })
+    );
+  }
 }
