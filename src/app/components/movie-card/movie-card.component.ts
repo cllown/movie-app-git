@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
@@ -10,15 +17,16 @@ import { Store } from '@ngrx/store';
 import { setMovieToFavourites, setMovieToWatchList } from '../../store/actions';
 import { map, Observable, take, tap } from 'rxjs';
 import {
+  selectCustomLists,
   selectFavouriteMovies,
-  selectGenres,
   selectIsLoggedIn,
   selectWatchListMovies,
 } from '../../store/selectors';
 import { DropdownModule } from 'primeng/dropdown';
-import { MenuModule } from 'primeng/menu';
+import { Menu, MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import * as MovieActions from '../../store/actions';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 @Component({
   selector: 'app-movie-card',
@@ -31,12 +39,20 @@ import * as MovieActions from '../../store/actions';
     RatingRoundingPipe,
     DropdownModule,
     MenuModule,
+    SplitButtonModule,
   ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',
 })
 export class MovieCardComponent implements OnInit {
-  @Input() customLists: { id: number; name: string }[] = [];
+  @ViewChild('customMenu') customMenu!: Menu;
+
+  toggleMenu(event: Event) {
+    if (this.customMenu) {
+      this.customMenu.toggle(event);
+    }
+  }
+
   @Input() movie!: Movie;
   @Input() isActionsShow: boolean = true;
   @Input() isRemoveButtonShow = false;
@@ -46,11 +62,19 @@ export class MovieCardComponent implements OnInit {
   isLoggedIn$!: Observable<boolean>;
   isFavourite$!: Observable<boolean>;
   isInWatchList$!: Observable<boolean>;
+  customLists: { id: number; name: string }[] = [];
+  customLists$!: Observable<{ id: number; name: string }[]>;
+  customListMenuItems: MenuItem[] = [];
 
   constructor(private store: Store, private movieService: MovieService) {}
 
   ngOnInit(): void {
-    this.prepareCustomListMenuItems();
+    this.customLists$ = this.store.select(selectCustomLists);
+
+    this.customLists$.subscribe((lists) => {
+      this.customLists = lists || [];
+      this.prepareCustomListMenuItems();
+    });
     this.genres$ = this.movieService.getGenreNames(this.movie.genre_ids);
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
@@ -64,8 +88,6 @@ export class MovieCardComponent implements OnInit {
     );
   }
 
-  customListMenuItems: MenuItem[] = [];
-
   prepareCustomListMenuItems() {
     this.customListMenuItems = this.customLists.map((list) => ({
       label: list.name,
@@ -77,14 +99,12 @@ export class MovieCardComponent implements OnInit {
   addToCustomList(listId: number) {
     this.isLoggedIn$.pipe(take(1)).subscribe((isLoggedIn) => {
       if (isLoggedIn) {
-        this.movieService
-          .addMovieToCustomList(this.movie.id, listId)
-          .subscribe({
-            next: () => {},
-            error: (err) => {
-              console.error('Failed to add movie to custom list', err);
-            },
-          });
+        this.store.dispatch(
+          MovieActions.addMovieToCustomList({
+            movieId: this.movie.id,
+            listId,
+          })
+        );
       } else {
         this.openLoginPopup();
       }
@@ -119,15 +139,6 @@ export class MovieCardComponent implements OnInit {
         })
       )
       .subscribe();
-  }
-
-  private checkMovieInList(
-    movies$: Observable<Movie[] | null>,
-    movieId: number
-  ): Observable<boolean> {
-    return movies$.pipe(
-      map((movies) => movies?.some((movie) => movie.id === movieId) || false)
-    );
   }
 
   onRemoveFromList() {

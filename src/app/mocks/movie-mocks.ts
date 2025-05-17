@@ -126,4 +126,5 @@ export const mockState: MovieState = {
   registerError: null,
   isRegistering: false,
   isSubscriptionPopupVisible: false,
+  customLists: [],
 };

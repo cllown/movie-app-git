@@ -244,3 +244,18 @@ export const loadCustomListsFailure = createAction(
   '[Profile] Load Custom Lists Failure',
   props<{ error: any }>()
 );
+
+export const addMovieToCustomList = createAction(
+  '[Movie] Add Movie To Custom List',
+  props<{ movieId: number; listId: number }>()
+);
+
+export const addMovieToCustomListSuccess = createAction(
+  '[Movie] Add Movie To Custom List Success',
+  props<{ movieId: number; listId: number }>()
+);
+
+export const addMovieToCustomListFailure = createAction(
+  '[Movie] Add Movie To Custom List Failure',
+  props<{ error: any }>()
+);

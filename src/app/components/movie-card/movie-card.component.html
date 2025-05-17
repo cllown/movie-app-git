@@ -20,17 +20,20 @@
                 class="w-full movie-card-button"
                 [styleClass]="(isInWatchList$ | async) ? 'pi pi-check-circle' : 'pi pi-history'"
                 severity="secondary"></p-button>
+            <p-button
+              icon="pi pi-ellipsis-v"
+              class="w-full movie-card-button"
+              [disabled]="!(isLoggedIn$ | async)"
+              (click)="toggleMenu($event)">
+            </p-button>
+
+            <p-menu [model]="customListMenuItems" [popup]="true" appendTo="body" #customMenu></p-menu>
+
         </ng-container>
 
         <p-button *ngIf="isRemoveButtonShow" (click)="onRemoveFromList()" severity="secondary"
-            class="w-full movie-card-button" styleClass="pi pi-times"></p-button>
-            <p-splitButton
-              icon="pi pi-ellipsis-v"
-              label=""
-              [model]="customListMenuItems"
-              class="w-full movie-card-button"
-              severity="help"
-              *ngIf="customLists?.length > 0">
-            </p-splitButton>
+            class="w-full movie-card-button" styleClass="pi pi-times">
+          </p-button>
+
     </ng-template>
 </p-card>

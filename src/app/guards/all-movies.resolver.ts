@@ -16,6 +16,7 @@ export class AllMoviesResolver implements Resolve<boolean> {
     this.store.dispatch(MovieActions.loadTopRatedMovies());
     this.store.dispatch(MovieActions.loadUpcomingMovies());
     this.store.dispatch(MovieActions.loadRecomendationMovies());
+    this.store.dispatch(MovieActions.loadCustomLists());
     return true;
   }
 }

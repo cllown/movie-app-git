@@ -13,7 +13,6 @@ import { of } from 'rxjs';
 import { MovieService } from '../services/movie/movie.service';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { selectFavouriteMovies } from './selectors';
 
 @Injectable()
 export class MovieEffects {
@@ -196,6 +195,26 @@ export class MovieEffects {
             of(MovieActions.loadWatchListMoviesFailure({ error }))
           )
         )
+      )
+    )
+  );
+  addMovieToCustomList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.addMovieToCustomList),
+      mergeMap((action) =>
+        this.movieService
+          .addMovieToCustomList(action.listId, action.movieId)
+          .pipe(
+            map(() =>
+              MovieActions.addMovieToCustomListSuccess({
+                movieId: action.movieId,
+                listId: action.listId,
+              })
+            ),
+            catchError((error) =>
+              of(MovieActions.addMovieToCustomListFailure({ error }))
+            )
+          )
       )
     )
   );
