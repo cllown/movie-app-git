@@ -11,18 +11,16 @@ import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { combineLatest, map, Observable, startWith } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   selectError,
-  selectIsLoggedIn,
   selectIsPopupVisible,
   selectLoading,
   selectPassword,
   selectUsername,
 } from '../../store/selectors';
 import * as MovieActions from '../../store/actions';
-import { ProfilePageComponent } from '../../pages/profile-page/profile-page.component';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-popup',

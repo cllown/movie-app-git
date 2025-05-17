@@ -1,17 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  RouterLink,
-  RouterLinkActive,
-  RouterModule,
-  RouterOutlet,
-} from '@angular/router';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { PopularMoviesPageComponent } from './pages/popular-movies-page/popular-movies-page.component';
-import { TopRatedMoviesPageComponent } from './pages/top-rated-movies-page/top-rated-movies-page.component';
-import { UpcomingMoviesPageComponent } from './pages/upcoming-movies-page/upcoming-movies-page.component';
-import { DetailsMoviePageComponent } from './pages/details-movie-page/details-movie-page.component';
-import { NowPlayingMoviesPageComponent } from './pages/now-playing-movies-page/now-playing-movies-page.component';
-import { HeaderComponent } from './components/header/header.component';
+import { RouterModule, RouterOutlet } from '@angular/router';
+
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { ClearObservable } from './models/clear-observable';
@@ -19,11 +8,11 @@ import { takeUntil } from 'rxjs';
 import { LoginPopupComponent } from './components/login-popup/login-popup.component';
 import { MenubarComponent } from './components/menubar/menubar.component';
 import { NewsSubscriptionComponent } from './components/news-subscription/news-subscription.component';
-import { RegistrationPopupComponent } from './components/registration-popup/registration-popup.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as MovieActions from './store/actions';
 import { SubscriptionPopupComponent } from './components/subscription-popup/subscription-popup.component';
+import { MoodRecommendationPopupComponent } from './components/mood-recommendation-popup/mood-recommendation-popup.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -32,22 +21,13 @@ import { SubscriptionPopupComponent } from './components/subscription-popup/subs
   imports: [
     RouterOutlet,
     RouterModule,
-    RouterLink,
-    RouterLinkActive,
-    SidebarComponent,
-    PopularMoviesPageComponent,
-    TopRatedMoviesPageComponent,
-    UpcomingMoviesPageComponent,
-    DetailsMoviePageComponent,
-    NowPlayingMoviesPageComponent,
-    HeaderComponent,
     HttpClientModule,
     LoginPopupComponent,
     MenubarComponent,
     NewsSubscriptionComponent,
-    RegistrationPopupComponent,
     CommonModule,
     SubscriptionPopupComponent,
+    MoodRecommendationPopupComponent,
   ],
 })
 export class AppComponent extends ClearObservable implements OnInit {

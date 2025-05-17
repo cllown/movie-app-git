@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
@@ -8,8 +8,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { Store } from '@ngrx/store';
 import {
+  selectAllMovies,
   selectFavouriteMovies,
-  selectUsername,
+  selectIsLoggedIn,
   selectWatchListMovies,
 } from '../../store/selectors';
 import { Observable } from 'rxjs';
@@ -20,6 +21,8 @@ import {
 } from '../../store/actions';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
 import * as MovieActions from '../../store/actions';
+import { DropdownModule } from 'primeng/dropdown';
+import { MoodRecommendationPopupComponent } from '../../components/mood-recommendation-popup/mood-recommendation-popup.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -32,14 +35,17 @@ import * as MovieActions from '../../store/actions';
     CardModule,
     ButtonModule,
     MovieCardComponent,
+    DropdownModule,
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
+  isLoggedin!: Observable<boolean | null>;
   favouriteMovies$!: Observable<Movie[] | null>;
   watchListMovies$!: Observable<Movie[] | null>;
-  username$: Observable<string | null>;
+  allMovies$!: Observable<Movie[] | null>;
+  allMovies: Movie[] = [];
   availableGenres: string[] = [
     'Action',
     'Comedy',
@@ -49,15 +55,25 @@ export class ProfilePageComponent implements OnInit {
     'Fantasy',
   ];
   selectedGenres: string[] = [];
+  @ViewChild(MoodRecommendationPopupComponent)
+  moodPopup!: MoodRecommendationPopupComponent;
 
   constructor(private authService: AuthService, private store: Store) {
-    this.username$ = this.store.select(selectUsername);
+    this.isLoggedin = this.store.select(selectIsLoggedIn);
   }
 
   ngOnInit() {
     this.favouriteMovies$ = this.store.select(selectFavouriteMovies);
     this.watchListMovies$ = this.store.select(selectWatchListMovies);
+    this.allMovies$ = this.store.select(selectAllMovies);
+    this.allMovies$.subscribe((movies) => {
+      this.allMovies = movies ?? [];
+    });
   }
+  openMoodPopup() {
+    this.store.dispatch(MovieActions.openMoodRecommendationPopup());
+  }
+
   logout(): void {
     this.store.dispatch(MovieActions.logout());
   }

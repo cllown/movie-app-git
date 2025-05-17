@@ -1,0 +1,50 @@
+<p-dialog
+  header="Mood Recommendations"
+  [(visible)]="isVisible"
+  (onHide)="onClose()"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+>
+  <div class="popup-container">
+    <p-dropdown
+      [options]="moods"
+      [(ngModel)]="selectedMood"
+      placeholder="Choose your mood"
+      optionLabel="label"
+      class="w-full mb-3"
+    ></p-dropdown>
+
+    <div class="popup-buttons">
+      <p-button
+        label="Get Movies"
+        icon="pi pi-check"
+        (onClick)="onGetMovies()"
+        [disabled]="!selectedMood"
+      />
+      <p-button label="Close" icon="pi pi-times" severity="secondary" (onClick)="onClose()" />
+    </div>
+
+    <div *ngIf="recommendedMovies.length > 0; else noRecommendations" class="movie-list mt-4">
+      <h4>Recommendations:</h4>
+      <div class="items-movies">
+        @for (movie of recommendedMovies; track movie.id) {
+          <app-movie-card
+            [movie]="movie"
+            [isActionsShow]="false"
+            [isRemoveButtonShow]="false">
+          </app-movie-card>
+        }
+      </div>
+      <p-button
+        label="Re-roll"
+        icon="pi pi-refresh"
+        (onClick)="onReroll()"
+        class="mt-2"
+      />
+    </div>
+
+    <ng-template #noRecommendations>
+      <p>No movie recommendations yet. Select a mood and hit "Get Movies".</p>
+    </ng-template>
+  </div>
+</p-dialog>

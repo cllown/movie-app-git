@@ -6,6 +6,7 @@ import { NowPlayingMoviesResolver } from './guards/now-playing-movies.resolver';
 import { TopRatedMoviesResolver } from './guards/top-rated-movies.resolver';
 import { UpcomingMoviesResolver } from './guards/upcoming-movies.resolver';
 import { AllMoviesResolver } from './guards/all-movies.resolver';
+import { profilePageResolver } from './guards/profile-page-resolver';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,7 @@ export const routes: Routes = [
         (m) => m.ProfilePageComponent
       ),
     canActivate: [AuthGuard],
+    resolve: { data: profilePageResolver },
   },
   {
     path: 'popular',

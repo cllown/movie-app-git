@@ -1,8 +1,21 @@
-<ng-container *ngIf="username$; else notLoggedIn">
+<ng-container *ngIf="isLoggedin; else notLoggedIn">
   <p-card class="profile-page">
     <div class="profile-header">
       <h2>Welcome!</h2>
-      <p-button (click)="logout()" label="logout"></p-button>
+      <div class="profile-actions">
+        <p-button
+          label="Mood Recommendations"
+          icon="pi pi-smile"
+          severity="help"
+          (click)="openMoodPopup()"
+        ></p-button>
+        <p-button
+          label="Logout"
+          icon="pi pi-sign-out"
+          severity="danger"
+          (click)="logout()"
+        ></p-button>
+      </div>
     </div>
 
 

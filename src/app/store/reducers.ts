@@ -211,32 +211,14 @@ export const MovieReducer = createReducer(
     isSubscriptionPopupVisible: false,
   })),
 
-  on(MovieActions.openRegisterPopup, (state) => ({
+  on(MovieActions.openMoodRecommendationPopup, (state) => ({
     ...state,
-    isRegisterPopupVisible: true,
+    isMoodRecommendationPopupVisible: true,
   })),
 
-  on(MovieActions.closeRegisterPopup, (state) => ({
+  on(MovieActions.closeMoodRecommendationPopup, (state) => ({
     ...state,
-    isRegisterPopupVisible: false,
-  })),
-
-  on(MovieActions.register, (state) => ({
-    ...state,
-    isRegistering: true,
-    registerError: null,
-  })),
-
-  on(MovieActions.registerSuccess, (state) => ({
-    ...state,
-    isRegistering: false,
-    isLoggedIn: true,
-  })),
-
-  on(MovieActions.registerFailure, (state, { error }) => ({
-    ...state,
-    isRegistering: false,
-    registerError: error,
+    isMoodRecommendationPopupVisible: false,
   })),
 
   on(MovieActions.searchMoviesSuccess, (state, { movies }) => ({
