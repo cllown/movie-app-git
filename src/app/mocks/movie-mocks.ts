@@ -122,7 +122,7 @@ export const mockState: MovieState = {
   searchResults: mockMovies,
   genres: mockGenres,
   filteredMovies: mockMovies,
-  isRegisterPopupVisible: false,
+  isMoodRecommendationPopupVisible: false,
   registerError: null,
   isRegistering: false,
   isSubscriptionPopupVisible: false,

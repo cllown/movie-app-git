@@ -269,12 +269,7 @@ export class MovieEffects {
   sessionRestored$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.sessionRestored),
-      switchMap(({ sessionId }) => [
-        MovieActions.loginSuccess({ sessionId }),
-        MovieActions.loadFavouriteMovies(),
-        MovieActions.loadWatchListMovies(),
-        MovieActions.loadGenres(),
-      ])
+      switchMap(({ sessionId }) => [MovieActions.loginSuccess({ sessionId })])
     )
   );
 
@@ -291,19 +286,6 @@ export class MovieEffects {
     { dispatch: false }
   );
 
-  register$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(MovieActions.register),
-      switchMap(({ username, password }) =>
-        this.authService.register(username, password).pipe(
-          map(() => MovieActions.registerSuccess()),
-          catchError((err) =>
-            of(MovieActions.registerFailure({ error: err.message }))
-          )
-        )
-      )
-    )
-  );
   searchMovies$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.searchMovies),

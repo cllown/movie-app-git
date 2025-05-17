@@ -1,22 +1,14 @@
   :host ::ng-deep .p-multiselect {
     width: 300px;
   }
-  .profile-header{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .profile-page {
-    margin-top: 2rem;
-    padding: 1.5rem;
-  }
+
   .items-movies {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   gap: 0.5rem;
   align-items: stretch;
   }
-.create-list-tab {
+  .create-list-tab {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -27,4 +19,20 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+}
+    .profile-page {
+    margin-top: 2rem;
+    padding: 1.5rem;
+
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .profile-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
 }

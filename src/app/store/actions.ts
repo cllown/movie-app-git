@@ -157,9 +157,13 @@ export const openLoginPopup = createAction('[Auth] Open Login Popup');
 
 export const closeLoginPopup = createAction('[Auth] Close Login Popup');
 
-export const openRegisterPopup = createAction('[Auth] Open Register Popup');
+export const openMoodRecommendationPopup = createAction(
+  '[Auth] Open Mood Recommendation Popup'
+);
 
-export const closeRegisterPopup = createAction('[Auth] Close Register Popup');
+export const closeMoodRecommendationPopup = createAction(
+  '[Auth] Close Mood Recommendation Popup'
+);
 
 export const openSubscriptionPopup = createAction(
   '[Auth] Open Subscription Popup'

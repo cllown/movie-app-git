@@ -211,14 +211,14 @@ export const MovieReducer = createReducer(
     isSubscriptionPopupVisible: false,
   })),
 
-  on(MovieActions.openRegisterPopup, (state) => ({
+  on(MovieActions.openMoodRecommendationPopup, (state) => ({
     ...state,
-    isRegisterPopupVisible: true,
+    isMoodRecommendationPopupVisible: true,
   })),
 
-  on(MovieActions.closeRegisterPopup, (state) => ({
+  on(MovieActions.closeMoodRecommendationPopup, (state) => ({
     ...state,
-    isRegisterPopupVisible: false,
+    isMoodRecommendationPopupVisible: false,
   })),
 
   on(MovieActions.searchMoviesSuccess, (state, { movies }) => ({

@@ -87,9 +87,9 @@ export const selectIsPopupVisible = createSelector(
   (state) => state.isPopupVisible ?? false
 );
 
-export const selectIsRegisterPopupVisible = createSelector(
+export const selectIsMoodRecommendationPopupVisible = createSelector(
   selectState,
-  (state) => state.isRegisterPopupVisible ?? false
+  (state) => state.isMoodRecommendationPopupVisible ?? false
 );
 
 export const selectIsSubscriptionPopupVisible = createSelector(
