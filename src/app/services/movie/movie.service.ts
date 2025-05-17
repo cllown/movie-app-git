@@ -12,7 +12,10 @@ import {
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
-import { MovieListResponse } from '../../models/responce.inetrface';
+import {
+  CustomListDetailsResponse,
+  MovieListResponse,
+} from '../../models/responce.inetrface';
 import { Store } from '@ngrx/store';
 import { selectGenres } from '../../store/selectors';
 
@@ -235,5 +238,105 @@ export class MovieService {
     return list$.pipe(
       map((movies) => movies?.some((movie) => movie.id === movieId) || false)
     );
+  }
+  //CUSTOM LISTS
+
+  // 1. Создание кастомного списка
+  createCustomList(
+    name: string,
+    description = '',
+    isPublic = true
+  ): Observable<any> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) return of(null);
+
+    const body = {
+      name,
+      description,
+      language: 'en',
+      public: isPublic,
+    };
+
+    return this.httpClient.post(
+      `${environment.apiBaseUrl}/list`,
+      body,
+      this.getOptions({ session_id: sessionId })
+    );
+  }
+
+  // 2. Удаление кастомного списка
+  deleteCustomList(listId: number): Observable<any> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) return of(null);
+
+    return this.httpClient.delete(
+      `${environment.apiBaseUrl}/list/${listId}`,
+      this.getOptions({ session_id: sessionId })
+    );
+  }
+
+  // 3. Получение всех кастомных списков пользователя
+  getCustomLists(): Observable<any> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) return of([]);
+
+    return this.httpClient.get(
+      `${environment.apiBaseUrl}/account/${environment.accountId}/lists`,
+      this.getOptions({ session_id: sessionId })
+    );
+  }
+
+  // 4. Добавление фильма в кастомный список
+  addMovieToCustomList(listId: number, movieId: number): Observable<any> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) return of(null);
+
+    const body = {
+      media_id: movieId,
+    };
+
+    return this.httpClient.post(
+      `${environment.apiBaseUrl}/list/${listId}/add_item`,
+      body,
+      this.getOptions({ session_id: sessionId })
+    );
+  }
+
+  // 5. Удаление фильма из кастомного списка
+  removeMovieFromCustomList(listId: number, movieId: number): Observable<any> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) return of(null);
+
+    const body = {
+      media_id: movieId,
+    };
+
+    return this.httpClient.post(
+      `${environment.apiBaseUrl}/list/${listId}/remove_item`,
+      body,
+      this.getOptions({ session_id: sessionId })
+    );
+  }
+
+  // 6. Очистка кастомного списка
+  clearCustomList(listId: number): Observable<any> {
+    const sessionId = this.authService.getSessionId();
+    if (!sessionId) return of(null);
+
+    return this.httpClient.post(
+      `${environment.apiBaseUrl}/list/${listId}/clear`,
+      {},
+      this.getOptions({ session_id: sessionId })
+    );
+  }
+
+  // 7. Получение фильмов в кастомном списке
+  getMoviesInCustomList(listId: number): Observable<Movie[]> {
+    return this.httpClient
+      .get<CustomListDetailsResponse>(
+        `${environment.apiBaseUrl}/list/${listId}`,
+        this.getOptions()
+      )
+      .pipe(map((response) => response.items));
   }
 }

@@ -20,6 +20,7 @@ import {
 } from '../../store/actions';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
 import * as MovieActions from '../../store/actions';
+import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -50,13 +51,28 @@ export class ProfilePageComponent implements OnInit {
   ];
   selectedGenres: string[] = [];
 
-  constructor(private authService: AuthService, private store: Store) {
+  constructor(
+    private authService: AuthService,
+    private store: Store,
+    private movieService: MovieService
+  ) {
     this.username$ = this.store.select(selectUsername);
   }
 
   ngOnInit() {
     this.favouriteMovies$ = this.store.select(selectFavouriteMovies);
     this.watchListMovies$ = this.store.select(selectWatchListMovies);
+    this.loadCustomLists();
+  }
+  loadCustomLists() {
+    this.movieService.getCustomLists().subscribe((response) => {
+      this.customLists = response.results || [];
+      this.customLists.forEach((list) => {
+        this.movieService.getMoviesInCustomList(list.id).subscribe((movies) => {
+          this.customListMovies[list.id] = movies;
+        });
+      });
+    });
   }
   logout(): void {
     this.store.dispatch(MovieActions.logout());
@@ -67,5 +83,24 @@ export class ProfilePageComponent implements OnInit {
   }
   removeFromWatchList(movieId: number) {
     this.store.dispatch(removeMovieFromWatchList({ movieId }));
+  }
+
+  //CUSTOM LISTS LOGIC
+  customLists: any[] = [];
+  customListMovies: { [listId: number]: Movie[] } = [];
+  newListName = '';
+
+  createNewList() {
+    if (!this.newListName.trim()) return;
+
+    this.movieService.createCustomList(this.newListName).subscribe(() => {
+      this.newListName = '';
+      this.loadCustomLists(); // Перезагрузка списков
+    });
+  }
+  deleteList(listId: number) {
+    this.movieService.deleteCustomList(listId).subscribe(() => {
+      this.loadCustomLists();
+    });
   }
 }

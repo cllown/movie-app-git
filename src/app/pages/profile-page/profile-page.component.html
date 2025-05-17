@@ -23,6 +23,8 @@
             </ng-template>
           </ng-container>
       </p-tabPanel>
+
+
       <p-tabPanel header="watch list">
         <ng-container *ngIf="watchListMovies$ | async as movies;">
           <ng-container *ngIf="movies && movies.length > 0; else noMovies">
@@ -38,9 +40,50 @@
           </ng-template>
         </ng-container>
       </p-tabPanel>
-      <p-tabPanel header="other">
 
+      <p-tabPanel *ngFor="let list of customLists" [header]="list.name">
+        <div class="custom-list-header">
+          <p-button
+            icon="pi pi-trash"
+            label="Delete List"
+            (click)="deleteList(list.id)"
+            severity="danger"
+          ></p-button>
+        </div>
+        <ng-container *ngIf="(customListMovies[list.id] ?? []).length > 0; else noMovies">
+          <div class="items-movies">
+            @for(movie of customListMovies[list.id]; track movie.id){
+              <app-movie-card
+                [movie]="movie"
+                [isActionsShow]="false"
+                [isRemoveButtonShow]="false"
+              ></app-movie-card>
+            }
+          </div>
+        </ng-container>
+        <ng-template #noMovies>
+          <p>No movies in this list yet.</p>
+        </ng-template>
       </p-tabPanel>
+
+  <!-- Таб для создания нового списка -->
+      <p-tabPanel header="+">
+        <div class="create-list-tab">
+          <input
+            [(ngModel)]="newListName"
+            type="text"
+            placeholder="New list name"
+            class="p-inputtext"
+          />
+          <p-button
+            label="Create"
+            icon="pi pi-check"
+            (click)="createNewList()"
+            [disabled]="!newListName.trim()"
+          ></p-button>
+        </div>
+      </p-tabPanel>
+
     </p-tabView>
   </p-card>
 </ng-container>

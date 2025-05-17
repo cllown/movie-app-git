@@ -16,3 +16,15 @@
   gap: 0.5rem;
   align-items: stretch;
   }
+.create-list-tab {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.custom-list-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
