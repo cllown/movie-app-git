@@ -24,5 +24,13 @@
 
         <p-button *ngIf="isRemoveButtonShow" (click)="onRemoveFromList()" severity="secondary"
             class="w-full movie-card-button" styleClass="pi pi-times"></p-button>
+            <p-splitButton
+              icon="pi pi-ellipsis-v"
+              label=""
+              [model]="customListMenuItems"
+              class="w-full movie-card-button"
+              severity="help"
+              *ngIf="customLists?.length > 0">
+            </p-splitButton>
     </ng-template>
 </p-card>

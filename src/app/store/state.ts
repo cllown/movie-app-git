@@ -23,6 +23,7 @@ export interface MovieState {
   isSubscriptionPopupVisible: boolean;
   registerError: string | null;
   isRegistering: boolean;
+  customLists: { id: number; name: string }[];
 }
 
 export const initialState: MovieState = {
@@ -48,4 +49,5 @@ export const initialState: MovieState = {
   registerError: null,
   isRegistering: false,
   isSubscriptionPopupVisible: false,
+  customLists: [],
 };

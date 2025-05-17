@@ -221,24 +221,6 @@ export const MovieReducer = createReducer(
     isRegisterPopupVisible: false,
   })),
 
-  on(MovieActions.register, (state) => ({
-    ...state,
-    isRegistering: true,
-    registerError: null,
-  })),
-
-  on(MovieActions.registerSuccess, (state) => ({
-    ...state,
-    isRegistering: false,
-    isLoggedIn: true,
-  })),
-
-  on(MovieActions.registerFailure, (state, { error }) => ({
-    ...state,
-    isRegistering: false,
-    registerError: error,
-  })),
-
   on(MovieActions.searchMoviesSuccess, (state, { movies }) => ({
     ...state,
     searchResults: movies,
@@ -282,5 +264,10 @@ export const MovieReducer = createReducer(
   on(MovieActions.loadMoviesByRatingFailure, (state, { error }) => ({
     ...state,
     error,
+  })),
+
+  on(MovieActions.loadCustomListsSuccess, (state, { customLists }) => ({
+    ...state,
+    customLists,
   }))
 );

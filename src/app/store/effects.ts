@@ -363,6 +363,26 @@ export class MovieEffects {
       )
     )
   );
+  loadCustomLists$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.loadCustomLists),
+      switchMap(() =>
+        this.movieService.getCustomLists().pipe(
+          map((response) =>
+            MovieActions.loadCustomListsSuccess({
+              customLists: response.results.map((list: any) => ({
+                id: list.id,
+                name: list.name,
+              })),
+            })
+          ),
+          catchError((error) =>
+            of(MovieActions.loadCustomListsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 
   constructor(
     private actions$: Actions,

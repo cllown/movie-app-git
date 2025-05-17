@@ -3,6 +3,11 @@ import { MovieState } from './state';
 
 export const selectState = createFeatureSelector<MovieState>('MovieState');
 
+export const selectCustomLists = createSelector(
+  selectState,
+  (state) => state.customLists
+);
+
 export const selectPopularMovies = createSelector(
   selectState,
   (state) => state.popularMovies

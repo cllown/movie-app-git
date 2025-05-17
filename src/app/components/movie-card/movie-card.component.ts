@@ -8,13 +8,16 @@ import { Genre, Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
 import { Store } from '@ngrx/store';
 import { setMovieToFavourites, setMovieToWatchList } from '../../store/actions';
-import { combineLatest, map, Observable, take, tap } from 'rxjs';
+import { map, Observable, take, tap } from 'rxjs';
 import {
   selectFavouriteMovies,
   selectGenres,
   selectIsLoggedIn,
   selectWatchListMovies,
 } from '../../store/selectors';
+import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 import * as MovieActions from '../../store/actions';
 
 @Component({
@@ -26,11 +29,14 @@ import * as MovieActions from '../../store/actions';
     CommonModule,
     RouterLink,
     RatingRoundingPipe,
+    DropdownModule,
+    MenuModule,
   ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',
 })
 export class MovieCardComponent implements OnInit {
+  @Input() customLists: { id: number; name: string }[] = [];
   @Input() movie!: Movie;
   @Input() isActionsShow: boolean = true;
   @Input() isRemoveButtonShow = false;
@@ -44,13 +50,46 @@ export class MovieCardComponent implements OnInit {
   constructor(private store: Store, private movieService: MovieService) {}
 
   ngOnInit(): void {
+    this.prepareCustomListMenuItems();
     this.genres$ = this.movieService.getGenreNames(this.movie.genre_ids);
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
-  
-    this.isFavourite$ = this.movieService.checkIfMovieInList(this.movie.id, this.store.select(selectFavouriteMovies));
-    this.isInWatchList$ = this.movieService.checkIfMovieInList(this.movie.id, this.store.select(selectWatchListMovies));
+
+    this.isFavourite$ = this.movieService.checkIfMovieInList(
+      this.movie.id,
+      this.store.select(selectFavouriteMovies)
+    );
+    this.isInWatchList$ = this.movieService.checkIfMovieInList(
+      this.movie.id,
+      this.store.select(selectWatchListMovies)
+    );
   }
-  
+
+  customListMenuItems: MenuItem[] = [];
+
+  prepareCustomListMenuItems() {
+    this.customListMenuItems = this.customLists.map((list) => ({
+      label: list.name,
+      icon: 'pi pi-plus',
+      command: () => this.addToCustomList(list.id),
+    }));
+  }
+
+  addToCustomList(listId: number) {
+    this.isLoggedIn$.pipe(take(1)).subscribe((isLoggedIn) => {
+      if (isLoggedIn) {
+        this.movieService
+          .addMovieToCustomList(this.movie.id, listId)
+          .subscribe({
+            next: () => {},
+            error: (err) => {
+              console.error('Failed to add movie to custom list', err);
+            },
+          });
+      } else {
+        this.openLoginPopup();
+      }
+    });
+  }
 
   onAddToFavourites(movieId: number) {
     this.isLoggedIn$

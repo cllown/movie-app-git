@@ -169,18 +169,6 @@ export const closeSubscriptionPopup = createAction(
   '[Auth] Close Subscription Popup'
 );
 
-export const register = createAction(
-  '[Auth] Register',
-  props<{ username: string; password: string }>()
-);
-
-export const registerSuccess = createAction('[Auth] Register Success');
-
-export const registerFailure = createAction(
-  '[Auth] Register Failure',
-  props<{ error: string }>()
-);
-
 export const searchMovies = createAction(
   '[Movie] Search Movies',
   props<{ query: string }>()
@@ -237,5 +225,18 @@ export const loadMoviesByRatingSuccess = createAction(
 
 export const loadMoviesByRatingFailure = createAction(
   '[Movies] Load Movies By Rating Failure',
+  props<{ error: any }>()
+);
+
+//CUSTOM LISTS
+export const loadCustomLists = createAction('[Profile] Load Custom Lists');
+
+export const loadCustomListsSuccess = createAction(
+  '[Profile] Load Custom Lists Success',
+  props<{ customLists: { id: number; name: string }[] }>()
+);
+
+export const loadCustomListsFailure = createAction(
+  '[Profile] Load Custom Lists Failure',
   props<{ error: any }>()
 );
