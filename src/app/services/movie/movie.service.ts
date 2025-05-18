@@ -339,4 +339,19 @@ export class MovieService {
       )
       .pipe(map((response) => response.items));
   }
+  //--------------------------------------
+  getMovieTrailer(movieId: number): Observable<string | null> {
+    return this.httpClient
+      .get<{ results: Array<{ key: string; type: string }> }>(
+        `${environment.apiBaseUrl}/movie/${movieId}/videos?api_key=${environment.apiKey}`
+      )
+      .pipe(
+        map((response) => {
+          const trailer = response.results.find(
+            (video) => video.type === 'Trailer' && video.key
+          );
+          return trailer ? trailer.key : null;
+        })
+      );
+  }
 }

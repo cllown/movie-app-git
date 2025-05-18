@@ -201,6 +201,11 @@ export const MovieReducer = createReducer(
     isPopupVisible: false,
   })),
 
+  on(MovieActions.subscribe, (state) => ({
+    ...state,
+    isSubscribed: true,
+  })),
+
   on(MovieActions.openSubscriptionPopup, (state) => ({
     ...state,
     isSubscriptionPopupVisible: true,

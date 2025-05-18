@@ -152,6 +152,7 @@ export const loginFailure = createAction(
   '[Auth] Login Failure',
   props<{ error: string }>()
 );
+export const subscribe = createAction('[Auth] subscribe');
 
 export const openLoginPopup = createAction('[Auth] Open Login Popup');
 

@@ -22,7 +22,7 @@ export interface MovieState {
   isMoodRecommendationPopupVisible: boolean;
   isSubscriptionPopupVisible: boolean;
   registerError: string | null;
-  isRegistering: boolean;
+  isSubscribed: boolean;
   customLists: { id: number; name: string }[];
 }
 
@@ -47,7 +47,7 @@ export const initialState: MovieState = {
   filteredMovies: null,
   isMoodRecommendationPopupVisible: false,
   registerError: null,
-  isRegistering: false,
+  isSubscribed: false,
   isSubscriptionPopupVisible: false,
   customLists: [],
 };

@@ -124,7 +124,7 @@ export const mockState: MovieState = {
   filteredMovies: mockMovies,
   isMoodRecommendationPopupVisible: false,
   registerError: null,
-  isRegistering: false,
+  isSubscribed: false,
   isSubscriptionPopupVisible: false,
   customLists: [],
 };

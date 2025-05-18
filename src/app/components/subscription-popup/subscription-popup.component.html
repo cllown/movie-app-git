@@ -1,9 +1,27 @@
 <p-dialog
-    header="subscribe"
-    [modal]="true"
-    [(visible)]="isVisible"
-    [style]="{ width: '25rem' }"
-    (onHide)="onCancel()">
-LETS SUBSCRIBE
+  header="Subscribe to Watch"
+  [modal]="true"
+  [(visible)]="isVisible"
+  [style]="{ width: '30rem' }"
+  (onHide)="onCancel()"
+  [closable]="false"
+>
+  <div class="p-text-center" style="padding: 1rem;">
+    <h3>Enjoy Unlimited Access</h3>
+    <p style="margin-bottom: 2rem;">
+      Subscribe now for <strong>$0.00</strong> and start watching your favorite movies instantly!
+    </p>
+    <p-button
+      label="Subscribe Now"
+      (onClick)="onSubscribe()"
+      class="p-button-success"
+      [style]="{ width: '100%' }"
+    ></p-button>
+    <p-button
+      label="Cancel"
+      (onClick)="onCancel()"
+      class="p-button-text"
+      [style]="{ width: '100%', marginTop:'0.5rem' }"
+    ></p-button>
+  </div>
 </p-dialog>
-

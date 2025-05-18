@@ -7,6 +7,7 @@ import { TopRatedMoviesResolver } from './guards/top-rated-movies.resolver';
 import { UpcomingMoviesResolver } from './guards/upcoming-movies.resolver';
 import { AllMoviesResolver } from './guards/all-movies.resolver';
 import { profilePageResolver } from './guards/profile-page-resolver';
+import { WatchMoviePageComponent } from './pages/watch-movie-page/watch-movie-page.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,14 @@ export const routes: Routes = [
       ),
     canActivate: [AuthGuard],
     resolve: { data: profilePageResolver },
+  },
+  {
+    path: 'movie/watch/:id',
+    loadComponent: () =>
+      import('./pages/watch-movie-page/watch-movie-page.component').then(
+        (m) => m.WatchMoviePageComponent
+      ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'popular',

@@ -77,6 +77,11 @@ export const selectIsLoggedIn = createSelector(
   (state) => state.isLoggedIn
 );
 
+export const selectIsSubscribed = createSelector(
+  selectState,
+  (state) => state.isSubscribed
+);
+
 export const selectLoading = createSelector(
   selectState,
   (state) => state.loading

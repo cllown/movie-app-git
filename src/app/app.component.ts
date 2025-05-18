@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
-
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { ClearObservable } from './models/clear-observable';
@@ -35,6 +34,7 @@ export class AppComponent extends ClearObservable implements OnInit {
   showSubscriptionForm = false;
 
   constructor(private authService: AuthService, private store: Store) {
+    ('');
     super();
   }
 

@@ -1,4 +1,8 @@
-import { selectIsLoggedIn, selectLoading } from './../../store/selectors';
+import {
+  selectIsLoggedIn,
+  selectIsSubscribed,
+  selectLoading,
+} from './../../store/selectors';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
@@ -8,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { selectSelectedMovie } from '../../store/selectors';
 import { ButtonModule } from 'primeng/button';
 import * as MovieActions from '../../store/actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-details-movie-page',
@@ -20,12 +25,14 @@ import * as MovieActions from '../../store/actions';
 export class DetailsMoviePageComponent implements OnInit {
   movie$!: Observable<Movie | null>;
   isLoggedIn$!: Observable<boolean>;
+  isSubscribed$!: Observable<boolean>;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private route: Router) {}
 
   ngOnInit() {
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
     this.movie$ = this.store.select(selectSelectedMovie);
+    this.isSubscribed$ = this.store.select(selectIsSubscribed);
   }
   onWatch(movieId: number) {
     this.isLoggedIn$
@@ -33,7 +40,8 @@ export class DetailsMoviePageComponent implements OnInit {
         take(1),
         tap((isLoggedIn) => {
           if (isLoggedIn) {
-            if (!isLoggedIn) {
+            if (this.isSubscribed$) {
+              this.route.navigate(['/movie/watch/', movieId]);
             } else {
               this.openSubscriptionPopup();
             }

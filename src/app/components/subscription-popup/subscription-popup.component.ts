@@ -39,6 +39,11 @@ export class SubscriptionPopupComponent {
         this.isVisible = visible;
       });
   }
+  onSubscribe() {
+    this.store.dispatch(MovieActions.subscribe());
+
+    this.store.dispatch(MovieActions.closeSubscriptionPopup());
+  }
 
   ngOnDestroy(): void {
     if (this.subscription) {
