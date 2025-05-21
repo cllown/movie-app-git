@@ -6,7 +6,6 @@ import { ClearObservable } from './models/clear-observable';
 import { takeUntil } from 'rxjs';
 import { LoginPopupComponent } from './components/login-popup/login-popup.component';
 import { MenubarComponent } from './components/menubar/menubar.component';
-import { NewsSubscriptionComponent } from './components/news-subscription/news-subscription.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as MovieActions from './store/actions';
@@ -23,7 +22,6 @@ import { MoodRecommendationPopupComponent } from './components/mood-recommendati
     HttpClientModule,
     LoginPopupComponent,
     MenubarComponent,
-    NewsSubscriptionComponent,
     CommonModule,
     SubscriptionPopupComponent,
     MoodRecommendationPopupComponent,

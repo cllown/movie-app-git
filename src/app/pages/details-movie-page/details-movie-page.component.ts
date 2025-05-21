@@ -7,12 +7,13 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
-import { Observable, take, tap } from 'rxjs';
+import { EMPTY, Observable, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectSelectedMovie } from '../../store/selectors';
 import { ButtonModule } from 'primeng/button';
 import * as MovieActions from '../../store/actions';
 import { Router } from '@angular/router';
+import { openLoginPopup } from '../../store/actions';
 
 @Component({
   selector: 'app-details-movie-page',
@@ -38,16 +39,21 @@ export class DetailsMoviePageComponent implements OnInit {
     this.isLoggedIn$
       .pipe(
         take(1),
-        tap((isLoggedIn) => {
-          if (isLoggedIn) {
-            if (this.isSubscribed$) {
-              this.route.navigate(['/movie/watch/', movieId]);
-            } else {
-              this.openSubscriptionPopup();
-            }
-          } else {
+        switchMap((isLoggedIn) => {
+          if (!isLoggedIn) {
             this.openLoginPopup();
+            return EMPTY;
           }
+          return this.isSubscribed$.pipe(
+            take(1),
+            tap((isSubscribed) => {
+              if (isSubscribed) {
+                this.route.navigate(['/movie/watch/', movieId]);
+              } else {
+                this.openSubscriptionPopup();
+              }
+            })
+          );
         })
       )
       .subscribe();
