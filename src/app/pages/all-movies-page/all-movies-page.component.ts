@@ -5,13 +5,12 @@ import { Store } from '@ngrx/store';
 import { selectAllMovies, selectFilteredMovies } from '../../store/selectors';
 import { MovieListComponent } from '../../components/movie-list/movie-list.component';
 import { CommonModule } from '@angular/common';
-import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
 import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-all-movies-page',
   standalone: true,
-  imports: [MovieListComponent, CommonModule, MovieCardComponent],
+  imports: [MovieListComponent, CommonModule],
   templateUrl: './all-movies-page.component.html',
   styleUrl: './all-movies-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

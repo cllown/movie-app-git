@@ -43,92 +43,77 @@ import { MovieService } from '../../services/movie/movie.service';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
-  username$: Observable<string | null>;
-  isLoggedin!: Observable<boolean | null>;
-  favouriteMovies$!: Observable<Movie[] | null>;
-  watchListMovies$!: Observable<Movie[] | null>;
-  allMovies$!: Observable<Movie[] | null>;
-  allMovies: Movie[] = [];
+  username$ = this.store.select(selectUsername);
+  isLoggedin$ = this.store.select(selectIsLoggedIn);
+  favouriteMovies$ = this.store.select(selectFavouriteMovies);
+  watchListMovies$ = this.store.select(selectWatchListMovies);
+  allMovies$ = this.store.select(selectAllMovies);
   recommendationMovies$!: Observable<Movie[]>;
-  availableGenres: string[] = [
-    'Action',
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Sci-Fi',
-    'Fantasy',
-  ];
-  selectedGenres: string[] = [];
-  @ViewChild(MoodRecommendationPopupComponent)
-  moodPopup!: MoodRecommendationPopupComponent;
 
-  constructor(private store: Store, private movieService: MovieService) {
-    this.isLoggedin = this.store.select(selectIsLoggedIn);
-    this.username$ = this.store.select(selectUsername);
-  }
-  ngOnInit() {
-    this.favouriteMovies$ = this.store.select(selectFavouriteMovies);
-    this.watchListMovies$ = this.store.select(selectWatchListMovies);
+  customLists: any[] = [];
+  customListMovies: Record<number, Movie[]> = {};
+  newListName = '';
+
+  constructor(private store: Store, private movieService: MovieService) {}
+
+  ngOnInit(): void {
     this.loadCustomLists();
+
     this.recommendationMovies$ = this.movieService.getFavouriteMovies().pipe(
       take(1),
-      map((favMovies) => favMovies.map((movie) => movie.id)),
-      switchMap((favIds) => {
-        if (favIds.length === 0) return of([]);
-        return this.movieService.getSmartRecommendations(favIds);
-      })
+      map((favMovies) => favMovies.map((m) => m.id)),
+      switchMap((ids) =>
+        ids.length ? this.movieService.getSmartRecommendations(ids) : of([])
+      )
     );
   }
-  loadCustomLists() {
-    this.movieService.getCustomLists().subscribe((response) => {
-      this.customLists = response.results || [];
-      this.customLists.forEach((list) => {
-        this.movieService.getMoviesInCustomList(list.id).subscribe((movies) => {
-          this.customListMovies[list.id] = movies;
-        });
-      });
-    });
-    this.allMovies$ = this.store.select(selectAllMovies);
-    this.allMovies$.subscribe((movies) => {
-      this.allMovies = movies ?? [];
-    });
-  }
+
   openMoodPopup() {
     this.store.dispatch(MovieActions.openMoodRecommendationPopup());
   }
 
-  logout(): void {
+  logout() {
     this.store.dispatch(MovieActions.logout());
   }
 
   removeFromFavourites(movieId: number) {
     this.store.dispatch(removeMovieFromFavourites({ movieId }));
   }
+
   removeFromWatchList(movieId: number) {
     this.store.dispatch(removeMovieFromWatchList({ movieId }));
   }
 
-  //CUSTOM LISTS LOGIC
-  customLists: any[] = [];
-  customListMovies: { [listId: number]: Movie[] } = [];
-  newListName = '';
+  removeFromCustomList(movieId: number, listId: number) {
+    this.store.dispatch(
+      MovieActions.removeMovieFromCustomList({ movieId, listId })
+    );
+  }
 
   createNewList() {
-    if (!this.newListName.trim()) return;
+    const name = this.newListName.trim();
+    if (!name) return;
 
-    this.movieService.createCustomList(this.newListName).subscribe(() => {
+    this.movieService.createCustomList(name).subscribe(() => {
       this.newListName = '';
-      this.loadCustomLists(); // Перезагрузка списков
+      this.loadCustomLists();
     });
   }
+
   deleteList(listId: number) {
     this.movieService.deleteCustomList(listId).subscribe(() => {
       this.loadCustomLists();
     });
   }
-  removeFromCustomList(movieId: number, listId: number) {
-    this.store.dispatch(
-      MovieActions.removeMovieFromCustomList({ movieId, listId })
-    );
+
+  private loadCustomLists() {
+    this.movieService.getCustomLists().subscribe(({ results }) => {
+      this.customLists = results || [];
+      this.customLists.forEach((list) => {
+        this.movieService.getMoviesInCustomList(list.id).subscribe((movies) => {
+          this.customListMovies[list.id] = movies;
+        });
+      });
+    });
   }
 }

@@ -220,7 +220,7 @@ export class MovieEffects {
     )
   );
 
-  removeMovieFromCustomList$ = createEffect(() =>
+  removieMovieFromCustomList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.removeMovieFromCustomList),
       mergeMap((action) =>
