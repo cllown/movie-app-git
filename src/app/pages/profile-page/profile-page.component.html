@@ -1,7 +1,7 @@
 <ng-container *ngIf="isLoggedin; else notLoggedIn">
   <p-card class="profile-page">
     <div class="profile-header">
-      <h2>Welcome!</h2>
+      <h2>Welcome {{ username$ | async }}!</h2>
       <div class="profile-actions">
         <p-button
           label="Mood Recommendations"

@@ -11,6 +11,7 @@ import {
   selectAllMovies,
   selectFavouriteMovies,
   selectIsLoggedIn,
+  selectUsername,
   selectWatchListMovies,
 } from '../../store/selectors';
 import { Observable } from 'rxjs';
@@ -42,6 +43,7 @@ import { MovieService } from '../../services/movie/movie.service';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
+  username$: Observable<string | null>;
   isLoggedin!: Observable<boolean | null>;
   favouriteMovies$!: Observable<Movie[] | null>;
   watchListMovies$!: Observable<Movie[] | null>;
@@ -65,6 +67,7 @@ export class ProfilePageComponent implements OnInit {
     private movieService: MovieService
   ) {
     this.isLoggedin = this.store.select(selectIsLoggedIn);
+    this.username$ = this.store.select(selectUsername);
   }
   ngOnInit() {
     this.favouriteMovies$ = this.store.select(selectFavouriteMovies);

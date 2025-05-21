@@ -7,7 +7,7 @@ export const loadSessionFromStorage = createAction(
 
 export const sessionRestored = createAction(
   '[Auth] Session Restored',
-  props<{ sessionId: string }>()
+  props<{ sessionId: string; username: string }>()
 );
 
 export const logout = createAction('[Auth] Logout');
@@ -145,7 +145,7 @@ export const login = createAction(
 
 export const loginSuccess = createAction(
   '[Auth] Login Success',
-  props<{ sessionId: string; redirectUrl?: string }>()
+  props<{ sessionId: string; redirectUrl?: string; username: string }>()
 );
 
 export const loginFailure = createAction(

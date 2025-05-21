@@ -170,11 +170,12 @@ export const MovieReducer = createReducer(
     error: null,
   })),
 
-  on(MovieActions.loginSuccess, (state, { sessionId }) => ({
+  on(MovieActions.loginSuccess, (state, { sessionId, username }) => ({
     ...state,
     isLoggedIn: true,
     loading: false,
     error: null,
+    username,
   })),
 
   on(MovieActions.logout, (state) => ({

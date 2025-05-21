@@ -7,11 +7,7 @@ import { Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
 import { MovieState } from '../../store/state';
 import * as MovieActions from '../../store/actions';
-import {
-  mockGenres,
-  mockMovie,
-  mockState,
-} from '../../mocks/movie-mocks';
+import { mockGenres, mockMovie, mockState } from '../../mocks/movie-mocks';
 
 describe('MovieCardComponent', () => {
   let component: MovieCardComponent;
@@ -70,7 +66,12 @@ describe('MovieCardComponent', () => {
   });
 
   it('should dispatch setMovieToFavourites when logged in and trying to add to favourites', () => {
-    store.dispatch(MovieActions.loginSuccess({ sessionId: 'mockSessionId' }));
+    store.dispatch(
+      MovieActions.loginSuccess({
+        sessionId: 'mockSessionId',
+        username: 'test_user',
+      })
+    );
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     component.onAddToFavourites(mockMovie.id);
     expect(dispatchSpy).toHaveBeenCalledWith(
@@ -86,7 +87,12 @@ describe('MovieCardComponent', () => {
   });
 
   it('should dispatch setMovieToWatchList when logged in and trying to add to watch list', () => {
-    store.dispatch(MovieActions.loginSuccess({ sessionId: 'mockSessionId' }));
+    store.dispatch(
+      MovieActions.loginSuccess({
+        sessionId: 'mockSessionId',
+        username: 'test_user',
+      })
+    );
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     component.onAddToWatchList(mockMovie.id);
     expect(dispatchSpy).toHaveBeenCalledWith(

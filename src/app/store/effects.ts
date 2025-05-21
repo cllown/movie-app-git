@@ -257,11 +257,13 @@ export class MovieEffects {
                     .pipe(
                       map((sessionResponse) => {
                         const sessionId = sessionResponse.session_id;
-
                         localStorage.setItem('sessionId', sessionId);
-
+                        localStorage.setItem('username', username);
                         this.authService.setSessionId(sessionId);
-                        return MovieActions.loginSuccess({ sessionId });
+                        return MovieActions.loginSuccess({
+                          sessionId,
+                          username,
+                        });
                       })
                     )
                 )
@@ -299,19 +301,23 @@ export class MovieEffects {
       ofType(MovieActions.loadSessionFromStorage),
       map(() => {
         const sessionId = localStorage.getItem('sessionId');
-        if (sessionId) {
+        const username = localStorage.getItem('username');
+        if (sessionId && username) {
           this.authService.setSessionId(sessionId);
-          return MovieActions.sessionRestored({ sessionId });
+          return MovieActions.sessionRestored({ sessionId, username });
         } else {
           return MovieActions.logout();
         }
       })
     )
   );
+
   sessionRestored$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.sessionRestored),
-      switchMap(({ sessionId }) => [MovieActions.loginSuccess({ sessionId })])
+      switchMap(({ sessionId, username }) => [
+        MovieActions.loginSuccess({ sessionId, username }),
+      ])
     )
   );
 
