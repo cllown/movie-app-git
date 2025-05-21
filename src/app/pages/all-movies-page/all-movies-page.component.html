@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-  <h2 class="page-title">Recommended for You</h2>
+<!--   <h2 class="page-title">Recommended for You</h2>
   <ng-container *ngIf="recommendationMovies$ | async as recommendation">
     <ng-container *ngIf="recommendation && recommendation.length > 0; else noMovies">
       <div class="all-movies__items items-movies recommendation-list">
@@ -15,7 +15,7 @@
     <ng-template #noMovies>
       <p>No recommendations yet, put some films to favourite</p>
     </ng-template>
-  </ng-container>
+  </ng-container> -->
 
   <h2 class="page-title">All movies</h2>
   <ng-container *ngIf="allMovies$ | async as movies; else loading">

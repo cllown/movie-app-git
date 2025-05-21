@@ -9,10 +9,23 @@
   align-items: stretch;
   }
   .create-list-tab {
-  display: flex;
+ display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    input {
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
 }
 
 .custom-list-header {
@@ -23,13 +36,20 @@
     .profile-page {
     margin-top: 2rem;
     padding: 1.5rem;
+    overflow-y: hidden;
+
 
   .profile-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  @media (max-width: 600px) {
     flex-direction: column;
-    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
   }
 
   .profile-actions {
@@ -38,3 +58,43 @@
   }
 
 }
+:host ::ng-deep .p-tabview-nav {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+  padding-bottom: 4px;
+}
+
+:host ::ng-deep .p-tabview-nav li {
+  flex: 0 0 auto; // запрет сжатия
+  white-space: nowrap;
+}
+
+:host ::ng-deep .p-tabview {
+  overflow: hidden;
+}
+
+:host ::ng-deep .p-tabview-nav::-webkit-scrollbar {
+  height: 6px;
+}
+
+:host ::ng-deep .p-tabview-nav::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+:host ::ng-deep .custom-blue-button {
+  background-color: #42A5F5 !important; // светло-голубой
+  border: none;
+  color: white;
+
+  &:hover {
+    background-color: #1E88E5 !important;
+  }
+}
+
+

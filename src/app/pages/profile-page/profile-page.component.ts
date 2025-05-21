@@ -14,7 +14,7 @@ import {
   selectUsername,
   selectWatchListMovies,
 } from '../../store/selectors';
-import { Observable } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { Movie } from '../../models/movie';
 import {
   removeMovieFromFavourites,
@@ -49,6 +49,7 @@ export class ProfilePageComponent implements OnInit {
   watchListMovies$!: Observable<Movie[] | null>;
   allMovies$!: Observable<Movie[] | null>;
   allMovies: Movie[] = [];
+  recommendationMovies$!: Observable<Movie[]>;
   availableGenres: string[] = [
     'Action',
     'Comedy',
@@ -61,11 +62,7 @@ export class ProfilePageComponent implements OnInit {
   @ViewChild(MoodRecommendationPopupComponent)
   moodPopup!: MoodRecommendationPopupComponent;
 
-  constructor(
-    private authService: AuthService,
-    private store: Store,
-    private movieService: MovieService
-  ) {
+  constructor(private store: Store, private movieService: MovieService) {
     this.isLoggedin = this.store.select(selectIsLoggedIn);
     this.username$ = this.store.select(selectUsername);
   }
@@ -73,6 +70,14 @@ export class ProfilePageComponent implements OnInit {
     this.favouriteMovies$ = this.store.select(selectFavouriteMovies);
     this.watchListMovies$ = this.store.select(selectWatchListMovies);
     this.loadCustomLists();
+    this.recommendationMovies$ = this.movieService.getFavouriteMovies().pipe(
+      take(1),
+      map((favMovies) => favMovies.map((movie) => movie.id)),
+      switchMap((favIds) => {
+        if (favIds.length === 0) return of([]);
+        return this.movieService.getSmartRecommendations(favIds);
+      })
+    );
   }
   loadCustomLists() {
     this.movieService.getCustomLists().subscribe((response) => {

@@ -21,6 +21,27 @@
 
     <p-tabView>
 
+      <p-tabPanel header="Recommendations">
+      <h2 class="page-title">Recommended for You</h2>
+        <ng-container *ngIf="recommendationMovies$ | async as recommendation">
+          <ng-container *ngIf="recommendation && recommendation.length > 0; else noMovies">
+            <div class="all-movies__items items-movies recommendation-list">
+              @for(movie of recommendation; track movie.id) {
+                <app-movie-card
+                  [movie]="movie"
+                  [isActionsShow]="true"
+                  [isRemoveButtonShow]="false"
+                ></app-movie-card>
+              }
+            </div>
+          </ng-container>
+          <ng-template #noMovies>
+            <p>No recommendations yet, put some films to favourite</p>
+          </ng-template>
+        </ng-container>
+      </p-tabPanel>
+
+
       <p-tabPanel header="liked">
         <ng-container *ngIf="favouriteMovies$ | async as movies;">
             <ng-container *ngIf="movies && movies.length > 0; else noMovies">
@@ -81,19 +102,21 @@
       </p-tabPanel>
 
   <!-- Таб для создания нового списка -->
-      <p-tabPanel header="+">
+      <p-tabPanel header="+" headerStyleClass="plus-tab-header">
         <div class="create-list-tab">
           <input
             [(ngModel)]="newListName"
             type="text"
             placeholder="New list name"
             class="p-inputtext"
+            styleClass="custom-blue-button"
           />
           <p-button
             label="Create"
             icon="pi pi-check"
             (click)="createNewList()"
             [disabled]="!newListName.trim()"
+            styleClass="custom-blue-button"
           ></p-button>
         </div>
       </p-tabPanel>
