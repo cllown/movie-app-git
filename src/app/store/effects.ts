@@ -393,6 +393,7 @@ export class MovieEffects {
       )
     )
   );
+
   loadCustomLists$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.loadCustomLists),

@@ -19,20 +19,16 @@
   }
 
   .movie-list {
-    h4 {
-      margin-bottom: 1rem;
-      font-size: 1.25rem;
-      color: #333;
-    }
 
     .items-movies {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 1rem;
+      margin-bottom: 1rem;
 
       app-movie-card {
         width: 100%;
-        max-width: 180px;
+        max-width: 100%;
         margin: 0 auto;
       }
     }
@@ -45,11 +41,30 @@
 }
 
 ::ng-deep .p-dialog {
+  width: 90vw !important;
+  max-width: 600px;
+
   .p-dialog-header {
     font-weight: 600;
   }
 
   .p-dialog-content {
     padding-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .popup-container {
+    .movie-list .items-movies {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-container {
+    .movie-list .items-movies {
+      grid-template-columns: 1fr;
+    }
   }
 }

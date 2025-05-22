@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Genre, Movie, MovieApiModel } from '../../models/movie';
-import {
-  BehaviorSubject,
-  forkJoin,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
@@ -23,7 +15,7 @@ import { selectGenres } from '../../store/selectors';
   providedIn: 'root',
 })
 export class MovieService {
-  private cache = new Map<string, any>();
+  private cache = new Map<string, any>(); // Кеш для запитів до API
 
   constructor(
     private httpClient: HttpClient,
@@ -31,6 +23,7 @@ export class MovieService {
     private store: Store
   ) {}
 
+  // Метод для перевірки кешу або отримання нових даних
   private getCachedData<T>(
     url: string,
     params?: Record<string, string>
@@ -38,60 +31,63 @@ export class MovieService {
     const fullUrl = this.constructFullUrl(url, params);
 
     if (this.cache.has(fullUrl)) {
-      return of(this.cache.get(fullUrl)! as T);
+      return of(this.cache.get(fullUrl)! as T); // Повертаємо з кешу
     } else {
       return this.httpClient
         .get<T>(fullUrl)
-        .pipe(tap((data) => this.cache.set(fullUrl, data)));
+        .pipe(tap((data) => this.cache.set(fullUrl, data))); // Запит і збереження в кеш
     }
   }
 
+  // Метод для створення повного URL з параметрами
   private constructFullUrl(
     url: string,
     params?: Record<string, string>
   ): string {
-    if (!params) {
-      return url;
-    }
+    if (!params) return url;
 
     const queryParams = new URLSearchParams(params).toString();
     return `${url}?${queryParams}`;
   }
 
+  // Отримання популярних фільмів
   getPopularMovies(): Observable<MovieApiModel> {
     return this.getCachedData(
       `${environment.apiBaseUrl}/movie/popular?api_key=${environment.apiKey}`
     );
   }
 
+  // Найкраще оцінені фільми
   getTopRatedMovies(): Observable<MovieApiModel> {
     return this.getCachedData(
       `${environment.apiBaseUrl}/movie/top_rated?api_key=${environment.apiKey}`
     );
   }
 
+  // Зараз у кінотеатрах
   getNowPlayingMovies(): Observable<MovieApiModel> {
     return this.getCachedData(
       `${environment.apiBaseUrl}/movie/now_playing?api_key=${environment.apiKey}`
     );
   }
 
+  // Майбутні релізи
   getUpcomingMovies(): Observable<MovieApiModel> {
     return this.getCachedData(
       `${environment.apiBaseUrl}/movie/upcoming?api_key=${environment.apiKey}`
     );
   }
 
+  // Рекомендації до певного фільму
   getRecommendationForMovie(movieId: number): Observable<MovieApiModel> {
     return this.getCachedData(
       `${environment.apiBaseUrl}/movie/${movieId}/recommendations?api_key=${environment.apiKey}`
     );
   }
 
+  // Розумні рекомендації на основі улюблених фільмів користувача
   getSmartRecommendations(userLikedMovies: number[]): Observable<Movie[]> {
-    const topLikedIds = userLikedMovies;
-
-    const requests$ = topLikedIds.map((id) =>
+    const requests$ = userLikedMovies.map((id) =>
       this.getRecommendationForMovie(id)
     );
 
@@ -106,28 +102,29 @@ export class MovieService {
           }
         }
 
-        return Array.from(uniqueMoviesMap.values());
-      })
-    );
-  }
-  getPersonalRecommendations(): Observable<Movie[]> {
-    return this.getFavouriteMovies().pipe(
-      map((favourites) => favourites.map((movie) => movie.id)),
-      switchMap((ids) => {
-        if (!ids.length) {
-          return of([]);
-        }
-        return this.getSmartRecommendations(ids);
+        return Array.from(uniqueMoviesMap.values()); // Видаляємо дублікати
       })
     );
   }
 
+  // Персональні рекомендації
+  getPersonalRecommendations(): Observable<Movie[]> {
+    return this.getFavouriteMovies().pipe(
+      map((favourites) => favourites.map((movie) => movie.id)),
+      switchMap((ids) =>
+        ids.length ? this.getSmartRecommendations(ids) : of([])
+      )
+    );
+  }
+
+  // Детальна інформація про фільм
   getMovieDetails(movieId: number): Observable<Movie> {
     return this.getCachedData(
       `${environment.apiBaseUrl}/movie/${movieId}?api_key=${environment.apiKey}`
     );
   }
 
+  // Пошук фільмів за параметрами
   getMoviesByParams(params: Record<string, string>): Observable<MovieApiModel> {
     return this.httpClient.get<MovieApiModel>(
       `${environment.apiBaseUrl}/discover/movie`,
@@ -135,20 +132,24 @@ export class MovieService {
     );
   }
 
+  // Пошук фільмів за жанрами
   getMoviesByGenres(genres: number[]): Observable<MovieApiModel> {
     return this.getMoviesByParams({ with_genres: genres.join(',') });
   }
 
+  // Пошук фільмів за рейтингом
   getMoviesByRating(rating: number): Observable<MovieApiModel> {
     return this.getMoviesByParams({ 'vote_average.gte': rating.toString() });
   }
 
+  // Отримання списку жанрів
   getGenres() {
     return this.httpClient.get<{ genres: Genre[] }>(
       `${environment.apiBaseUrl}/genre/movie/list?api_key=${environment.apiKey}`
     );
   }
 
+  // Формування параметрів для запиту
   private getOptions(params: Record<string, string> = {}): {
     params: HttpParams;
   } {
@@ -159,11 +160,20 @@ export class MovieService {
     };
   }
 
+  // Пошук фільмів по жанрам для розумних рекомундацій по настрою
+  getMoodBasedRecommendations(genres: number[]): Observable<Movie[]> {
+    const randomPage = Math.floor(Math.random() * 10) + 1;
+
+    return this.getMoviesByParams({
+      with_genres: genres.join(','),
+      page: randomPage.toString(),
+    }).pipe(map((res) => res.results.slice(0, 3)));
+  }
+
+  // Додавання або видалення фільму з улюблених / списку перегляду
   updateList(listType: string, id: number, isAdding: boolean): Observable<any> {
     const sessionId = this.authService.getSessionId();
-    if (!sessionId) {
-      return of([]);
-    }
+    if (!sessionId) return of([]);
 
     const body = {
       media_type: 'movie',
@@ -178,46 +188,44 @@ export class MovieService {
     );
   }
 
+  // Улюблені фільми
   getFavouriteMovies() {
     const sessionId = this.authService.getSessionId();
     if (sessionId) {
-      const params: Record<string, string> = { session_id: sessionId };
       return this.httpClient
         .get<MovieListResponse>(
           `${environment.apiBaseUrl}/account/${environment.accountId}/favorite/movies`,
-          this.getOptions(params)
+          this.getOptions({ session_id: sessionId })
         )
         .pipe(map((response) => response.results));
     }
     return of([]);
   }
 
+  // Список для перегляду
   getWatchListMovies() {
     const sessionId = this.authService.getSessionId();
     if (sessionId) {
-      const params: Record<string, string> = { session_id: sessionId };
       return this.httpClient
         .get<MovieListResponse>(
           `${environment.apiBaseUrl}/account/${environment.accountId}/watchlist/movies`,
-          this.getOptions(params)
+          this.getOptions({ session_id: sessionId })
         )
         .pipe(map((response) => response.results));
     }
     return of([]);
   }
 
+  // Пошук фільмів за ключовим словом
   searchMovies(query: string): Observable<Movie[]> {
     return this.httpClient
       .get<{ results: Movie[] }>(
         `${environment.apiBaseUrl}/search/movie?api_key=${environment.apiKey}&query=${query}`
       )
-      .pipe(
-        map((response) => {
-          return response.results;
-        })
-      );
+      .pipe(map((response) => response.results));
   }
 
+  // Отримання назв жанрів за їх ідентифікаторами
   getGenreNames(genreIds: number[]): Observable<Genre[]> {
     return this.store
       .select(selectGenres)
@@ -231,6 +239,7 @@ export class MovieService {
       );
   }
 
+  // Перевірка, чи є фільм у списку
   checkIfMovieInList(
     movieId: number,
     list$: Observable<Movie[] | null>
@@ -239,9 +248,10 @@ export class MovieService {
       map((movies) => movies?.some((movie) => movie.id === movieId) || false)
     );
   }
-  //CUSTOM LISTS
 
-  // 1. Создание кастомного списка
+  //================ Кастомні списки =====================//
+
+  // Створення кастомного списку
   createCustomList(
     name: string,
     description = '',
@@ -264,7 +274,7 @@ export class MovieService {
     );
   }
 
-  // 2. Удаление кастомного списка
+  // Видалення кастомного списку
   deleteCustomList(listId: number): Observable<any> {
     const sessionId = this.authService.getSessionId();
     if (!sessionId) return of(null);
@@ -275,7 +285,7 @@ export class MovieService {
     );
   }
 
-  // 3. Получение всех кастомных списков пользователя
+  // Отримання всіх кастомних списків
   getCustomLists(): Observable<any> {
     const sessionId = this.authService.getSessionId();
     if (!sessionId) return of([]);
@@ -286,39 +296,31 @@ export class MovieService {
     );
   }
 
-  // 4. Добавление фильма в кастомный список
+  // Додавання фільму до кастомного списку
   addMovieToCustomList(listId: number, movieId: number): Observable<any> {
     const sessionId = this.authService.getSessionId();
     if (!sessionId) return of(null);
 
-    const body = {
-      media_id: movieId,
-    };
-
     return this.httpClient.post(
       `${environment.apiBaseUrl}/list/${listId}/add_item`,
-      body,
+      { media_id: movieId },
       this.getOptions({ session_id: sessionId })
     );
   }
 
-  // 5. Удаление фильма из кастомного списка
+  // Видалення фільму з кастомного списку
   removeMovieFromCustomList(listId: number, movieId: number): Observable<any> {
     const sessionId = this.authService.getSessionId();
     if (!sessionId) return of(null);
 
-    const body = {
-      media_id: movieId,
-    };
-
     return this.httpClient.post(
       `${environment.apiBaseUrl}/list/${listId}/remove_item`,
-      body,
+      { media_id: movieId },
       this.getOptions({ session_id: sessionId })
     );
   }
 
-  // 6. Очистка кастомного списка
+  // Очищення кастомного списку
   clearCustomList(listId: number): Observable<any> {
     const sessionId = this.authService.getSessionId();
     if (!sessionId) return of(null);
@@ -330,7 +332,7 @@ export class MovieService {
     );
   }
 
-  // 7. Получение фильмов в кастомном списке
+  // Отримання фільмів з кастомного списку
   getMoviesInCustomList(listId: number): Observable<Movie[]> {
     return this.httpClient
       .get<CustomListDetailsResponse>(
@@ -339,7 +341,8 @@ export class MovieService {
       )
       .pipe(map((response) => response.items));
   }
-  //--------------------------------------
+
+  // Отримання трейлеру фільму
   getMovieTrailer(movieId: number): Observable<string | null> {
     return this.httpClient
       .get<{ results: Array<{ key: string; type: string }> }>(
@@ -348,7 +351,7 @@ export class MovieService {
       .pipe(
         map((response) => {
           const trailer = response.results.find(
-            (video) => video.type === 'Trailer' && video.key
+            (video) => video.type === 'Trailer'
           );
           return trailer ? trailer.key : null;
         })

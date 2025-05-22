@@ -11,7 +11,9 @@
       [(ngModel)]="selectedMood"
       placeholder="Choose your mood"
       optionLabel="label"
+      optionValue='value'
       class="w-full mb-3"
+      appendTo="body"
     ></p-dropdown>
 
     <div class="popup-buttons">
@@ -19,13 +21,15 @@
         label="Get Movies"
         icon="pi pi-check"
         (onClick)="onGetMovies()"
-        [disabled]="!selectedMood"
+        [disabled]="!selectedMood || isLoading"
       />
-      <p-button label="Close" icon="pi pi-times" severity="secondary" (onClick)="onClose()" />
     </div>
 
-    <div *ngIf="recommendedMovies.length > 0; else noRecommendations" class="movie-list mt-4">
-      <h4>Recommendations:</h4>
+    <div *ngIf="isLoading" class="mt-4">
+      <p>Loading movies...</p>
+    </div>
+
+    <div *ngIf="!isLoading && recommendedMovies.length > 0; else noRecommendations" class="movie-list mt-4">
       <div class="items-movies">
         @for (movie of recommendedMovies; track movie.id) {
           <app-movie-card

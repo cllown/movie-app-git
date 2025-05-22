@@ -1,23 +1,16 @@
-import { Component, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { Movie } from '../../models/movie';
 import { SelectItem } from 'primeng/api';
-import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { Store } from '@ngrx/store';
 import { closeMoodRecommendationPopup } from '../../store/actions';
-import {
-  selectAllMovies,
-  selectFilteredMovies,
-  selectIsMoodRecommendationPopupVisible,
-} from '../../store/selectors';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { Observable } from 'rxjs/internal/Observable';
-import { combineLatest, first, map } from 'rxjs';
-import * as MovieActions from '../../store/actions';
+import { selectIsMoodRecommendationPopupVisible } from '../../store/selectors';
+import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-mood-recommendation-popup',
@@ -33,8 +26,12 @@ import * as MovieActions from '../../store/actions';
   templateUrl: './mood-recommendation-popup.component.html',
   styleUrl: './mood-recommendation-popup.component.scss',
 })
-export class MoodRecommendationPopupComponent {
-  isVisible: boolean = false;
+export class MoodRecommendationPopupComponent implements OnInit {
+  isVisible = false;
+  selectedMood: string | null = null;
+  recommendedMovies: Movie[] = [];
+  isLoading = false;
+
   moods: SelectItem[] = [
     { label: 'Happy', value: 'happy' },
     { label: 'Sad', value: 'sad' },
@@ -43,122 +40,64 @@ export class MoodRecommendationPopupComponent {
     { label: 'Relaxed', value: 'calm' },
   ];
 
-  allMovies$!: Observable<Movie[] | null>;
-  private subscription: Subscription | undefined;
+  private moodGenreMap: Record<string, number[]> = {
+    happy: [35, 16, 10751], // Comedy, Animation, Family
+    sad: [18, 10749], // Drama, Romance
+    romantic: [10749, 18], // Romance, Drama
+    adventure: [12, 28, 878], // Adventure, Action, Sci-Fi
+    calm: [99, 10402], // Documentary, Music
+  };
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private movieService: MovieService) {}
 
   ngOnInit(): void {
-    this.subscription = this.store
+    this.store
       .select(selectIsMoodRecommendationPopupVisible)
       .subscribe((visible) => {
         this.isVisible = visible;
-
         if (visible) {
-          // если фильмы ещё не загружены — загружаем
-          this.store
-            .select(selectAllMovies)
-            .pipe(first())
-            .subscribe((movies) => {
-              if (!movies || movies.length === 0) {
-                this.store.dispatch(MovieActions.loadGenres());
-                this.store.dispatch(MovieActions.loadPopularMovies());
-                this.store.dispatch(MovieActions.loadNowPlayingMovies());
-                this.store.dispatch(MovieActions.loadTopRatedMovies());
-                this.store.dispatch(MovieActions.loadUpcomingMovies());
-                this.store.dispatch(MovieActions.loadRecomendationMovies());
-              }
-            });
+          this.recommendedMovies = [];
         }
       });
-
-    const allMovies$ = this.store.select(selectAllMovies);
-    const filteredMovies$ = this.store.select(selectFilteredMovies);
-
-    this.allMovies$ = combineLatest([filteredMovies$, allMovies$]).pipe(
-      map(([filtered, all]) =>
-        filtered && filtered.length > 0 ? filtered : all ?? []
-      )
-    );
   }
 
-  selectedMood: string | null = null;
-  recommendedMovies: Movie[] = [];
+  onGetMovies(): void {
+    //console.log('Clicked "Get Movies"');
 
-  handleMoodChange(event: any) {
-    this.selectedMood = event.value;
-  }
-
-  onGetMovies() {
     if (!this.selectedMood) {
-      console.warn('Mood not selected');
+      //console.warn('No mood selected');
       return;
     }
 
-    this.allMovies$.pipe(first()).subscribe((movies) => {
-      console.log('Movies loaded for mood matching:', movies);
+    const moodKey = this.selectedMood;
+    const genreIds = this.moodGenreMap[moodKey];
 
-      if (!movies || movies.length === 0) {
-        console.warn('Movie list is empty');
-        return;
-      }
+    if (!genreIds) {
+      //console.warn('No genres found for mood:', this.selectedMood);
+      return;
+    }
 
-      const filtered = movies.filter((movie) =>
-        this.matchMood(movie, this.selectedMood!)
-      );
+    this.isLoading = true;
+    //console.log('Calling movieService with genres:', genreIds);
 
-      if (filtered.length === 0) {
-        console.warn('No matching movies found for mood:', this.selectedMood);
-      }
-
-      this.recommendedMovies = this.shuffleArray(filtered).slice(0, 4);
+    this.movieService.getMoodBasedRecommendations(genreIds).subscribe({
+      next: (movies) => {
+        //console.log('Fetched movies:', movies);
+        this.recommendedMovies = movies;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        //console.error('Error fetching movies:', err);
+        this.isLoading = false;
+      },
     });
   }
 
-  onReroll() {
-    this.onGetMovies();
-  }
-
-  onClose() {
+  onClose(): void {
     this.store.dispatch(closeMoodRecommendationPopup());
   }
 
-  shuffleArray(arr: Movie[]): Movie[] {
-    return [...arr].sort(() => Math.random() - 0.5);
-  }
-
-  matchMood(movie: Movie, mood: string): boolean {
-    const genreMap: Record<string, string[]> = {
-      happy: ['Comedy', 'Animation', 'Family'],
-      sad: ['Drama', 'Romance'],
-      romantic: ['Romance', 'Drama'],
-      adventure: ['Action', 'Adventure', 'Sci-Fi'],
-      calm: ['Documentary', 'Music'],
-    };
-
-    const targetGenres = genreMap[mood];
-    if (!targetGenres) {
-      console.warn(`[matchMood] Unknown mood: '${mood}'`);
-      return false;
-    }
-
-    const movieGenres = movie.genre_ids.map((id) => this.getGenreNameById(id));
-    return movieGenres.some((genre) => targetGenres.includes(genre));
-  }
-
-  getGenreNameById(id: number): string {
-    const genres: Record<number, string> = {
-      28: 'Action',
-      35: 'Comedy',
-      18: 'Drama',
-      10749: 'Romance',
-      12: 'Adventure',
-      16: 'Animation',
-      99: 'Documentary',
-      10402: 'Music',
-      10751: 'Family',
-      878: 'Sci-Fi',
-    };
-    return genres[id] || 'Unknown';
+  onReroll(): void {
+    this.onGetMovies();
   }
 }

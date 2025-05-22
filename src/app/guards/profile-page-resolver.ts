@@ -13,6 +13,7 @@ export class profilePageResolver implements Resolve<boolean> {
     this.store.dispatch(MovieActions.loadGenres());
     this.store.dispatch(MovieActions.loadFavouriteMovies());
     this.store.dispatch(MovieActions.loadWatchListMovies());
+    this.store.dispatch(MovieActions.loadCustomLists());
     return true;
   }
 }
