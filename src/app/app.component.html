@@ -1,11 +1,7 @@
-<app-menubar></app-menubar>
-<!-- <app-news-subscription
-  *ngIf="showSubscriptionForm"
-  (close)="showSubscriptionForm = false">
-</app-news-subscription> -->
+<app-menubar (isSearchingChange)="onSearchingChange($event)"></app-menubar>
 <app-login-popup></app-login-popup>
 <app-subscription-popup></app-subscription-popup>
 <app-mood-recommendation-popup></app-mood-recommendation-popup>
-<main>
+<main *ngIf="!isSearching">
     <router-outlet></router-outlet>
 </main>

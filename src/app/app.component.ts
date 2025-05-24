@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
@@ -30,6 +30,11 @@ import { MoodRecommendationPopupComponent } from './components/mood-recommendati
 export class AppComponent extends ClearObservable implements OnInit {
   title = 'movie-app';
   showSubscriptionForm = false;
+  isSearching = false;
+
+  onSearchingChange(value: boolean) {
+    this.isSearching = value;
+  }
 
   constructor(private authService: AuthService, private store: Store) {
     ('');
