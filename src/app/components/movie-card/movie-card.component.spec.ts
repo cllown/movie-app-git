@@ -61,7 +61,7 @@ describe('MovieCardComponent', () => {
   it('should call openLoginPopup when not logged in and trying to add to favourites', () => {
     store.dispatch(MovieActions.loginFailure({ error: 'Not logged in' }));
     const openLoginPopupSpy = jest.spyOn(component as any, 'openLoginPopup');
-    component.onAddToFavourites(mockMovie.id);
+    component.onAddToFavourites();
     expect(openLoginPopupSpy).toHaveBeenCalled();
   });
 
@@ -73,7 +73,7 @@ describe('MovieCardComponent', () => {
       })
     );
     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    component.onAddToFavourites(mockMovie.id);
+    component.onAddToFavourites();
     expect(dispatchSpy).toHaveBeenCalledWith(
       MovieActions.setMovieToFavourites({ movieId: mockMovie.id })
     );
@@ -82,7 +82,7 @@ describe('MovieCardComponent', () => {
   it('should call openLoginPopup when not logged in and trying to add to watch list', () => {
     store.dispatch(MovieActions.loginFailure({ error: 'Not logged in' }));
     const openLoginPopupSpy = jest.spyOn(component as any, 'openLoginPopup');
-    component.onAddToWatchList(mockMovie.id);
+    component.onAddToWatchList();
     expect(openLoginPopupSpy).toHaveBeenCalled();
   });
 
@@ -94,7 +94,7 @@ describe('MovieCardComponent', () => {
       })
     );
     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    component.onAddToWatchList(mockMovie.id);
+    component.onAddToWatchList();
     expect(dispatchSpy).toHaveBeenCalledWith(
       MovieActions.setMovieToWatchList({ movieId: mockMovie.id })
     );

@@ -12,11 +12,11 @@
     </p>
     <ng-template pTemplate="footer">
         <ng-container *ngIf="isActionsShow">
-            <p-button [disabled]="!(isLoggedIn$ | async)" (click)="onAddToFavourites(movie.id)"
+            <p-button [disabled]="!(isLoggedIn$ | async)" (click)="onAddToFavourites()"
                 class="w-full movie-card-button"
                 [styleClass]="(isFavourite$ | async) ? 'pi pi-heart-fill' : 'pi pi-heart'"></p-button>
 
-            <p-button [disabled]="!(isLoggedIn$ | async)" (click)="onAddToWatchList(movie.id)"
+            <p-button [disabled]="!(isLoggedIn$ | async)" (click)="onAddToWatchList()"
                 class="w-full movie-card-button"
                 [styleClass]="(isInWatchList$ | async) ? 'pi pi-check-circle' : 'pi pi-history'"
                 severity="secondary"></p-button>
