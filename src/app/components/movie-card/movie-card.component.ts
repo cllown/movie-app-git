@@ -15,7 +15,7 @@ import { Genre, Movie } from '../../models/movie';
 import { RatingRoundingPipe } from '../../pipes/rating-rounding/rating-rounding.pipe';
 import { Store } from '@ngrx/store';
 import { setMovieToFavourites, setMovieToWatchList } from '../../store/actions';
-import { map, Observable, take, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import {
   selectCustomLists,
   selectFavouriteMovies,

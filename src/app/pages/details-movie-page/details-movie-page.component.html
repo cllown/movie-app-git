@@ -10,11 +10,42 @@
         <p><strong>Rating:</strong> {{ movie.vote_average | ratingRounding }}</p>
         <p><strong>Description:</strong> {{ movie.overview }}</p>
         <p><strong>Original Language:</strong> {{ movie.original_language }}</p>
-        <p-button
-        [disabled]="!(isLoggedIn$ | async)"
-        (click)="onWatch(movie.id)"
-        label="Watch"
-        ></p-button>
+        <div class="movie-page__actions">
+        <div class="movie-action-button watch-button">
+          <p-button
+            [disabled]="!(isLoggedIn$ | async)"
+            (click)="onWatch(movie.id)"
+            label="Watch">
+          </p-button>
+        </div>
+
+        <div class="movie-action-button">
+          <p-button
+            [disabled]="!(isLoggedIn$ | async)"
+            (click)="onAddToFavourites(movie.id)"
+            [styleClass]="(isFavourite$ | async) ? 'pi pi-heart-fill' : 'pi pi-heart'">
+          </p-button>
+        </div>
+
+        <div class="movie-action-button">
+          <p-button
+            [disabled]="!(isLoggedIn$ | async)"
+            (click)="onAddToWatchList(movie.id)"
+            [styleClass]="(isInWatchList$ | async) ? 'pi pi-check-circle' : 'pi pi-history'"
+            severity="secondary">
+          </p-button>
+        </div>
+
+        <div class="movie-action-button">
+          <p-button
+            icon="pi pi-ellipsis-v"
+            [disabled]="!(isLoggedIn$ | async)"
+            (click)="toggleMenu($event)">
+          </p-button>
+          <p-menu [model]="customListMenuItems" [popup]="true" appendTo="body" #customMenu></p-menu>
+        </div>
+      </div>
+
       </div>
     </div>
   </ng-container>

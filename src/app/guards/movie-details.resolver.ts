@@ -12,6 +12,7 @@ export class MovieDetailsResolver implements Resolve<boolean> {
   resolve(route: ActivatedRouteSnapshot): boolean {
     const movieId = route.params['id'];
     this.store.dispatch(MovieActions.loadGenres());
+    this.store.dispatch(MovieActions.loadCustomLists());
     this.store.dispatch(MovieActions.loadMovieDetails({ movieId: +movieId }));
     return true;
   }
