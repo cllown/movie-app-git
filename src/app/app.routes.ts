@@ -74,20 +74,4 @@ export const routes: Routes = [
       ).then((m) => m.UpcomingMoviesPageComponent),
     resolve: { data: UpcomingMoviesResolver },
   },
-  {
-    path: 'favourites',
-    loadComponent: () =>
-      import(
-        './pages/favourites-movies-page/favourites-movies-page.component'
-      ).then((m) => m.FavouritesMoviesPageComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'watch-list',
-    loadComponent: () =>
-      import(
-        './pages/watch-list-movies-page/watch-list-movies-page.component'
-      ).then((m) => m.WatchListMoviesPageComponent),
-    canActivate: [AuthGuard],
-  },
 ];

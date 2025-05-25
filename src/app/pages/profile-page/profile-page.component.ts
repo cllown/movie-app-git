@@ -11,6 +11,7 @@ import {
   selectAllMovies,
   selectFavouriteMovies,
   selectIsLoggedIn,
+  selectIsSubscribed,
   selectUsername,
   selectWatchListMovies,
 } from '../../store/selectors';
@@ -49,6 +50,8 @@ export class ProfilePageComponent implements OnInit {
   watchListMovies$ = this.store.select(selectWatchListMovies);
   allMovies$ = this.store.select(selectAllMovies);
   recommendationMovies$!: Observable<Movie[]>;
+  isSubscribed$ = this.store.select(selectIsSubscribed);
+  showUnsubscribeButton = false;
 
   customLists: any[] = [];
   customListMovies: Record<number, Movie[]> = {};
@@ -105,7 +108,13 @@ export class ProfilePageComponent implements OnInit {
       this.loadCustomLists();
     });
   }
-
+  onToggleUnsubscribe() {
+    this.showUnsubscribeButton = !this.showUnsubscribeButton;
+  }
+  onUnsubscribe() {
+    this.store.dispatch(MovieActions.unsubscribe());
+    this.showUnsubscribeButton = false;
+  }
   private loadCustomLists() {
     this.movieService.getCustomLists().subscribe(({ results }) => {
       this.customLists = results || [];

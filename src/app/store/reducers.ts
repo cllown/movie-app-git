@@ -170,13 +170,18 @@ export const MovieReducer = createReducer(
     error: null,
   })),
 
-  on(MovieActions.loginSuccess, (state, { sessionId, username }) => ({
-    ...state,
-    isLoggedIn: true,
-    loading: false,
-    error: null,
-    username,
-  })),
+  on(
+    MovieActions.loginSuccess,
+    (state, { sessionId, username, isSubscribed }) => ({
+      ...state,
+      isLoggedIn: true,
+      loading: false,
+      error: null,
+      username,
+      isSubscribed: isSubscribed ?? false,
+      sessionId,
+    })
+  ),
 
   on(MovieActions.logout, (state) => ({
     ...state,
@@ -205,6 +210,11 @@ export const MovieReducer = createReducer(
   on(MovieActions.subscribe, (state) => ({
     ...state,
     isSubscribed: true,
+  })),
+
+  on(MovieActions.setSubscribed, (state, { isSubscribed }) => ({
+    ...state,
+    isSubscribed,
   })),
 
   on(MovieActions.openSubscriptionPopup, (state) => ({

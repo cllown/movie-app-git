@@ -13,6 +13,7 @@ import { of } from 'rxjs';
 import { MovieService } from '../services/movie/movie.service';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { subscribe } from './actions';
 
 @Injectable()
 export class MovieEffects {
@@ -259,10 +260,14 @@ export class MovieEffects {
                         const sessionId = sessionResponse.session_id;
                         localStorage.setItem('sessionId', sessionId);
                         localStorage.setItem('username', username);
+                        const isSubscribed = JSON.parse(
+                          localStorage.getItem('isSubscribed') || 'false'
+                        );
                         this.authService.setSessionId(sessionId);
                         return MovieActions.loginSuccess({
                           sessionId,
                           username,
+                          isSubscribed,
                         });
                       })
                     )
@@ -302,9 +307,17 @@ export class MovieEffects {
       map(() => {
         const sessionId = localStorage.getItem('sessionId');
         const username = localStorage.getItem('username');
+        const isSubscribed = JSON.parse(
+          localStorage.getItem('isSubscribed') || 'false'
+        );
+
         if (sessionId && username) {
           this.authService.setSessionId(sessionId);
-          return MovieActions.sessionRestored({ sessionId, username });
+          return MovieActions.sessionRestored({
+            sessionId,
+            username,
+            isSubscribed,
+          });
         } else {
           return MovieActions.logout();
         }
@@ -315,8 +328,8 @@ export class MovieEffects {
   sessionRestored$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MovieActions.sessionRestored),
-      switchMap(({ sessionId, username }) => [
-        MovieActions.loginSuccess({ sessionId, username }),
+      switchMap(({ sessionId, username, isSubscribed }) => [
+        MovieActions.loginSuccess({ sessionId, username, isSubscribed }),
       ])
     )
   );
@@ -332,6 +345,25 @@ export class MovieEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  subscribe$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.subscribe),
+      tap(() => {
+        localStorage.setItem('isSubscribed', JSON.stringify(true));
+      }),
+      map(() => MovieActions.setSubscribed({ isSubscribed: true }))
+    )
+  );
+  unsubscribe$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MovieActions.unsubscribe),
+      tap(() => {
+        localStorage.setItem('isSubscribed', JSON.stringify(false));
+      }),
+      map(() => MovieActions.setSubscribed({ isSubscribed: false }))
+    )
   );
 
   searchMovies$ = createEffect(() =>

@@ -1,15 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Genre, Movie } from '../models/movie';
 
-export const loadSessionFromStorage = createAction(
-  '[Auth] Load Session From Storage'
-);
-
-export const sessionRestored = createAction(
-  '[Auth] Session Restored',
-  props<{ sessionId: string; username: string }>()
-);
-
 export const logout = createAction('[Auth] Logout');
 
 export const loadPopularMovies = createAction('[Movie] Load Popular Movies');
@@ -140,12 +131,21 @@ export const removeMovieFromWatchList = createAction(
 
 export const login = createAction(
   '[Auth] Login',
-  props<{ username: string; password: string; redirectUrl?: string }>()
+  props<{
+    username: string;
+    password: string;
+    redirectUrl?: string;
+  }>()
 );
 
 export const loginSuccess = createAction(
   '[Auth] Login Success',
-  props<{ sessionId: string; redirectUrl?: string; username: string }>()
+  props<{
+    sessionId: string;
+    redirectUrl?: string;
+    username: string;
+    isSubscribed?: boolean;
+  }>()
 );
 
 export const loginFailure = createAction(
@@ -153,6 +153,22 @@ export const loginFailure = createAction(
   props<{ error: string }>()
 );
 export const subscribe = createAction('[Auth] subscribe');
+
+export const unsubscribe = createAction('[Auth] Unsubscribe');
+
+export const setSubscribed = createAction(
+  '[Auth] Set Subscribed',
+  props<{ isSubscribed: boolean }>()
+);
+
+export const loadSessionFromStorage = createAction(
+  '[Auth] Load Session From Storage'
+);
+
+export const sessionRestored = createAction(
+  '[Auth] Session Restored',
+  props<{ sessionId: string; username: string; isSubscribed: boolean }>()
+);
 
 export const openLoginPopup = createAction('[Auth] Open Login Popup');
 

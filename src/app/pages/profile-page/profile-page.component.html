@@ -1,12 +1,37 @@
 <ng-container *ngIf="isLoggedin$ | async; else notLoggedIn">
   <p-card class="profile-page">
     <div class="profile-header">
-      <h2>Welcome {{ username$ | async }}!</h2>
-      <div class="profile-actions">
-        <p-button label="Mood Recommendations" icon="pi pi-smile" severity="help" (click)="openMoodPopup()" />
-        <p-button label="Logout" icon="pi pi-sign-out" severity="danger" (click)="logout()" />
-      </div>
-    </div>
+  <h2>
+    Welcome {{ username$ | async }}!
+
+    <ng-container *ngIf="isSubscribed$ | async; else notSubscribed">
+      <span *ngIf="!showUnsubscribeButton"
+            class="subscribed-label"
+            (click)="onToggleUnsubscribe()"
+            style="cursor: pointer; display: inline-flex; align-items: center;">
+        <i class="pi pi-check-circle" style="color: green; margin-right: 0.3em;"></i>
+        Subsribed
+      </span>
+      <button *ngIf="showUnsubscribeButton"
+              pButton
+              type="button"
+              label="Отписаться"
+              (click)="onUnsubscribe()"
+              style="margin-left: 1em;">
+      </button>
+    </ng-container>
+
+    <ng-template #notSubscribed>
+    </ng-template>
+  </h2>
+
+  <div class="profile-actions">
+    <p-button label="Mood Recommendations" icon="pi pi-smile" severity="help" (click)="openMoodPopup()" />
+    <p-button label="Logout" icon="pi pi-sign-out" severity="danger" (click)="logout()" />
+  </div>
+</div>
+
+
 
     <p-tabView>
       <!-- Recommendations -->
